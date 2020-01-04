@@ -1,0 +1,84 @@
+# Default language if you have a multi-language setup
+DefaultContentLanguage = "en"
+
+baseURL = "https://example.com"
+
+theme = "amperage"
+
+pygmentsUseClasses = true
+
+# Number of posts shown per page (dafault: 10)
+paginate = 3
+
+# Language sections
+[languages]
+    [languages.en]
+        contentDir = "content"
+        languageName = "English"
+        languageCode = "en"
+        title = "Amperage theme!"
+        description = "This is an demo for the Amperage theme!"
+        weight = 1
+    [languages.es]
+        contentDir = "content/spanish"
+        languageName = "Español"
+        languageCode = "es"
+        title = "Tema Amperage!"
+        description = "Esta es una demo para el tema Amperage!"
+        weight = 2
+
+# Menu elements
+[[menu.main]]
+    identifier = "hugo"
+    name = "GoHugo"
+    url = "https://gohugo.io"
+    weight = 8
+[[menu.main]]
+    identifier = "author"
+    name = "The author"
+    url = "https://asur.dev"
+    weight = 9
+[[menu.main]]
+    identifier = "github"
+    name = "The code!"
+    url = "https://github.com/asurbernardo/amperage"
+    weight = 10
+
+# Enable only tags taxonomy
+[taxonomies]
+    tag = "tags"
+
+[params]
+    copyright = "Amperage" # Name shown on footer copyright
+    themeColor = "#333" # Theme color displayed on mobile browsers
+
+    # Default AMP components for the whole site
+    ampElements = ["amp-analytics", "amp-social-share", "amp-install-serviceworker"]
+
+    # Google Analytics code
+    # googleAnalytics = "UA-xxxxxxxxx-x"
+
+    # Adsense publisher code
+    # adsensePublisher = "ca-pub-123456789"
+
+    # Comments Iframe URL
+    # commentsEmbedUrl = "https://comments.example.com"
+
+    # Social sites for metatags
+    facebookSite = "example"
+    twitterSite = "@example"
+
+    # Structured data elements
+    socialProfiles = ["https://twitter.com/example","https://www.linkedin.com/in/example/","https://github.com/example"]
+
+    alternatePageName = "Amperage example"
+    organizationLogo = "/logo.png"
+    organizationName = "Asur"
+
+    publisherName = "amperage"
+    publisherLogo = "/logo-amp-article.png"
+    publisherLogoWidth = 600
+    publisherLogoHeight = 60
+
+[markup]
+    defaultMarkdownHandler = "blackfriday"

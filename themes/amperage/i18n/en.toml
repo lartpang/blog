@@ -1,0 +1,38 @@
+[home]
+other = "Home"
+[notFound]
+other = "Page not found"
+[search]
+other = "Search"
+[goBackHome]
+other = "Go back to the homepage"
+[by]
+other = "by"
+[tags]
+other = "Tags"
+[share]
+other = "Share content"
+[shareFacebook]
+other = "Share on Facebook"
+[shareTwitter]
+other = "Share on Twitter"
+[shareLinkedin]
+other = "Share on Linkedin"
+[sharePinterest]
+other = "Share on Pinterest"
+[toc]
+other = "Table of contents"
+[related]
+other = "Related readings 📖"
+[comments]
+other = "Leave a comment!  💬"
+[months]
+other = "months"
+[published]
+other = "{{.Day}} {{.Month}} {{.Year}}"
+[next]
+other = "Next"
+[previous]
+other = "Previous"
+[noAd]
+other = "No ad for you!"
