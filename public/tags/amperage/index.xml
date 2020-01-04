@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>amperage on Lart Pang&#39;s Articles...</title>
+    <link>https://lartpang.github.io/blog/tags/amperage/</link>
+    <description>Recent content in amperage on Lart Pang&#39;s Articles...</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 11 Dec 2019 12:09:32 +0200</lastBuildDate>
+    
+	<atom:link href="https://lartpang.github.io/blog/tags/amperage/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Markdown Syntax Guide</title>
+      <link>https://lartpang.github.io/blog/test/markdown-syntax/</link>
+      <pubDate>Wed, 11 Dec 2019 12:09:32 +0200</pubDate>
+      
+      <guid>https://lartpang.github.io/blog/test/markdown-syntax/</guid>
+      <description>This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.</description>
+    </item>
+    
+  </channel>
+</rss>
