@@ -1,7 +1,5 @@
 +++
-draft = false
-date = "2019-12-23T12:09:32+02:00"
-publishdate = "2019-12-23T12:09:32+02:00"
+date = "2019-12-11T12:09:32+02:00"
 
 title = "Markdown Syntax Guide"
 description = "Sample article showcasing basic Markdown syntax and formatting for HTML elements."
@@ -12,17 +10,8 @@ tags = [
     "amperage"
 ]
 
-keywords = ['hugo', 'markdown', 'example']
-
 [author]
     name = "Asur"
-    homepage = "https://asur.dev"
-
-[image]
-    src = "/images/share-banner.png"
-
-[twitter]
-    site = "@asurbernardo"
 
 [sitemap]
     changefreq = "monthly"

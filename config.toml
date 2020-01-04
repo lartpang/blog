@@ -1,14 +1,14 @@
 # Default language if you have a multi-language setup
 DefaultContentLanguage = "en"
 
-baseURL = "https://example.com"
+baseURL = "https://lartpang.github.io/blog"
 
 theme = "amperage"
 
 pygmentsUseClasses = true
 
 # Number of posts shown per page (dafault: 10)
-paginate = 3
+paginate = 5
 
 # Language sections
 [languages]
@@ -16,40 +16,28 @@ paginate = 3
         contentDir = "content"
         languageName = "English"
         languageCode = "en"
-        title = "Amperage theme!"
-        description = "This is an demo for the Amperage theme!"
+        title = "Lart Pang's Articles..."
+        description = "竟然被你找到了！"
         weight = 1
-    [languages.es]
-        contentDir = "content/spanish"
-        languageName = "Español"
-        languageCode = "es"
-        title = "Tema Amperage!"
-        description = "Esta es una demo para el tema Amperage!"
-        weight = 2
 
 # Menu elements
 [[menu.main]]
-    identifier = "hugo"
-    name = "GoHugo"
-    url = "https://gohugo.io"
+    identifier = "author"
+    name = "The Author"
+    url = "https://github.com/lartpang"
     weight = 8
 [[menu.main]]
-    identifier = "author"
-    name = "The author"
-    url = "https://asur.dev"
+    identifier = "csdn"
+    name = "Another Blog!"
+    url = "https://blog.csdn.net/p_lart"
     weight = 9
-[[menu.main]]
-    identifier = "github"
-    name = "The code!"
-    url = "https://github.com/asurbernardo/amperage"
-    weight = 10
 
 # Enable only tags taxonomy
 [taxonomies]
     tag = "tags"
 
 [params]
-    copyright = "Amperage" # Name shown on footer copyright
+    copyright = "Theme by Amperage & The site by Lart Pang!" # Name shown on footer copyright
     themeColor = "#333" # Theme color displayed on mobile browsers
 
     # Default AMP components for the whole site

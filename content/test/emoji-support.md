@@ -17,16 +17,6 @@ keywords = ['hugo', 'emoji', 'example']
     name = "Asur"
     homepage = "https://asur.dev"
 
-[image]
-    src = "/images/share-banner.png"
-
-[twitter]
-    site = "@asurbernardo"
-
-[sitemap]
-    changefreq = "monthly"
-    priority = 0.5
-    filename = "sitemap.xml"
 +++
 
 # Emoji support
