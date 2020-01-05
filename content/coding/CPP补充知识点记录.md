@@ -7,13 +7,21 @@ title = "CPP补充知识点记录"
 description = "CPP补充知识点记录" 
 summary = "一些CPP的关键知识点集合"
 
-tags = [ "编程", ]
+tags = [ 
+    "编程", 
+]
 
-keywords = ['cpp', 'coding']
+keywords = [
+    'cpp', 
+    'coding'
+]
 
-[author] 
+[author]
     name = "Lart Pang"
+
 +++
+
+# CPP补充知识点记录
 
 - [CPP补充知识点记录](#cpp补充知识点记录)
   - [类&对象](#类对象)
@@ -44,8 +52,6 @@ keywords = ['cpp', 'coding']
     - [指针数组](#指针数组)
     - [小结](#小结)
   - [命令行参数](#命令行参数)
-
-# CPP补充知识点记录
 
 ## 类&对象
 
