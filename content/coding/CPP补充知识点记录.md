@@ -1,12 +1,18 @@
 +++
 draft = false 
+
 date = "2019-12-07"
+
 title = "CPP补充知识点记录"
 description = "CPP补充知识点记录" 
 summary = "一些CPP的关键知识点集合"
+
 tags = [ "编程", ]
+
 keywords = ['cpp', 'coding']
-[author] name = "Lart Pang"
+
+[author] 
+    name = "Lart Pang"
 +++
 
 - [CPP补充知识点记录](#cpp补充知识点记录)
