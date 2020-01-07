@@ -1,72 +1,72 @@
-# Default language if you have a multi-language setup
+baseurl = "https://lartpang.github.io/blog"
 DefaultContentLanguage = "en"
+title = "Lart Pang's Articles..."
+theme = "beautifulhugo"
+metaDataFormat = "yaml"
 
-baseURL = "https://lartpang.github.io/blog"
-
-theme = "amperage"
-
+pygmentsStyle = "trac"
 pygmentsUseClasses = true
+pygmentsCodeFences = true
+pygmentsCodefencesGuessSyntax = true
+# pygmentsUseClassic = true
+# pygmentOptions = "linenos=inline"
+#disqusShortname = "XXX"
+#googleAnalytics = "XXX"
 
-# Number of posts shown per page (dafault: 10)
-paginate = 5
+[Params]
+  homeTitle = "胡言乱语" # Set a different text for the header on the home page
+  subtitle = "竟然被你找到了！"
+  mainSections = ["post", "posts"]
+  logo = "img/avatar-icon.png" # Expecting square dimensions
+  favicon = "img/favicon.ico"
+  dateFormat = "January 2, 2006"
+  commit = false
+  rss = true
+  comments = false
+  readingTime = true
+  wordCount = true
+  useHLJS = true
+  socialShare = true
+  delayDisqus = true
+  showRelatedPosts = true
+#  hideAuthor = true
 
-# Language sections
-[languages]
-    [languages.en]
-        contentDir = "content"
-        languageName = "English"
-        languageCode = "en"
-        title = "Lart Pang's Articles..."
-        description = "竟然被你找到了！"
-        weight = 1
+#[[Params.bigimg]]
+#  src = "img/triangle.jpg"
+#  desc = "Triangle"
+[[Params.bigimg]]
+ src = "img/home.gif"
+ desc = "Lart Pang"
+ # position: see values of CSS background-position.
+ position = "center top"
+#[[Params.bigimg]]
+#  src = "img/hexagon.jpg"
+#  desc = "Hexagon"
 
-# Menu elements
+[Author]
+  name = "Lart Pang"
+  github = "https://github.com/lartpang"
+
 [[menu.main]]
-    identifier = "author"
-    name = "The Author"
-    url = "https://github.com/lartpang"
-    weight = 8
+    name = "Blog"
+    url = ""
+    weight = 1
+
 [[menu.main]]
-    identifier = "csdn"
-    name = "Another Blog!"
+    identifier = "Sites"
+    name = "Other Sites"
+    weight = 2
+[[menu.main]]
+    parent = "Sites"
+    name = "CSDN"
     url = "https://blog.csdn.net/p_lart"
-    weight = 9
+    weight = 1
 
-# Enable only tags taxonomy
-[taxonomies]
-    tag = "tags"
-
-[params]
-    copyright = "Theme by Amperage & The site by Lart Pang!" # Name shown on footer copyright
-    themeColor = "#333" # Theme color displayed on mobile browsers
-
-    # Default AMP components for the whole site
-    ampElements = ["amp-analytics", "amp-social-share", "amp-install-serviceworker"]
-
-    # Google Analytics code
-    # googleAnalytics = "UA-xxxxxxxxx-x"
-
-    # Adsense publisher code
-    # adsensePublisher = "ca-pub-123456789"
-
-    # Comments Iframe URL
-    # commentsEmbedUrl = "https://comments.example.com"
-
-    # Social sites for metatags
-    facebookSite = "example"
-    twitterSite = "@example"
-
-    # Structured data elements
-    socialProfiles = ["https://twitter.com/example","https://www.linkedin.com/in/example/","https://github.com/example"]
-
-    alternatePageName = "Amperage example"
-    organizationLogo = "/logo.png"
-    organizationName = "Asur"
-
-    publisherName = "amperage"
-    publisherLogo = "/logo-amp-article.png"
-    publisherLogoWidth = 600
-    publisherLogoHeight = 60
-
-[markup]
-    defaultMarkdownHandler = "blackfriday"
+[[menu.main]]
+    name = "About"
+    url = "page/about/"
+    weight = 3
+[[menu.main]]
+    name = "Tags"
+    url = "tags"
+    weight = 4

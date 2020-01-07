@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>coding on Lart Pang&#39;s Articles...</title>
+    <link>https://lartpang.github.io/blog/tags/coding/</link>
+    <description>Recent content in coding on Lart Pang&#39;s Articles...</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 07 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://lartpang.github.io/blog/tags/coding/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>CPP补充知识点记录</title>
+      <link>https://lartpang.github.io/blog/post/cpp%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86%E7%82%B9%E8%AE%B0%E5%BD%95/</link>
+      <pubDate>Sat, 07 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://lartpang.github.io/blog/post/cpp%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86%E7%82%B9%E8%AE%B0%E5%BD%95/</guid>
+      <description>CPP补充知识点记录  CPP补充知识点记录  类&amp;amp;对象  默认配置 静态成员  静态成员函数   对象数组初始化 赋值兼容规则 构造函数&amp;amp;析构函数  类的构造函数 使用初始化列表来初始化字段 类的析构函数 new&amp;amp;delete 拷贝构造函数   内联函数 友元函数&amp;amp;友元类 类访问修饰符  三种访问控制下继承的差异   this指针 常函数 virtual  虚基类 虚函数（多态） 纯虚函数     作用域 指针数组&amp;amp;数组指针  数组指针（也称行指针） 指针数组 小结   命令行参数    类&amp;amp;对象 默认配置 C++为类（Class）提供了许多默认函数。如果自己没有申明，编译器会为我们提供一个 copy构造函数 、一个 copy assignment操作符 和一个 析构函数 。此外，如果没有申明任何 构造函数 ，编译器会为我们申明一个 default构造函数 。很像下面的Empty类：
+class Empty{ public: Empty(); Empty(const Empty &amp;amp;rhs); ~Empty(); Empty&amp;amp; operator=(const Empty &amp;amp;rhs); }; 像Effective C++说的，如果不想使用编译器自动生成的函数，就应该明确拒绝。</description>
+    </item>
+    
+  </channel>
+</rss>

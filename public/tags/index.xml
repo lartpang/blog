@@ -5,54 +5,71 @@
     <link>https://lartpang.github.io/blog/tags/</link>
     <description>Recent content in Tags on Lart Pang&#39;s Articles...</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <lastBuildDate>Mon, 23 Dec 2019 12:09:32 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 07 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://lartpang.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>emoji</title>
-      <link>https://lartpang.github.io/blog/tags/emoji/</link>
-      <pubDate>Mon, 23 Dec 2019 12:09:32 +0200</pubDate>
+      <title>coding</title>
+      <link>https://lartpang.github.io/blog/tags/coding/</link>
+      <pubDate>Sat, 07 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://lartpang.github.io/blog/tags/emoji/</guid>
+      <guid>https://lartpang.github.io/blog/tags/coding/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>example</title>
+      <link>https://lartpang.github.io/blog/tags/example/</link>
+      <pubDate>Mon, 20 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://lartpang.github.io/blog/tags/example/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>photoswipe</title>
+      <link>https://lartpang.github.io/blog/tags/photoswipe/</link>
+      <pubDate>Mon, 20 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://lartpang.github.io/blog/tags/photoswipe/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>bigimg</title>
+      <link>https://lartpang.github.io/blog/tags/bigimg/</link>
+      <pubDate>Tue, 07 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://lartpang.github.io/blog/tags/bigimg/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>math</title>
+      <link>https://lartpang.github.io/blog/tags/math/</link>
+      <pubDate>Sun, 05 Mar 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://lartpang.github.io/blog/tags/math/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>code</title>
+      <link>https://lartpang.github.io/blog/tags/code/</link>
+      <pubDate>Tue, 08 Mar 2016 00:00:00 +0000</pubDate>
+      
+      <guid>https://lartpang.github.io/blog/tags/code/</guid>
       <description></description>
     </item>
     
     <item>
       <title>markdown</title>
       <link>https://lartpang.github.io/blog/tags/markdown/</link>
-      <pubDate>Mon, 23 Dec 2019 12:09:32 +0200</pubDate>
+      <pubDate>Fri, 20 Feb 2015 00:00:00 +0000</pubDate>
       
       <guid>https://lartpang.github.io/blog/tags/markdown/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>text</title>
-      <link>https://lartpang.github.io/blog/tags/text/</link>
-      <pubDate>Mon, 23 Dec 2019 12:09:32 +0200</pubDate>
-      
-      <guid>https://lartpang.github.io/blog/tags/text/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>amperage</title>
-      <link>https://lartpang.github.io/blog/tags/amperage/</link>
-      <pubDate>Wed, 11 Dec 2019 12:09:32 +0200</pubDate>
-      
-      <guid>https://lartpang.github.io/blog/tags/amperage/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Tag</title>
-      <link>https://lartpang.github.io/blog/tags/tag/</link>
-      <pubDate>Mon, 16 Sep 2019 12:33:32 +0200</pubDate>
-      
-      <guid>https://lartpang.github.io/blog/tags/tag/</guid>
       <description></description>
     </item>
     
