@@ -14,8 +14,8 @@ pygmentsCodefencesGuessSyntax = true
 #googleAnalytics = "XXX"
 
 [Params]
-  homeTitle = "胡言乱语" # Set a different text for the header on the home page
-  subtitle = "竟然被你找到了！"
+  homeTitle = "Digital Monument" # Set a different text for the header on the home page
+  subtitle = "0 & 1 will encode everything~"
   mainSections = ["post", "posts"]
   logo = "img/avatar-icon.png" # Expecting square dimensions
   favicon = "img/favicon.ico"
