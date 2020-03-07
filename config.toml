@@ -47,26 +47,18 @@ pygmentsCodefencesGuessSyntax = true
   name = "Lart Pang"
   github = "https://github.com/lartpang"
 
-[[menu.main]]
-    name = "Blog"
-    url = ""
-    weight = 1
+#[[menu.main]]
+#    name = ""
+#    url = ""
+#    weight = 1
 
 [[menu.main]]
-    identifier = "Sites"
-    name = "Other Sites"
-    weight = 2
-[[menu.main]]
-    parent = "Sites"
-    name = "CSDN"
-    url = "https://blog.csdn.net/p_lart"
+    name = "Tags"
+    url = "tags"
     weight = 1
 
 [[menu.main]]
     name = "About"
-    url = "page/about/"
-    weight = 3
-[[menu.main]]
-    name = "Tags"
-    url = "tags"
-    weight = 4
+    #url = "page/about/"
+    url = "https://lartpang.github.io/"
+    weight = 2
