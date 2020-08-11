@@ -44,7 +44,12 @@ for dirpath, dirnames, filenames in os.walk(raw_data_root):
         print(f"创建数据到新目录 {new_dirpath}")
         if not os.path.exists(new_dirpath):
             os.makedirs(new_dirpath)
-        new_filepath = os.path.join(new_dirpath, filename).replace("(", "_").replace(")", "_")
+        new_filepath = (
+            os.path.join(new_dirpath, filename)
+            .replace("(", "_")
+            .replace(")", "_")
+            .replace("，", ",")
+        )
         with open(new_filepath, encoding="utf-8", mode="w") as f:
             for line in line_list:
                 f.write(line + "\n")
