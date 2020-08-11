@@ -1,7 +1,7 @@
 import re
 import os
 
-raw_data_root = "../markdown"
+raw_data_root = "../markdown_old"
 output_root = "../markdown_cleaned"
 if not os.path.exists(output_root):
     os.mkdir(output_root)
@@ -44,7 +44,7 @@ for dirpath, dirnames, filenames in os.walk(raw_data_root):
         print(f"创建数据到新目录 {new_dirpath}")
         if not os.path.exists(new_dirpath):
             os.makedirs(new_dirpath)
-        new_filepath = os.path.join(new_dirpath, filename)
+        new_filepath = os.path.join(new_dirpath, filename).replace("(", "_").replace(")", "_")
         with open(new_filepath, encoding="utf-8", mode="w") as f:
             for line in line_list:
                 f.write(line + "\n")

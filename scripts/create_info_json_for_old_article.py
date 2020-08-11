@@ -8,7 +8,6 @@ def get_time_about_file(filepath):
 
 
 md_root = "../markdown_cleaned"
-origin_md_root = "../markdown_old"
 
 
 def create_article_info(root: str) -> dict:
@@ -19,8 +18,7 @@ def create_article_info(root: str) -> dict:
             filepath = "./" + os.path.relpath(
                 os.path.join(dirpath, filename), start=os.path.dirname(root)
             )
-            origin_filepath = origin_md_root + dirpath[len(md_root) :] + "/" + filename
-            created_time, modified_time = get_time_about_file(origin_filepath)
+            created_time, modified_time = get_time_about_file(os.path.join(dirpath, filename))
             all_article_info.append(
                 {
                     "file_name": filename,
