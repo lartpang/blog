@@ -3,6 +3,10 @@ title: "CVPR 2024 - Retrieval-Augmented Open-Vocabulary Object Detection"
 date: 2024-04-10 07:50:42
 tags: ["paper"]
 ---
+
+
+<!--more-->
+
 # CVPR 2024 - Retrieval-Augmented Open-Vocabulary Object Detection
 
 * 论文：<https://arxiv.org/abs/2404.05687>

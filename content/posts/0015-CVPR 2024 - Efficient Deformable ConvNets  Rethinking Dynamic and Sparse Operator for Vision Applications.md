@@ -3,6 +3,10 @@ title: "CVPR 2024 - Efficient Deformable ConvNets: Rethinking Dynamic and Sparse
 date: 2024-04-10 06:24:56
 tags: ["paper"]
 ---
+
+
+<!--more-->
+
 # CVPR 2024 - Efficient Deformable ConvNets - Rethinking Dynamic and Sparse Operator for Vision Applications
 
 ![](https://img-blog.csdnimg.cn/direct/91218b5449e44dc08281d227cb980f2e.png)

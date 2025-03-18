@@ -3,6 +3,10 @@ title: "CVPR 2024 - Rethinking Interactive Image Segmentationwith Low Latency, H
 date: 2024-04-10 06:51:40
 tags: ["paper"]
 ---
+
+
+<!--more-->
+
 # CVPR 2024 - Rethinking Interactive Image Segmentationwith Low Latency, High Quality, and Diverse Prompts
 
 * 论文：<https://arxiv.org/bas/2404.00741>

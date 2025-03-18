@@ -3,6 +3,10 @@ title: "ICLR 2024 - FasterViT - Fast Vision Transformers with Hierarchical Atten
 date: 2024-05-17 09:21:14
 tags: ["paper"]
 ---
+
+
+<!--more-->
+
 # FasterViT: Fast Vision Transformers with Hierarchical Attention
 
 * 论文：<https://arxiv.org/abs//2306.06189>

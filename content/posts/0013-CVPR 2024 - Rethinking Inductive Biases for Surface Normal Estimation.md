@@ -3,6 +3,10 @@ title: "CVPR 2024 - Rethinking Inductive Biases for Surface Normal Estimation"
 date: 2024-04-10 06:27:49
 tags: ["paper"]
 ---
+
+
+<!--more-->
+
 # CVPR 2024 - Rethinking Inductive Biases for Surface Normal Estimation
 
 * 论文：<https://arxiv.org/abs/2403.00712>

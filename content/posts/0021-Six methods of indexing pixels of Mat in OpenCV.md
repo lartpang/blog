@@ -3,6 +3,10 @@ title: "Six methods of indexing pixels of Mat in OpenCV"
 date: 2024-03-25 09:41:52
 tags: ["opencv"]
 ---
+
+
+<!--more-->
+
 # Six methods of indexing pixels of Mat in OpenCV
 
 ## `.at<>()`

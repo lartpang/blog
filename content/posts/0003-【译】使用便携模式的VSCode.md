@@ -3,6 +3,10 @@ title: "【译】使用便携模式的VSCode"
 date: 2024-07-30 07:17:42
 tags: ["tool"]
 ---
+
+
+<!--more-->
+
 > 原始文档：https://code.visualstudio.com/docs/editor/portable#_migrate-to-portable-mode
 
 Visual Studio Code 支持[便携模式](https://en.wikipedia.org/wiki/Portable_application)。此模式使 VS Code 创建和维护的所有数据都位于自身附近，因此可以在环境中移动。

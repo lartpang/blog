@@ -3,6 +3,10 @@ title: "Snippets of OpenVINO-CPP for Model Inference"
 date: 2024-03-25 09:41:05
 tags: ["opencv"]
 ---
+
+
+<!--more-->
+
 # Snippets of OpenVINO-CPP for Model Inference
 
 ## Header File

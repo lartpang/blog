@@ -3,6 +3,10 @@ title: "CVPR 2024 - SED - A Simple Encoder-Decoder for Open-Vocabulary Semantic 
 date: 2024-04-11 06:37:48
 tags: ["paper"]
 ---
+
+
+<!--more-->
+
 # CVPR 2024 - SED - A Simple Encoder-Decoder for Open-Vocabulary Semantic Segmentation
 
 * 论文：<https://arxiv.org/abs/2311.15537>

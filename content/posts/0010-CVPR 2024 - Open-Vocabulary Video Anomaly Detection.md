@@ -3,6 +3,10 @@ title: "CVPR 2024 - Open-Vocabulary Video Anomaly Detection"
 date: 2024-04-10 09:39:46
 tags: ["paper"]
 ---
+
+
+<!--more-->
+
 # CVPR 2024 - Open-Vocabulary Video Anomaly Detection
 
 * 论文：<https://arxiv.org/abs/2311.07042>

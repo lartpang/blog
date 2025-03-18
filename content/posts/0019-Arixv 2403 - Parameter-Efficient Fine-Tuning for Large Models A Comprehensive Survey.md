@@ -3,6 +3,10 @@ title: "Arixv 2403 - Parameter-Efficient Fine-Tuning for Large Models A Comprehe
 date: 2024-04-03 04:46:25
 tags: ["paper"]
 ---
+
+
+<!--more-->
+
 # Arixv 2403 | Parameter-Efficient Fine-Tuning for Large Models: A Comprehensive Survey
 
 ![image.png](https://cdn.nlark.com/yuque/0/2024/png/192314/1711865052255-f9c75ccf-1daf-488d-ae59-fd854eef2301.png#averageHue=%23f0efef&clientId=u6331460c-e958-4&from=paste&height=176&id=u1a3b8c64&originHeight=351&originWidth=1345&originalType=binary&ratio=2&rotation=0&showTitle=false&size=104896&status=done&style=none&taskId=ue922bda5-62cc-4bb2-b22e-d0a375624b0&title=&width=672.5)

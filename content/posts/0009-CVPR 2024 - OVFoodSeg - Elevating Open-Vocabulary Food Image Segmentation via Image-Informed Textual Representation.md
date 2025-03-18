@@ -3,6 +3,10 @@ title: "CVPR 2024 - OVFoodSeg - Elevating Open-Vocabulary Food Image Segmentatio
 date: 2024-04-10 11:12:23
 tags: ["paper"]
 ---
+
+
+<!--more-->
+
 # CVPR 2024 - OVFoodSeg - Elevating Open-Vocabulary Food Image Segmentation via Image-Informed Textual Representation
 
 * 论文：<https://arxiv.org/abs/2404.01409>

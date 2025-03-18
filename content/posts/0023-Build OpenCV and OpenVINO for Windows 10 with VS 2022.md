@@ -3,6 +3,10 @@ title: "Build OpenCV and OpenVINO for Windows 10 with VS 2022"
 date: 2024-03-25 09:38:03
 tags: ["opencv"]
 ---
+
+
+<!--more-->
+
 # Build OpenCV and OpenVINO for Windows 10 with VS 2022
 
 In this guide, I will build the two powerful open-source libraries, i.e., OpenCV and OpenVINO for running my deeplearning model on windows 10.

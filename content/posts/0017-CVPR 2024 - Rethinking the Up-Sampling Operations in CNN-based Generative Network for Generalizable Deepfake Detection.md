@@ -3,6 +3,10 @@ title: "CVPR 2024 - Rethinking the Up-Sampling Operations in CNN-based Generativ
 date: 2024-04-10 06:22:51
 tags: ["paper"]
 ---
+
+
+<!--more-->
+
 # CVPR 2024 - Rethinking the Up-Sampling Operations in CNN-based Generative Network for Generalizable Deepfake Detection
 
 * 论文：<https://arxiv.org/abs/2312.10461>

@@ -3,6 +3,10 @@ title: "Rethinking Interactive Image Segmentation: Feature Space Annotation"
 date: 2024-04-10 06:26:16
 tags: ["paper"]
 ---
+
+
+<!--more-->
+
 # Rethinking Interactive Image Segmentation Feature Space Annotation
 
 * 论文：<https://arxiv.org/abs/2101.04378>

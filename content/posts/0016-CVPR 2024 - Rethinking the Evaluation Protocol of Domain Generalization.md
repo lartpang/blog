@@ -3,6 +3,10 @@ title: "CVPR 2024 - Rethinking the Evaluation Protocol of Domain Generalization"
 date: 2024-04-10 06:23:52
 tags: ["paper"]
 ---
+
+
+<!--more-->
+
 # CVPR 2024 - Rethinking the Evaluation Protocol of Domain Generalization
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/direct/c97dafb81fc74a22ba6b43d48dd2f2da.png)
