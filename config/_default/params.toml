@@ -44,7 +44,7 @@ showRecent = true
 # Heading label for recent items.
 showRecentLabel = "Recent Posts"
 # Number of recent items to show.
-showRecentItems = 3
+showRecentItems = 10
 # Whether to display a "Show more" link at the end of recent section that directs to `showMoreDest`.
 showMore = true
 showMoreDest = "/posts"
