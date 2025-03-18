@@ -48,6 +48,7 @@ class Convertor:
             "title": issue.title,
             "created_date": issue.created_at.strftime("%Y-%m-%d %H:%M:%S"),
             "tags": [label.name for label in issue.labels],
+            "original_link": issue.html_url,
             "md_name": re.sub(r"[<>:/\\|?*\"]|[\0-\31]", " ", issue.title),
             "body": issue.body,
         }
@@ -64,8 +65,9 @@ class Convertor:
                 f"tags: [{tags}]",
                 "---",
                 "",
-                "",
                 "<!--more-->",
+                "",
+                f"> <{issue_info['original_link']}>",
                 "",
                 "",
             ]
