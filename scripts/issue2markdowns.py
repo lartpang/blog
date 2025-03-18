@@ -11,7 +11,7 @@ from github import Github
 from github.Issue import Issue
 from github.Repository import Repository
 
-__VERSION__ = "1.0.0"
+__VERSION__ = "1.1.0"
 
 NEWLINE_CHAR = "\r\n"
 
@@ -49,6 +49,7 @@ class Convertor:
             "created_date": issue.created_at.strftime("%Y-%m-%d %H:%M:%S"),
             "tags": [label.name for label in issue.labels],
             "original_link": issue.html_url,
+            "author": issue.user.login,
             "md_name": re.sub(r"[<>:/\\|?*\"]|[\0-\31]", " ", issue.title),
             "body": issue.body,
         }
@@ -67,7 +68,8 @@ class Convertor:
                 "",
                 "<!--more-->",
                 "",
-                f"> <{issue_info['original_link']}>",
+                f"- Author: {issue_info['author']}",
+                f"- Link: {issue_info['original_link']}",
                 "",
                 "",
             ]
