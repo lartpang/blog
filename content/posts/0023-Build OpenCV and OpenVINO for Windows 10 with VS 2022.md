@@ -6,7 +6,8 @@ tags: ["opencv"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/1>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/1
 
 # Build OpenCV and OpenVINO for Windows 10 with VS 2022
 

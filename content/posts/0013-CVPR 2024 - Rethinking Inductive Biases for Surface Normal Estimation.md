@@ -6,7 +6,8 @@ tags: ["paper"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/11>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/11
 
 # CVPR 2024 - Rethinking Inductive Biases for Surface Normal Estimation
 

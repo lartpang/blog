@@ -6,7 +6,8 @@ tags: ["paper"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/5>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/5
 
 # Arixv 2403 | Parameter-Efficient Fine-Tuning for Large Models: A Comprehensive Survey
 

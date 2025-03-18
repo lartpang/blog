@@ -6,7 +6,8 @@ tags: ["paper"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/23>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/23
 
 ## 1. 引言
 

@@ -6,7 +6,8 @@ tags: ["paper"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/10>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/10
 
 # Rethinking Interactive Image Segmentation Feature Space Annotation
 

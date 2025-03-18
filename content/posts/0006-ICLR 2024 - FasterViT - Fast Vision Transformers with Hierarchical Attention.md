@@ -6,7 +6,8 @@ tags: ["paper"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/18>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/18
 
 # FasterViT: Fast Vision Transformers with Hierarchical Attention
 

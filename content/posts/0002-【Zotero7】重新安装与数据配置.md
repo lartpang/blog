@@ -6,7 +6,8 @@ tags: ["tool"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/22>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/22
 
 ## 前提
 

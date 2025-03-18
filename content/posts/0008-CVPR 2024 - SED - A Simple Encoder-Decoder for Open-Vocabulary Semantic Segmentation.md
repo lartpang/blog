@@ -6,7 +6,8 @@ tags: ["paper"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/16>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/16
 
 # CVPR 2024 - SED - A Simple Encoder-Decoder for Open-Vocabulary Semantic Segmentation
 

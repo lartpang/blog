@@ -6,7 +6,8 @@ tags: ["qt"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/4>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/4
 
 # Tips for Qt
 

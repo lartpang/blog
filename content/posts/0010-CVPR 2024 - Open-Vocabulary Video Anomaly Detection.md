@@ -6,7 +6,8 @@ tags: ["paper"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/14>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/14
 
 # CVPR 2024 - Open-Vocabulary Video Anomaly Detection
 

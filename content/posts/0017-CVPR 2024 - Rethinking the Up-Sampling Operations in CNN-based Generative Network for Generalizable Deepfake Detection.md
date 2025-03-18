@@ -6,7 +6,8 @@ tags: ["paper"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/7>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/7
 
 # CVPR 2024 - Rethinking the Up-Sampling Operations in CNN-based Generative Network for Generalizable Deepfake Detection
 

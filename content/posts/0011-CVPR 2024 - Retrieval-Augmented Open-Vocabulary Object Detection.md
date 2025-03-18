@@ -6,7 +6,8 @@ tags: ["paper"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/13>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/13
 
 # CVPR 2024 - Retrieval-Augmented Open-Vocabulary Object Detection
 

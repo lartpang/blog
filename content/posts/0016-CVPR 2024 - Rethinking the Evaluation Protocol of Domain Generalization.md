@@ -6,7 +6,8 @@ tags: ["paper"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/8>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/8
 
 # CVPR 2024 - Rethinking the Evaluation Protocol of Domain Generalization
 

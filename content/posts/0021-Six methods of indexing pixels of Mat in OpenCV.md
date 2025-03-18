@@ -6,7 +6,8 @@ tags: ["opencv"]
 
 <!--more-->
 
-> <https://github.com/lartpang/blog/issues/3>
+- Author: lartpang
+- Link: https://github.com/lartpang/blog/issues/3
 
 # Six methods of indexing pixels of Mat in OpenCV
 
