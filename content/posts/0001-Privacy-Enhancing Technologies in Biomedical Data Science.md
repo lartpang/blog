@@ -4,8 +4,9 @@ date: 2024-10-26 13:48:07
 tags: ["paper"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/23>
 
 ## 1. 引言
 

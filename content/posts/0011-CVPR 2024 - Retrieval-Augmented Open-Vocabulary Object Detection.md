@@ -4,8 +4,9 @@ date: 2024-04-10 07:50:42
 tags: ["paper"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/13>
 
 # CVPR 2024 - Retrieval-Augmented Open-Vocabulary Object Detection
 

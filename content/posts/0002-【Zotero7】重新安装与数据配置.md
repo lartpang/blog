@@ -4,8 +4,9 @@ date: 2024-09-01 10:00:36
 tags: ["tool"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/22>
 
 ## 前提
 

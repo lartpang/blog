@@ -4,8 +4,9 @@ date: 2024-07-30 07:17:42
 tags: ["tool"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/21>
 
 > 原始文档：https://code.visualstudio.com/docs/editor/portable#_migrate-to-portable-mode
 

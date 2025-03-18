@@ -4,8 +4,9 @@ date: 2024-04-03 05:02:42
 tags: ["paper"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/6>
 
 # ICLR 2024 | FeatUp: A Model-Agnostic Framework for Features at Any Resolution
 

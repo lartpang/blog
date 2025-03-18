@@ -4,8 +4,9 @@ date: 2024-04-10 06:26:16
 tags: ["paper"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/10>
 
 # Rethinking Interactive Image Segmentation Feature Space Annotation
 

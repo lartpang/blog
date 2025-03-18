@@ -4,8 +4,9 @@ date: 2024-04-10 06:27:49
 tags: ["paper"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/11>
 
 # CVPR 2024 - Rethinking Inductive Biases for Surface Normal Estimation
 

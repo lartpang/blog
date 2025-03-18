@@ -4,8 +4,9 @@ date: 2024-05-17 11:08:54
 tags: ["paper"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/19>
 
 # Rethinking Scanning Strategies with Vision Mamba in Semantic Segmentation of Remote Sensing Imagery - An Experimental Study
 

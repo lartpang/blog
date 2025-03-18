@@ -4,8 +4,9 @@ date: 2024-05-17 09:21:14
 tags: ["paper"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/18>
 
 # FasterViT: Fast Vision Transformers with Hierarchical Attention
 

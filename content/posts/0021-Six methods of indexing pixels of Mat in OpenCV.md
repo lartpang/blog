@@ -4,8 +4,9 @@ date: 2024-03-25 09:41:52
 tags: ["opencv"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/3>
 
 # Six methods of indexing pixels of Mat in OpenCV
 

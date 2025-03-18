@@ -4,8 +4,9 @@ date: 2024-04-10 09:39:46
 tags: ["paper"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/14>
 
 # CVPR 2024 - Open-Vocabulary Video Anomaly Detection
 

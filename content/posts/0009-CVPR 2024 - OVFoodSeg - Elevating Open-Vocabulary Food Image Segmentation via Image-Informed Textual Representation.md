@@ -4,8 +4,9 @@ date: 2024-04-10 11:12:23
 tags: ["paper"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/15>
 
 # CVPR 2024 - OVFoodSeg - Elevating Open-Vocabulary Food Image Segmentation via Image-Informed Textual Representation
 

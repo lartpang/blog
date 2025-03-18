@@ -4,8 +4,9 @@ date: 2024-03-25 09:49:38
 tags: ["qt"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/4>
 
 # Tips for Qt
 

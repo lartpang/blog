@@ -4,8 +4,9 @@ date: 2024-04-10 06:24:56
 tags: ["paper"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/9>
 
 # CVPR 2024 - Efficient Deformable ConvNets - Rethinking Dynamic and Sparse Operator for Vision Applications
 

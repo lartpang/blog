@@ -4,8 +4,9 @@ date: 2024-03-25 09:38:03
 tags: ["opencv"]
 ---
 
-
 <!--more-->
+
+> <https://github.com/lartpang/blog/issues/1>
 
 # Build OpenCV and OpenVINO for Windows 10 with VS 2022
 
