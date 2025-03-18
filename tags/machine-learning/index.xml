@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Machine Learning on 啊，哈！</title><link>https://lartpang.github.io/blog/tags/machine-learning/</link><description>Recent content in Machine Learning on 啊，哈！</description><generator>Hugo -- 0.145.0</generator><language>en-us</language><lastBuildDate>Thu, 25 Jul 2024 08:32:08 +0000</lastBuildDate><atom:link href="https://lartpang.github.io/blog/tags/machine-learning/index.xml" rel="self" type="application/rss+xml"/><item><title>【译】集成模型：它们是什么以及何时应该使用它们？</title><link>https://lartpang.github.io/blog/posts/0004-%E8%AF%91%E9%9B%86%E6%88%90%E6%A8%A1%E5%9E%8B%E5%AE%83%E4%BB%AC%E6%98%AF%E4%BB%80%E4%B9%88%E4%BB%A5%E5%8F%8A%E4%BD%95%E6%97%B6%E5%BA%94%E8%AF%A5%E4%BD%BF%E7%94%A8%E5%AE%83%E4%BB%AC/</link><pubDate>Thu, 25 Jul 2024 08:32:08 +0000</pubDate><guid>https://lartpang.github.io/blog/posts/0004-%E8%AF%91%E9%9B%86%E6%88%90%E6%A8%A1%E5%9E%8B%E5%AE%83%E4%BB%AC%E6%98%AF%E4%BB%80%E4%B9%88%E4%BB%A5%E5%8F%8A%E4%BD%95%E6%97%B6%E5%BA%94%E8%AF%A5%E4%BD%BF%E7%94%A8%E5%AE%83%E4%BB%AC/</guid><description> [!IMPORTANT] 原文：https://builtin.com/machine-learning/ensemble-model 有时，一个模型是不够的。在这篇集成模型指南中，我将向您介绍如何（以及何时）对机器学习模型使用集成技术。
+每当我们试图做出重要决定时，我们都会尝试收集尽可能多的信息，并向专家寻求建议。我们可以收集的信息越多，我们（和我们周围的人）就越信任决策过程。
+机器学习预测遵循类似的行为。模型处理给定的输入并产生结果。结果是根据模型在训练过程中看到的模式进行预测。
+在许多情况下，一个模型是不够的，本文阐明了这一点。我们何时以及为何需要多个模型？我们如何训练这些模型？这些模型应该提供什么样的多样性？所以，让我们直接进入。
+如果你想看一个如何构建集成模型的例子，你可以跳到最后！
+[!NOTE] 什么是集成模型？
+集成模型是一种机器学习方法，用于在预测过程中结合多个其他模型。这些模型称为基础估计器。集成模型提供了一种解决方案，可以克服构建单个估计器的技术挑战。
+构建单一估计器的技术挑战包括：
+高方差：模型对为学习特征提供的输入非常敏感。 准确性低：一个模型（或一种算法）无法拟合整个训练数据，可能无法为您提供项目所需的细微差别。 具有噪声和偏差的特征：模型在进行预测时严重依赖于太少的特征。 集成算法 单一算法可能无法对给定的数据集做出完美的预测。机器学习算法有其局限性，生成高精度的模型具有挑战性。如果我们构建并组合多个模型，我们就有机会提高整体准确性。然后，我们通过将每个模型的输出与两个目标聚合来实现模型组合：</description></item></channel></rss>
