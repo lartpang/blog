@@ -1,0 +1,4 @@
+[submodule "themes/kayal"]
+	path = themes/kayal
+	url = https://github.com/mnjm/kayal.git
+	branch = main

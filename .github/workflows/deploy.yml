@@ -1,0 +1,76 @@
+name: build the website
+
+on:
+  workflow_dispatch:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  build:
+    name: Generate Markdown Files
+    runs-on: ubuntu-22.04
+    if: ${{ github.event.repository.owner.id == github.event.sender.id }}
+    permissions: write-all
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: false  # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies and Generate new html
+        run: |
+          cd scripts/
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          python issue2markdowns.py ${{ secrets.GITHUB_TOKEN }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'
+
+      - name: Update Files
+        run: |
+          git config --local user.email "action-bot@github.com"
+          git config --local user.name "${{ github.repository_owner }}"
+          git add .
+          git commit -a -m '🎉auto update' || echo "update content/posts"
+          git push || echo "push content/posts"
+
+  deploy:
+    name: Publish Website
+    runs-on: ubuntu-22.04
+    needs: build  # 确保 deploy 在 build 完成后运行
+    if: ${{ github.event.repository.owner.id == github.event.sender.id }}
+    permissions: write-all
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true  # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 1    # Fetch all history for .GitInfo and .Lastmod
+
+      # https://github.com/peaceiris/actions-hugo?tab=readme-ov-file#%EF%B8%8F-non-ascii-filename
+      - name: Disable quotePath
+        run: git config core.quotePath false
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.145.0'
+          extended: true
+
+      - name: Build
+        run: hugo --minify
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
