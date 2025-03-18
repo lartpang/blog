@@ -64,6 +64,10 @@ class Convertor:
                 f"tags: [{tags}]",
                 "---",
                 "",
+                "",
+                "<!--more-->",
+                "",
+                "",
             ]
         )
         md_file = str(post_id).rjust(4, "0") + "-" + issue_info["md_name"] + ".md"
