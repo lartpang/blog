@@ -11,8 +11,6 @@ tags: ["opencv"]
 - Author: lartpang
 - Link: https://github.com/lartpang/blog/issues/2
 
-# Snippets of OpenVINO-CPP for Model Inference
-
 ## Header File
 
 ```cpp

@@ -147,6 +147,13 @@ def process_single_file(input_path, output_dir, jinja_template):
         clean_text = strip_html(full_html)
         summary_text_plain = clean_text[:200] + "..."
 
+    # 生成亮色模式 CSS (使用 'xcode' 或 'github-light' 风格)
+    formatter_light = HtmlFormatter(style="xcode", cssclass="highlight")
+    css_light = formatter_light.get_style_defs(".highlight")
+    # 生成暗色模式 CSS (使用 'monokai' 或 'github-dark' 风格)
+    formatter_dark = HtmlFormatter(style="monokai", cssclass="highlight")
+    css_dark = formatter_dark.get_style_defs(".highlight")
+
     # 4. 准备渲染数据 (Context)
     # 注意：tags 如果是字符串，尝试分割成列表，方便模板循环
     tags = metadata.get("tags", [])
@@ -160,6 +167,8 @@ def process_single_file(input_path, output_dir, jinja_template):
         "tags": tags,
         "summary_html": html_summary,  # 传给模板判断是否显示
         "content": html_body,
+        "pygments_css_light": css_light,
+        "pygments_css_dark": css_dark,
     }
 
     # 5. Jinja2 渲染

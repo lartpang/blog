@@ -11,8 +11,6 @@ tags: ["opencv"]
 - Author: lartpang
 - Link: https://github.com/lartpang/blog/issues/3
 
-# Six methods of indexing pixels of Mat in OpenCV
-
 ## `.at<>()`
 
 ```cpp

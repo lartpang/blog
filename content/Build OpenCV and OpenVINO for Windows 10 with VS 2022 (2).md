@@ -11,8 +11,6 @@ tags: ["opencv"]
 - Author: lartpang
 - Link: https://github.com/lartpang/blog/issues/1
 
-# Build OpenCV and OpenVINO for Windows 10 with VS 2022
-
 In this guide, I will build the two powerful open-source libraries, i.e., OpenCV and OpenVINO for running my deeplearning model on windows 10.
 Interestingly, both libraries are closely associated with Intel 🖥️.
 

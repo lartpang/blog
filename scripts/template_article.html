@@ -261,6 +261,12 @@
             }
         }
 
+        /* 亮色模式代码高亮 */
+        {{ pygments_css_light | safe }}
+        /* 暗色模式代码高亮 (使用媒体查询) */
+        @media (prefers-color-scheme: dark) {
+            {{ pygments_css_dark | safe }}
+        }
     </style>
 </head>
 
