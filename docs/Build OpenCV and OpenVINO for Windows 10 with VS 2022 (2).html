@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build OpenCV and OpenVINO for Windows 10 with VS 2022</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        :root {
+            /* --- 核心配色方案 --- */
+            --color-bg: #fdfdfd;
+            --color-fg: #24292f;
+            --color-accent: #c93a40;
+            /* 学术红 */
+            --color-border: #e1e4e8;
+            --color-muted: #6e7781;
+
+            /* --- 字体栈优化 --- */
+            /* 标题和正文：优先使用各平台的高质量衬线体 */
+            --font-serif: "New York", "Georgia", "Times New Roman",
+                "Source Han Serif SC", "Noto Serif SC",
+                "Songti SC", "STZhongsong", "SimSun", "PMingLiU",
+                serif;
+            /* 代码块：等宽字体 */
+            --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            /* UI元素(导航/元数据)：无衬线字体 */
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+            --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        /* --- 暗色模式适配 --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg: #0d1117;
+                --color-fg: #c9d1d9;
+                --color-accent: #ff7b72;
+                /* 暗模式下红色调亮 */
+                --color-border: #30363d;
+                --color-muted: #8b949e;
+                --shadow-card: none;
+            }
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-fg);
+            font-family: var(--font-serif);
+            margin: 0;
+            line-height: 1.8;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- 面包屑导航 --- */
+        .breadcrumbs {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumbs a {
+            color: var(--color-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--color-accent);
+            border-bottom: 1px solid var(--color-accent);
+        }
+
+        .breadcrumbs .current {
+            color: var(--color-fg);
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* --- 头部信息 --- */
+        .doc-header {
+            margin-bottom: 56px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .doc-title {
+            margin: 0 0 16px 0;
+            font-size: 2.6em;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            color: var(--color-fg);
+        }
+
+        .doc-meta {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .meta-icon {
+            margin-right: 6px;
+            fill: currentColor;
+            opacity: 0.7;
+        }
+
+        /* --- 摘要区域 --- */
+        .doc-summary {
+            font-family: var(--font-serif);
+            margin-bottom: 56px;
+            padding: 24px 32px;
+            background-color: rgba(125, 133, 144, 0.04);
+            border-left: 3px solid var(--color-accent);
+            font-style: italic;
+            font-size: 1.05em;
+            color: var(--color-fg);
+            line-height: 1.8;
+        }
+
+        .doc-summary p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- Markdown 正文样式重置与优化 --- */
+        .markdown-body {
+            font-family: var(--font-serif);
+            background: transparent;
+            font-size: 18px;
+            color: var(--color-fg);
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3 {
+            border-bottom: none;
+            font-weight: 700;
+            margin-top: 1.6em;
+            letter-spacing: -0.01em;
+        }
+
+        .markdown-body p {
+            margin-bottom: 1.2em;
+            text-align: justify;
+            /* 衬线体两端对齐 */
+        }
+
+        .markdown-body a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+
+        /* 代码块: 始终保持等宽字体 */
+        .markdown-body pre,
+        .markdown-body code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+        }
+
+        /* 代码高亮背景微调 */
+        .markdown-body .highlight pre,
+        .markdown-body pre {
+            background-color: rgba(125, 133, 144, 0.05);
+            border-radius: 4px;
+            padding: 20px;
+            border: none;
+        }
+
+        /* 图片优化 */
+        .markdown-body img {
+            display: block;
+            margin: 40px auto;
+            max-width: 100%;
+            border-radius: 2px;
+            box-shadow: var(--shadow-card);
+        }
+
+        /* 表格优化 */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 32px 0;
+        }
+
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .markdown-body table th,
+        .markdown-body table td {
+            font-family: var(--font-sans);
+            font-size: 0.9em;
+            padding: 8px 12px;
+            border: 1px solid var(--color-border);
+        }
+
+        .markdown-body table tr:nth-child(2n) {
+            background-color: rgba(125, 133, 144, 0.03);
+        }
+
+        /* KaTeX 公式容器 */
+        .katex-display {
+            margin: 1.5em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 767px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .doc-title {
+                font-size: 2em;
+            }
+
+            .markdown-body {
+                font-size: 17px;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+
+            .markdown-body .highlight pre,
+            .markdown-body pre {
+                background-color: #161b22;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="breadcrumbs">
+            <a href="index.html">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" style="vertical-align: -1px; margin-right:4px;">
+                    <path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"></path>
+                </svg>
+                Home
+            </a>
+            <span style="opacity:0.5">/</span>
+            <span class="current" title="Build OpenCV and OpenVINO for Windows 10 with VS 2022">Build OpenCV and OpenVINO for Windows 10 with VS 2022</span>
+        </nav>
+
+        <header class="doc-header">
+            <h1 class="doc-title">Build OpenCV and OpenVINO for Windows 10 with VS 2022</h1>
+            <div class="doc-meta">
+                
+                <span class="meta-item">
+                    <svg class="meta-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
+                        <path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM1.75 6h12.5v8.25a.25.25 0 0 1-.25.25H2.75a.25.25 0 0 1-.25-.25V6Z"></path>
+                    </svg>
+                    2024-03-25 09:38:03
+                </span>
+                
+
+                
+
+                
+                <div class="meta-item" style="display:flex;gap:6px;">
+                    
+                    <span style="background:rgba(201,58,64,0.1);color:var(--color-accent);padding:2px 8px;border-radius:20px;font-size:12px;font-weight:500;">#opencv</span>
+                    
+                </div>
+                
+            </div>
+        </header>
+
+        
+        <div class="doc-summary">
+            <p>记录了在 Windows 10 上自行编译OpenCV（为了CUDA支持）和OpenVINO的过程。</p>
+
+        </div>
+        
+
+        <article class="markdown-body">
+            <ul>
+<li>Author: lartpang</li>
+<li>Link: <a href="https://github.com/lartpang/blog/issues/1">https://github.com/lartpang/blog/issues/1</a></li>
+</ul>
+<h1>Build OpenCV and OpenVINO for Windows 10 with VS 2022</h1>
+<p>In this guide, I will build the two powerful open-source libraries, i.e., OpenCV and OpenVINO for running my deeplearning model on windows 10.
+Interestingly, both libraries are closely associated with Intel 🖥️.</p>
+<h2>OpenCV 😮</h2>
+<p>First of all, we must download the related code projects (<code>opencv</code> and <code>opencv_contrib</code> containing some plugins for <code>opencv</code>) into our computer from this links:</p>
+<ul>
+<li><a href="https://github.com/opencv/opencv/releases">https://github.com/opencv/opencv/releases</a></li>
+<li><a href="https://github.com/opencv/opencv_contrib/tags">https://github.com/opencv/opencv_contrib/tags</a></li>
+</ul>
+<p>Make sure the selected versions of the two libararies are the same.
+Here, I choice the latest version <code>4.7.0</code>.
+Because we will recompiling them by ourselves, we can just download the source code zip files.
+Put the two unpacked libraries into the same parent folder <code>opencv_dir</code> as follows:</p>
+<pre><code>-opencv_dir
+  -opencv-4.7.0
+    -...
+  -opencv_contrib-4.7.0
+    -modules
+    -...
+</code></pre><p><strong>NOTE</strong>: To avoid the network issue that may be encountered during using CMake, we need to add the url proxy prefix <code>https://ghproxy.com/</code> before the urls of some setting of the relevant modules like <code>https://ghproxy.com/https://raw.github***</code>:</p>
+<ul>
+<li><code>.cmake</code> in <code>opencv-4.7.0/3rdparty/ippicv</code></li>
+<li><code>.cmake</code> in <code>opencv-4.7.0/3rdparty/ffmpeg</code></li>
+<li><code>CMakeLists.txt</code> in <code>opencv_contrib-4.7.0/modules/face</code></li>
+<li>Files in <code>cmake</code> of <code>opencv_contrib-4.7.0/modules/xfeatures2d</code></li>
+<li><code>CMakeLists.txt</code> in <code>opencv_contrib-4.7.0/modules/wechat_qrcode</code></li>
+<li><code>CMakeLists.txt</code> in <code>opencv_contrib-4.7.0/modules/cudaoptflow</code></li>
+</ul>
+<p>Next, start compiling OpenCV.</p>
+<ol>
+<li>Create the build folder: <code>cd opencv_dir &amp;&amp; mkdir opencv-build-vs2022</code></li>
+<li>Configure and generate the VS solution by CMake with some config items:</li>
+</ol>
+<ul>
+<li>General:<ul>
+<li>source folder: <code>&lt;opencv-4.7.0&gt;</code></li>
+<li>build folder: <code>&lt;opencv-build-vs2022&gt;</code></li>
+<li><code>BUILD_OPENCV_WORLD=ON</code></li>
+<li><code>CMAKE_BUILD_TYPE=RELEASE</code></li>
+<li><code>OPENCV_ENABLE_NONFREE=ON</code></li>
+<li><code>BUILD_opencv_dnn=ON</code></li>
+<li><code>OPENCV_EXTRA_MODULES_PATH=&lt;opencv_contrib-4.7.0/modules&gt;</code></li>
+</ul>
+</li>
+<li>CUDA:<ul>
+<li><code>WITH_CUDA=ON</code></li>
+<li><code>WITH_CUDNN=ON</code></li>
+<li><code>WITH_CUBLAS=ON</code></li>
+<li><code>WITH_CUFFT=ON</code></li>
+<li><code>CUDA_FAST_MATH=ON</code></li>
+<li><code>CUDA_ARCH_BIN=7.5</code> (We can fill the single value corresponding to the real GPU for accelerating the compilation process. More details can be found at <a href="https://developer.nvidia.com/cuda-gpus">https://developer.nvidia.com/cuda-gpus</a>)</li>
+<li><code>OPENCV_DNN_CUDA=ON</code></li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>Go to the build directory: <code>cd &lt;opencv-build-vs2022&gt;</code></li>
+<li>Start build by cmake and msvc compiler: <code>cmake --build . --config Release --verbose -j8</code></li>
+<li>Install the built opencv into the <code>install</code> folder in the current path: <code>cmake --install . --prefix install</code></li>
+<li>Add the <code>bin</code> directory into the user environment: <code>&lt;path&gt;\install\x64\vc17\bin</code></li>
+<li>In VS:<ul>
+<li>add the <code>&lt;path&gt;\install\include</code> directory into &quot;解决方案资源管理器-&gt;右键点击属性-&gt;VC++目录-&gt;外部包含目录&quot;</li>
+<li>add the <code>&lt;path&gt;\install\x64\vc17\lib</code> directory into &quot;解决方案资源管理器-&gt;右键点击属性-&gt;VC++目录-&gt;库目录&quot;</li>
+<li>add the <code>opencv_world470.lib</code> into &quot;解决方案资源管理器-&gt;右键点击属性-&gt;链接器-&gt;输入-&gt;附加依赖项&quot;</li>
+</ul>
+</li>
+</ol>
+<h2>OpenVINO 🍰</h2>
+<p>The document of OpenVINO is intuitive and the readability is better than OpenCV.
+The relevant content about building and installing the libirary is listed in these links:</p>
+<ul>
+<li><a href="https://github.com/openvinotoolkit/openvino/blob/master/docs/dev/build_windows.md">https://github.com/openvinotoolkit/openvino/blob/master/docs/dev/build_windows.md</a></li>
+<li><a href="https://github.com/openvinotoolkit/openvino/blob/master/docs/dev/cmake_options_for_custom_comiplation.md">https://github.com/openvinotoolkit/openvino/blob/master/docs/dev/cmake_options_for_custom_comiplation.md</a></li>
+<li><a href="https://github.com/openvinotoolkit/openvino/blob/master/docs/dev/installing.md">https://github.com/openvinotoolkit/openvino/blob/master/docs/dev/installing.md</a></li>
+</ul>
+<p>After building and install the OpenCV library, it's time to move on to OpenVINO.</p>
+<ol>
+<li>We need clone the project and the sub modules.<pre><code>git clone https://github.com/openvinotoolkit/openvino.git
+cd openvino
+git submodule update --init --recursive
+</code></pre></li>
+<li>Create the build folder: <code>mkdir build &amp;&amp; cd build</code></li>
+<li>Configure and generate the VS solution by CMake:<ul>
+<li><code>ENABLE_INTEL_GPU=OFF</code> (We only use the Intel CPU.)</li>
+<li>Disable some frontend items:<ul>
+<li><code>ENABLE_OV_PDPD_FRONTEND=OFF</code></li>
+<li><code>ENABLE_OV_TF_FRONTEND=OFF</code></li>
+<li><code>ENABLE_OV_TF_LITE_FRONTEND=OFF</code></li>
+<li><code>ENABLE_OV_PYTORCH_FRONTEND=OFF</code></li>
+</ul>
+</li>
+<li>For Python:<ul>
+<li><code>ENABLE_PYTHON=ON</code> It seems that <code>openvino-dev</code> needs to be installed first in the detected environment, otherwise a warning message will be thrown in the cmake-gui window.</li>
+<li><code>PYTHON_EXECUTABLE=&lt;python.exe&gt;</code></li>
+<li><code>PYTHON_INCLUDE_DIR=&lt;incude directory&gt;</code></li>
+<li><code>PYTHON_LIBIRARY=&lt;pythonxx.lib in libs directory&gt;</code></li>
+</ul>
+</li>
+<li>For OpenCV:<ul>
+<li><code>ENABLE_OPENCV=ON</code></li>
+<li><code>OpenCV_DIR=&lt;opencv-build-vs2022/install&gt;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Build the library: <code>cmake --build . --config Release --verbose -j8</code></li>
+<li>Install the library into the <code>install</code> directory: <code>cmake --install . --prefix install</code></li>
+<li>Add the <code>bin</code> directory into the environment:<ul>
+<li><code>&lt;path&gt;\install\runtime\bin\intel64\Release</code></li>
+<li><code>&lt;path&gt;\install\runtime\3rdparty\tbb\bin</code></li>
+</ul>
+</li>
+<li>In VS:<ul>
+<li>add the <code>&lt;path&gt;\install\runtime\include</code> directory into &quot;解决方案资源管理器-&gt;右键点击属性-&gt;VC++目录-&gt;外部包含目录&quot;</li>
+<li>add the <code>&lt;path&gt;\install\runtime\lib\intel64\Release</code> directory into &quot;解决方案资源管理器-&gt;右键点击属性-&gt;VC++目录-&gt;库目录&quot;</li>
+<li>add the 🌟 <code>openvino.lib</code>, 🌟 <code>openvino_onnx_frontend.lib</code>, <code>openvino_c.lib</code> into &quot;解决方案资源管理器-&gt;右键点击属性-&gt;链接器-&gt;输入-&gt;附加依赖项&quot;</li>
+</ul>
+</li>
+</ol>
+<h2>Set DLL path in IDE</h2>
+<ul>
+<li>VS: &quot;right click on solution -&gt; Properties -&gt; Debugging -&gt; Environment -&gt; <code>PATH=&lt;path&gt;\install\x64\vc17\bin;%PATH%</code>&quot;</li>
+<li>Qt Creator: &quot;Projects -&gt; Build &amp; Run -&gt; Build/Run -&gt; Environment -&gt; Details -&gt; Eidt %PATH% -&gt; Add <code>&lt;path&gt;\install\x64\vc17\bin</code>&quot;</li>
+</ul>
+
+        </article>
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+      delimiters: [
+          // 支持 Mistune 生成的 LaTeX 标准格式
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false}, // 新增：支持 \( ... \)
+          {left: '\\[', right: '\\]', display: true}   // 新增：支持 \[ ... \]
+      ],
+      throwOnError : false
+    });">
+    </script>
+</body>
+
+</html>

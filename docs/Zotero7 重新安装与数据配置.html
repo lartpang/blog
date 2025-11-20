@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zotero7 重新安装与数据配置</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        :root {
+            /* --- 核心配色方案 --- */
+            --color-bg: #fdfdfd;
+            --color-fg: #24292f;
+            --color-accent: #c93a40;
+            /* 学术红 */
+            --color-border: #e1e4e8;
+            --color-muted: #6e7781;
+
+            /* --- 字体栈优化 --- */
+            /* 标题和正文：优先使用各平台的高质量衬线体 */
+            --font-serif: "New York", "Georgia", "Times New Roman",
+                "Source Han Serif SC", "Noto Serif SC",
+                "Songti SC", "STZhongsong", "SimSun", "PMingLiU",
+                serif;
+            /* 代码块：等宽字体 */
+            --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            /* UI元素(导航/元数据)：无衬线字体 */
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+            --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        /* --- 暗色模式适配 --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg: #0d1117;
+                --color-fg: #c9d1d9;
+                --color-accent: #ff7b72;
+                /* 暗模式下红色调亮 */
+                --color-border: #30363d;
+                --color-muted: #8b949e;
+                --shadow-card: none;
+            }
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-fg);
+            font-family: var(--font-serif);
+            margin: 0;
+            line-height: 1.8;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- 面包屑导航 --- */
+        .breadcrumbs {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumbs a {
+            color: var(--color-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--color-accent);
+            border-bottom: 1px solid var(--color-accent);
+        }
+
+        .breadcrumbs .current {
+            color: var(--color-fg);
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* --- 头部信息 --- */
+        .doc-header {
+            margin-bottom: 56px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .doc-title {
+            margin: 0 0 16px 0;
+            font-size: 2.6em;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            color: var(--color-fg);
+        }
+
+        .doc-meta {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .meta-icon {
+            margin-right: 6px;
+            fill: currentColor;
+            opacity: 0.7;
+        }
+
+        /* --- 摘要区域 --- */
+        .doc-summary {
+            font-family: var(--font-serif);
+            margin-bottom: 56px;
+            padding: 24px 32px;
+            background-color: rgba(125, 133, 144, 0.04);
+            border-left: 3px solid var(--color-accent);
+            font-style: italic;
+            font-size: 1.05em;
+            color: var(--color-fg);
+            line-height: 1.8;
+        }
+
+        .doc-summary p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- Markdown 正文样式重置与优化 --- */
+        .markdown-body {
+            font-family: var(--font-serif);
+            background: transparent;
+            font-size: 18px;
+            color: var(--color-fg);
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3 {
+            border-bottom: none;
+            font-weight: 700;
+            margin-top: 1.6em;
+            letter-spacing: -0.01em;
+        }
+
+        .markdown-body p {
+            margin-bottom: 1.2em;
+            text-align: justify;
+            /* 衬线体两端对齐 */
+        }
+
+        .markdown-body a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+
+        /* 代码块: 始终保持等宽字体 */
+        .markdown-body pre,
+        .markdown-body code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+        }
+
+        /* 代码高亮背景微调 */
+        .markdown-body .highlight pre,
+        .markdown-body pre {
+            background-color: rgba(125, 133, 144, 0.05);
+            border-radius: 4px;
+            padding: 20px;
+            border: none;
+        }
+
+        /* 图片优化 */
+        .markdown-body img {
+            display: block;
+            margin: 40px auto;
+            max-width: 100%;
+            border-radius: 2px;
+            box-shadow: var(--shadow-card);
+        }
+
+        /* 表格优化 */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 32px 0;
+        }
+
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .markdown-body table th,
+        .markdown-body table td {
+            font-family: var(--font-sans);
+            font-size: 0.9em;
+            padding: 8px 12px;
+            border: 1px solid var(--color-border);
+        }
+
+        .markdown-body table tr:nth-child(2n) {
+            background-color: rgba(125, 133, 144, 0.03);
+        }
+
+        /* KaTeX 公式容器 */
+        .katex-display {
+            margin: 1.5em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 767px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .doc-title {
+                font-size: 2em;
+            }
+
+            .markdown-body {
+                font-size: 17px;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+
+            .markdown-body .highlight pre,
+            .markdown-body pre {
+                background-color: #161b22;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="breadcrumbs">
+            <a href="index.html">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" style="vertical-align: -1px; margin-right:4px;">
+                    <path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"></path>
+                </svg>
+                Home
+            </a>
+            <span style="opacity:0.5">/</span>
+            <span class="current" title="Zotero7 重新安装与数据配置">Zotero7 重新安装与数据配置</span>
+        </nav>
+
+        <header class="doc-header">
+            <h1 class="doc-title">Zotero7 重新安装与数据配置</h1>
+            <div class="doc-meta">
+                
+                <span class="meta-item">
+                    <svg class="meta-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
+                        <path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM1.75 6h12.5v8.25a.25.25 0 0 1-.25.25H2.75a.25.25 0 0 1-.25-.25V6Z"></path>
+                    </svg>
+                    2024-09-01 10:00:36
+                </span>
+                
+
+                
+
+                
+                <div class="meta-item" style="display:flex;gap:6px;">
+                    
+                    <span style="background:rgba(201,58,64,0.1);color:var(--color-accent);padding:2px 8px;border-radius:20px;font-size:12px;font-weight:500;">#tool</span>
+                    
+                </div>
+                
+            </div>
+        </header>
+
+        
+        <div class="doc-summary">
+            <p>简单记录了一次Zotero7的重新安装与数据配置。</p>
+
+        </div>
+        
+
+        <article class="markdown-body">
+            <ul>
+<li>Author: lartpang</li>
+<li>Link: <a href="https://github.com/lartpang/blog/issues/22">https://github.com/lartpang/blog/issues/22</a></li>
+</ul>
+<h2>前提</h2>
+<ul>
+<li>之前的附件配置是基于链接的形式，而附件是单独文件夹存储的。</li>
+<li>新安装时，设备上已经移除了所有之前的设置（几之前的所有配置信息都被保存到了云端你自己的账号下）。</li>
+<li>设备上只剩下了之前的pdf附件文件夹和其中的pdf附件了。</li>
+</ul>
+<h2>配置过程</h2>
+<ul>
+<li>安装最新版的Zotero7的安装包：<a href="https://www.zotero.org/download/">https://www.zotero.org/download/</a></li>
+<li>安装后到设置中配置：<ul>
+<li>先到 <code>同步</code> 选项卡中登录你的Zotero账号密码，将基础的设置同步下来。</li>
+<li>再配置 <code>高级</code> 选项卡中的已链接附件的根目录到你的附件文件夹目录。</li>
+<li>重启Zotero即可。
+常规情况下到这步应该就没问题了。</li>
+</ul>
+</li>
+</ul>
+<h2>后续配置</h2>
+<ul>
+<li>手动安装插件市场：<a href="https://github.com/syt2/zotero-addons">https://github.com/syt2/zotero-addons</a></li>
+<li>安装好后从插件市场中安装附件管理器插件：Zotero Attanger</li>
+<li>对附件管理器插件中配置新的附件采用链接形式，配置源路径、附加类型（链接）和靶路径等以适配你现有附件的存储格式。</li>
+<li>安装其他的插件，并进行相关的配置。</li>
+</ul>
+
+        </article>
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+      delimiters: [
+          // 支持 Mistune 生成的 LaTeX 标准格式
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false}, // 新增：支持 \( ... \)
+          {left: '\\[', right: '\\]', display: true}   // 新增：支持 \[ ... \]
+      ],
+      throwOnError : false
+    });">
+    </script>
+</body>
+
+</html>

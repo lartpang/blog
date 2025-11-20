@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CVPR 参会记录</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        :root {
+            /* --- 核心配色方案 --- */
+            --color-bg: #fdfdfd;
+            --color-fg: #24292f;
+            --color-accent: #c93a40;
+            /* 学术红 */
+            --color-border: #e1e4e8;
+            --color-muted: #6e7781;
+
+            /* --- 字体栈优化 --- */
+            /* 标题和正文：优先使用各平台的高质量衬线体 */
+            --font-serif: "New York", "Georgia", "Times New Roman",
+                "Source Han Serif SC", "Noto Serif SC",
+                "Songti SC", "STZhongsong", "SimSun", "PMingLiU",
+                serif;
+            /* 代码块：等宽字体 */
+            --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            /* UI元素(导航/元数据)：无衬线字体 */
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+            --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        /* --- 暗色模式适配 --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg: #0d1117;
+                --color-fg: #c9d1d9;
+                --color-accent: #ff7b72;
+                /* 暗模式下红色调亮 */
+                --color-border: #30363d;
+                --color-muted: #8b949e;
+                --shadow-card: none;
+            }
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-fg);
+            font-family: var(--font-serif);
+            margin: 0;
+            line-height: 1.8;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- 面包屑导航 --- */
+        .breadcrumbs {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumbs a {
+            color: var(--color-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--color-accent);
+            border-bottom: 1px solid var(--color-accent);
+        }
+
+        .breadcrumbs .current {
+            color: var(--color-fg);
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* --- 头部信息 --- */
+        .doc-header {
+            margin-bottom: 56px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .doc-title {
+            margin: 0 0 16px 0;
+            font-size: 2.6em;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            color: var(--color-fg);
+        }
+
+        .doc-meta {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .meta-icon {
+            margin-right: 6px;
+            fill: currentColor;
+            opacity: 0.7;
+        }
+
+        /* --- 摘要区域 --- */
+        .doc-summary {
+            font-family: var(--font-serif);
+            margin-bottom: 56px;
+            padding: 24px 32px;
+            background-color: rgba(125, 133, 144, 0.04);
+            border-left: 3px solid var(--color-accent);
+            font-style: italic;
+            font-size: 1.05em;
+            color: var(--color-fg);
+            line-height: 1.8;
+        }
+
+        .doc-summary p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- Markdown 正文样式重置与优化 --- */
+        .markdown-body {
+            font-family: var(--font-serif);
+            background: transparent;
+            font-size: 18px;
+            color: var(--color-fg);
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3 {
+            border-bottom: none;
+            font-weight: 700;
+            margin-top: 1.6em;
+            letter-spacing: -0.01em;
+        }
+
+        .markdown-body p {
+            margin-bottom: 1.2em;
+            text-align: justify;
+            /* 衬线体两端对齐 */
+        }
+
+        .markdown-body a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+
+        /* 代码块: 始终保持等宽字体 */
+        .markdown-body pre,
+        .markdown-body code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+        }
+
+        /* 代码高亮背景微调 */
+        .markdown-body .highlight pre,
+        .markdown-body pre {
+            background-color: rgba(125, 133, 144, 0.05);
+            border-radius: 4px;
+            padding: 20px;
+            border: none;
+        }
+
+        /* 图片优化 */
+        .markdown-body img {
+            display: block;
+            margin: 40px auto;
+            max-width: 100%;
+            border-radius: 2px;
+            box-shadow: var(--shadow-card);
+        }
+
+        /* 表格优化 */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 32px 0;
+        }
+
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .markdown-body table th,
+        .markdown-body table td {
+            font-family: var(--font-sans);
+            font-size: 0.9em;
+            padding: 8px 12px;
+            border: 1px solid var(--color-border);
+        }
+
+        .markdown-body table tr:nth-child(2n) {
+            background-color: rgba(125, 133, 144, 0.03);
+        }
+
+        /* KaTeX 公式容器 */
+        .katex-display {
+            margin: 1.5em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 767px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .doc-title {
+                font-size: 2em;
+            }
+
+            .markdown-body {
+                font-size: 17px;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+
+            .markdown-body .highlight pre,
+            .markdown-body pre {
+                background-color: #161b22;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="breadcrumbs">
+            <a href="index.html">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" style="vertical-align: -1px; margin-right:4px;">
+                    <path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"></path>
+                </svg>
+                Home
+            </a>
+            <span style="opacity:0.5">/</span>
+            <span class="current" title="CVPR 参会记录">CVPR 参会记录</span>
+        </nav>
+
+        <header class="doc-header">
+            <h1 class="doc-title">CVPR 参会记录</h1>
+            <div class="doc-meta">
+                
+                <span class="meta-item">
+                    <svg class="meta-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
+                        <path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM1.75 6h12.5v8.25a.25.25 0 0 1-.25.25H2.75a.25.25 0 0 1-.25-.25V6Z"></path>
+                    </svg>
+                    2024-04-17 03:32:15
+                </span>
+                
+
+                
+
+                
+                <div class="meta-item" style="display:flex;gap:6px;">
+                    
+                    <span style="background:rgba(201,58,64,0.1);color:var(--color-accent);padding:2px 8px;border-radius:20px;font-size:12px;font-weight:500;">#life</span>
+                    
+                </div>
+                
+            </div>
+        </header>
+
+        
+
+        <article class="markdown-body">
+            <ul>
+<li>Author: lartpang</li>
+<li>Link: <a href="https://github.com/lartpang/blog/issues/17">https://github.com/lartpang/blog/issues/17</a></li>
+</ul>
+<ol>
+<li>【获得邀请函】在 CVPR 官网参会注册后即可申请：<a href="https://cvpr.thecvf.com">https://cvpr.thecvf.com</a></li>
+<li>【申请美签】填写 DS-160：<a href="https://ceac.state.gov/genniv">https://ceac.state.gov/genniv</a><ol>
+<li>需要准备电子照片，相关要求可见：<a href="https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/photos.html">https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/photos.html</a><ol>
+<li><a href="https://www.meiguo-qianzheng.com/qitaqianzhengwenti/393.html">美国签证DS160照片和要携带面试上交的照片必须要同一张吗？</a></li>
+</ol>
+</li>
+<li>考虑选择申请 B1 签证。</li>
+<li>Passport Book Number（似乎可以不填）：<a href="https://www.citicbank.com/about/companynews/citicwiki/visafees/202502/t20250208_840231.html">办理美国签证护照本编号是什么</a></li>
+<li>邀请函中提供了填写 DS-160 需要的美国当地的联系人信息。</li>
+<li>中文姓名电码查询，注意电码必须四位，如果连续的多个，可以用空格隔开：<a href="https://apps.chasedream.com/chinese-commercial-code">https://apps.chasedream.com/chinese-commercial-code</a></li>
+<li>会议地址的信息可以从会议中心的官网上找到：<a href="https://seattleconventioncenter.com">https://seattleconventioncenter.com</a></li>
+<li>过程中会用到很多信息和选项，可以参考这些帖子：<ol>
+<li>各种填写细节：<ol>
+<li><a href="https://zhuanlan.zhihu.com/p/635554105">美国签证办理全流程攻略（上） - 火星大章鱼的文章 - 知乎</a></li>
+<li><a href="https://www.zhihu.com/tardis/zm/art/238155975">赴美签证DS160表格填写说明</a></li>
+<li><a href="http://www.ailvxing.com/info-103-22538-0.html">如何填写美国B1-B2申请表（DS-160）</a></li>
+<li><a href="https://www.meilvtong.com/viewthread.php?tid=19">美国签证DS160表格填写样本</a></li>
+</ol>
+</li>
+<li>关于社交账号：<a href="https://sevissavvy.com/ds-160-social-media-presence-cn/">如何回答DS-160表格上“你是否有社交网络账号”的问题</a></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>【申请面签】页面为 <a href="https://www.ustraveldocs.com/cn/zh/nonimmigrant-visa">https://www.ustraveldocs.com/cn/zh/nonimmigrant-visa</a><ol>
+<li>关于 B1 签证的一些要求：<a href="https://www.ustraveldocs.com/cn/zh/business-visa">https://www.ustraveldocs.com/cn/zh/business-visa</a></li>
+<li>关于费用支付的一些信息：<a href="https://www.ustraveldocs.com/cn/zh/payment-options">https://www.ustraveldocs.com/cn/zh/payment-options</a></li>
+<li>【注意事项】<ol>
+<li>费用支付后，记住支付码，后面取消预约后还可以在新的预约中使用这个码。</li>
+<li>预约系统有防止滥用预约的机制，尽量不要反复操作，容易被封号72小时。如果被封了，期间不要再登录系统，容易继续延长。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>【面签过程】<ol>
+<li><a href="https://www.sohu.com/a/624182528_121061754">美国签证被CHECK怎么办？一定会被拒吗？哪种情况会导致CHECK?</a></li>
+<li>准备好DS-160的确认页和最终预约确认页一起打印出来，面试需要。</li>
+<li>到日期准备参加面试吧。建议面试前多看看小红书上关于不同地区签证处的面试情况。提前做好心理准备。</li>
+</ol>
+</li>
+<li>【面前后续】面签之后如果没有当场通过或者被拒绝，那可能就要收走材料面临行政审查了。可以在 <a href="https://ceac.state.gov/CEACStatTracker/Status.aspx">https://ceac.state.gov/CEACStatTracker/Status.aspx</a> 中检索你的当前状态。<ol>
+<li><a href="https://zhuanlan.zhihu.com/p/113057894">实锤！美国签证查询系统更新，行政审查的“Refused”不是最终裁决！ - 鱼总美签的文章 - 知乎</a></li>
+<li>等了一个月，终于从refused变为了issued。护照寄出来，但是还没收掉。感觉时间可能不太行了。</li>
+</ol>
+</li>
+</ol>
+<hr />
+<p><a href="https://zhuanlan.zhihu.com/p/35256544">一些建议的材料（有点旧了）</a>：</p>
+<p><img src="https://pic3.zhimg.com/80/v2-ea7a4a454735e9874a8b2cc27cd87972_720w.webp" alt="" /></p>
+
+        </article>
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+      delimiters: [
+          // 支持 Mistune 生成的 LaTeX 标准格式
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false}, // 新增：支持 \( ... \)
+          {left: '\\[', right: '\\]', display: true}   // 新增：支持 \[ ... \]
+      ],
+      throwOnError : false
+    });">
+    </script>
+</body>
+
+</html>

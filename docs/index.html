@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页 - Document Collection</title>
+    <style>
+        :root {
+            --color-bg: #fdfdfd;
+            --color-fg: #24292f;
+            --color-accent: #c93a40;
+            --color-border: #e1e4e8;
+            --color-muted: #6e7781;
+
+            /* 字体栈与文章页保持一致 */
+            --font-serif: "New York", "Georgia", "Times New Roman",
+                          "Source Han Serif SC", "Noto Serif SC",
+                          "Songti SC", "STZhongsong", "SimSun", "PMingLiU",
+                          serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg: #0d1117;
+                --color-fg: #c9d1d9;
+                --color-accent: #ff7b72;
+                --color-border: #30363d;
+                --color-muted: #8b949e;
+            }
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-fg);
+            font-family: var(--font-serif);
+            margin: 0;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 60px 24px;
+            min-height: 100vh;
+        }
+
+        /* Index Header */
+        .index-header {
+            margin-bottom: 60px;
+            text-align: center;
+            padding-bottom: 40px;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .site-title {
+            font-size: 2.5em;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin: 0 0 10px 0;
+            color: var(--color-fg);
+        }
+        .site-desc {
+            color: var(--color-muted);
+            font-family: var(--font-sans);
+            font-size: 1.1em;
+        }
+
+        /* Article List */
+        .article-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .article-item {
+            display: flex;
+            flex-direction: column;
+            padding: 28px 0;
+            border-bottom: 1px solid rgba(125,133,144,0.1);
+            transition: transform 0.2s;
+        }
+        .article-item:last-child {
+            border-bottom: none;
+        }
+
+        .article-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            color: var(--color-fg);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .article-title:hover {
+            color: var(--color-accent);
+        }
+
+        .article-meta {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .article-summary {
+            font-size: 16px;
+            color: var(--color-muted);
+            margin: 0;
+            line-height: 1.6;
+            /* 多行截断 */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .tag-pill {
+            background: rgba(125,133,144,0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 767px) {
+            .container { padding: 40px 20px; }
+            .site-title { font-size: 2em; }
+            .article-title { font-size: 1.3em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="index-header">
+            <h1 class="site-title">開 心</h1>
+            <p class="site-desc">Notes, Documentation and Ideas.</p>
+        </header>
+
+        <ul class="article-list">
+            
+            <li class="article-item">
+                <a href="新编故事 - 星尘筑梦.html" class="article-title">新编故事 - 星尘筑梦</a>
+                <div class="article-meta">
+                    <span>2025-11-20 11:25</span>
+                    
+                    <span style="margin-left: 8px;">
+                        
+                        <span class="tag-pill">#story</span>
+                        
+                    </span>
+                    
+                </div>
+                <p class="article-summary">文献来源：人民日报海外版 日期：2020年5月11日 2020年5月8日，中国新一代载人飞船试验船返回舱成功着陆。引人注目的是，舱内搭载的一台“太空3D打印机”成功带回了两个样件：一个是连续纤维增强复合材料样件，一个是蜂窝结构样件。 这是中国首次在太空完成这种高强度材料的在轨制造。航天五院529厂的专家指出，这验证了微重力环境下材料成型的可行性。彼时，这只是一个手掌大小的黑色蜂窝块，但它却悄然埋下...</p>
+            </li>
+            
+            <li class="article-item">
+                <a href="新编故事 - 短剑与黄泉.html" class="article-title">新编故事 - 短剑与黄泉</a>
+                <div class="article-meta">
+                    <span>2025-11-16 15:19</span>
+                    
+                    <span style="margin-left: 8px;">
+                        
+                        <span class="tag-pill">#story</span>
+                        
+                    </span>
+                    
+                </div>
+                <p class="article-summary">一、 坠落 咸阳宫的喧嚣像潮水一样迅速退去。最后留在耳边的，只有我自己那狂妄却又绝望的笑声，以及骨肉分离的剧痛。 当我再次睁开眼时，没有金碧辉煌的大殿，也没有那根被我匕首击中的铜柱。四周是漫无边际的灰雾，脚下是暗红色的泥土，一条浑浊的大河在远处无声地流淌。这里没有风，但我却感到了比易水更彻骨的寒意。 我知道，这里是黄泉。 我低头看自己的身体，左腿完好如初，胸口的八个血洞也不见了。但我手中空空如也，...</p>
+            </li>
+            
+            <li class="article-item">
+                <a href="新编故事 - 噪音.html" class="article-title">新编故事 - 噪音</a>
+                <div class="article-meta">
+                    <span>2025-11-10 22:58</span>
+                    
+                    <span style="margin-left: 8px;">
+                        
+                        <span class="tag-pill">#story</span>
+                        
+                    </span>
+                    
+                </div>
+                <p class="article-summary">0x00 网络操作中心里没有天气。 这里只有恒定的21摄氏度，和一种被空气过滤器反复过滤的、干燥的空气。L称之为“罐头空气”。 墙上是一整面巨大的拼接屏，上面是数据港的实时流量图。那上面奔涌的线条，就是这座城市的脉搏。L的工作，是确保它们永不间断，永不紊乱。 他是夜班的运维工程师。他的世界由仪表盘、日志和告警组成。 凌晨3:17，“嘀嘀。嘀嘀。” 一声低沉的蜂鸣，优先级3级的告警。不算紧急，但足够...</p>
+            </li>
+            
+            <li class="article-item">
+                <a href="Zotero7 重新安装与数据配置.html" class="article-title">Zotero7 重新安装与数据配置</a>
+                <div class="article-meta">
+                    <span>2024-09-01 10:00:36</span>
+                    
+                    <span style="margin-left: 8px;">
+                        
+                        <span class="tag-pill">#tool</span>
+                        
+                    </span>
+                    
+                </div>
+                <p class="article-summary">简单记录了一次Zotero7的重新安装与数据配置。</p>
+            </li>
+            
+            <li class="article-item">
+                <a href="CVPR 参会记录.html" class="article-title">CVPR 参会记录</a>
+                <div class="article-meta">
+                    <span>2024-04-17 03:32:15</span>
+                    
+                    <span style="margin-left: 8px;">
+                        
+                        <span class="tag-pill">#life</span>
+                        
+                    </span>
+                    
+                </div>
+                <p class="article-summary"></p>
+            </li>
+            
+            <li class="article-item">
+                <a href="Six methods of indexing pixels of Mat in OpenCV.html" class="article-title">Six methods of indexing pixels of Mat in OpenCV</a>
+                <div class="article-meta">
+                    <span>2024-03-25 09:41:52</span>
+                    
+                    <span style="margin-left: 8px;">
+                        
+                        <span class="tag-pill">#opencv</span>
+                        
+                    </span>
+                    
+                </div>
+                <p class="article-summary">记录了六种在OpenCV中索引像素的方法。</p>
+            </li>
+            
+            <li class="article-item">
+                <a href="Snippets of OpenVINO-CPP for Model Inference.html" class="article-title">Snippets of OpenVINO-CPP for Model Inference</a>
+                <div class="article-meta">
+                    <span>2024-03-25 09:41:05</span>
+                    
+                    <span style="margin-left: 8px;">
+                        
+                        <span class="tag-pill">#opencv</span>
+                        
+                    </span>
+                    
+                </div>
+                <p class="article-summary">记录了通过 OpenVINO 创建的模型进行推理的一些代码片段。</p>
+            </li>
+            
+            <li class="article-item">
+                <a href="Build OpenCV and OpenVINO for Windows 10 with VS 2022 (2).html" class="article-title">Build OpenCV and OpenVINO for Windows 10 with VS 2022</a>
+                <div class="article-meta">
+                    <span>2024-03-25 09:38:03</span>
+                    
+                    <span style="margin-left: 8px;">
+                        
+                        <span class="tag-pill">#opencv</span>
+                        
+                    </span>
+                    
+                </div>
+                <p class="article-summary">记录了在 Windows 10 上自行编译OpenCV（为了CUDA支持）和OpenVINO的过程。</p>
+            </li>
+            
+        </ul>
+    </div>
+</body>
+</html>

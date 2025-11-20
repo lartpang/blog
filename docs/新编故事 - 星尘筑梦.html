@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新编故事 - 星尘筑梦</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        :root {
+            /* --- 核心配色方案 --- */
+            --color-bg: #fdfdfd;
+            --color-fg: #24292f;
+            --color-accent: #c93a40;
+            /* 学术红 */
+            --color-border: #e1e4e8;
+            --color-muted: #6e7781;
+
+            /* --- 字体栈优化 --- */
+            /* 标题和正文：优先使用各平台的高质量衬线体 */
+            --font-serif: "New York", "Georgia", "Times New Roman",
+                "Source Han Serif SC", "Noto Serif SC",
+                "Songti SC", "STZhongsong", "SimSun", "PMingLiU",
+                serif;
+            /* 代码块：等宽字体 */
+            --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            /* UI元素(导航/元数据)：无衬线字体 */
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+            --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        /* --- 暗色模式适配 --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg: #0d1117;
+                --color-fg: #c9d1d9;
+                --color-accent: #ff7b72;
+                /* 暗模式下红色调亮 */
+                --color-border: #30363d;
+                --color-muted: #8b949e;
+                --shadow-card: none;
+            }
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-fg);
+            font-family: var(--font-serif);
+            margin: 0;
+            line-height: 1.8;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- 面包屑导航 --- */
+        .breadcrumbs {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumbs a {
+            color: var(--color-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--color-accent);
+            border-bottom: 1px solid var(--color-accent);
+        }
+
+        .breadcrumbs .current {
+            color: var(--color-fg);
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* --- 头部信息 --- */
+        .doc-header {
+            margin-bottom: 56px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .doc-title {
+            margin: 0 0 16px 0;
+            font-size: 2.6em;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            color: var(--color-fg);
+        }
+
+        .doc-meta {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .meta-icon {
+            margin-right: 6px;
+            fill: currentColor;
+            opacity: 0.7;
+        }
+
+        /* --- 摘要区域 --- */
+        .doc-summary {
+            font-family: var(--font-serif);
+            margin-bottom: 56px;
+            padding: 24px 32px;
+            background-color: rgba(125, 133, 144, 0.04);
+            border-left: 3px solid var(--color-accent);
+            font-style: italic;
+            font-size: 1.05em;
+            color: var(--color-fg);
+            line-height: 1.8;
+        }
+
+        .doc-summary p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- Markdown 正文样式重置与优化 --- */
+        .markdown-body {
+            font-family: var(--font-serif);
+            background: transparent;
+            font-size: 18px;
+            color: var(--color-fg);
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3 {
+            border-bottom: none;
+            font-weight: 700;
+            margin-top: 1.6em;
+            letter-spacing: -0.01em;
+        }
+
+        .markdown-body p {
+            margin-bottom: 1.2em;
+            text-align: justify;
+            /* 衬线体两端对齐 */
+        }
+
+        .markdown-body a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+
+        /* 代码块: 始终保持等宽字体 */
+        .markdown-body pre,
+        .markdown-body code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+        }
+
+        /* 代码高亮背景微调 */
+        .markdown-body .highlight pre,
+        .markdown-body pre {
+            background-color: rgba(125, 133, 144, 0.05);
+            border-radius: 4px;
+            padding: 20px;
+            border: none;
+        }
+
+        /* 图片优化 */
+        .markdown-body img {
+            display: block;
+            margin: 40px auto;
+            max-width: 100%;
+            border-radius: 2px;
+            box-shadow: var(--shadow-card);
+        }
+
+        /* 表格优化 */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 32px 0;
+        }
+
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .markdown-body table th,
+        .markdown-body table td {
+            font-family: var(--font-sans);
+            font-size: 0.9em;
+            padding: 8px 12px;
+            border: 1px solid var(--color-border);
+        }
+
+        .markdown-body table tr:nth-child(2n) {
+            background-color: rgba(125, 133, 144, 0.03);
+        }
+
+        /* KaTeX 公式容器 */
+        .katex-display {
+            margin: 1.5em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 767px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .doc-title {
+                font-size: 2em;
+            }
+
+            .markdown-body {
+                font-size: 17px;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+
+            .markdown-body .highlight pre,
+            .markdown-body pre {
+                background-color: #161b22;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="breadcrumbs">
+            <a href="index.html">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" style="vertical-align: -1px; margin-right:4px;">
+                    <path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"></path>
+                </svg>
+                Home
+            </a>
+            <span style="opacity:0.5">/</span>
+            <span class="current" title="新编故事 - 星尘筑梦">新编故事 - 星尘筑梦</span>
+        </nav>
+
+        <header class="doc-header">
+            <h1 class="doc-title">新编故事 - 星尘筑梦</h1>
+            <div class="doc-meta">
+                
+                <span class="meta-item">
+                    <svg class="meta-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
+                        <path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM1.75 6h12.5v8.25a.25.25 0 0 1-.25.25H2.75a.25.25 0 0 1-.25-.25V6Z"></path>
+                    </svg>
+                    2025-11-20 11:25
+                </span>
+                
+
+                
+
+                
+                <div class="meta-item" style="display:flex;gap:6px;">
+                    
+                    <span style="background:rgba(201,58,64,0.1);color:var(--color-accent);padding:2px 8px;border-radius:20px;font-size:12px;font-weight:500;">#story</span>
+                    
+                </div>
+                
+            </div>
+        </header>
+
+        
+
+        <article class="markdown-body">
+            <blockquote>
+<p><strong>文献来源：人民日报海外版</strong>
+<strong>日期：2020年5月11日</strong></p>
+<p>2020年5月8日，中国新一代载人飞船试验船返回舱成功着陆。引人注目的是，舱内搭载的一台“太空3D打印机”成功带回了两个样件：一个是连续纤维增强复合材料样件，一个是蜂窝结构样件。</p>
+<p>这是中国首次在太空完成这种高强度材料的在轨制造。航天五院529厂的专家指出，这验证了微重力环境下材料成型的可行性。彼时，这只是一个手掌大小的黑色蜂窝块，但它却悄然埋下了未来“太空土木工程”的种子——它是人类在异星“就地取材”、制造大型承重结构的基因原点。</p>
+</blockquote>
+<h2>月壤之上</h2>
+<p><strong>时间：2050年</strong></p>
+<p><strong>地点：月球，风暴洋，“广寒”二期熔岩管城市施工现场</strong></p>
+<p>“注意！3号打印机喷头温度偏高，玄武岩纤维拉丝速率下调5%。”</p>
+<p>林拓的声音在通讯频道里显得沉稳而专业。他摘下布满月尘的护目镜，透过厚重的观察窗，审视着眼前这台巨大的六足建造机器人。</p>
+<p>林拓是“地外土木工程系”的第一批毕业生。在地球上，他的同学们还在为老旧城区的改造方案争论不休，而他，正在月球地下几十米的巨大熔岩管内，指挥着一场人类建筑史上的革命。</p>
+<p>在他面前，一座高达30米的居住区穹顶正在缓慢成型。</p>
+<p>它不是由地球运来的钢筋水泥浇筑的，而是“长”出来的。</p>
+<p>这一技术正是源于30年前那次试验船带回的蜂窝样品。如今，技术已经成熟：基地旁的熔炼塔将月球随处可见的岩石高温熔化，拉制出强度极高的连续玄武岩纤维；打印机则将这些纤维像肌肉束一样，精密地编织进月壤聚合物基质中。</p>
+<p>“林工，这批构件的抗拉强度测试出来了，比地球上的特种钢混结构还高20%。”助手兴奋地汇报道。</p>
+<p>林拓抚摸着刚固化的黑色墙体，触感粗糙却坚硬如铁。</p>
+<p>“以前在学校，老教授总说土木工程是‘夕阳产业’。”林拓笑着摇了摇头，“那是他们没看到这里。在月球，每一寸尘埃都是我们的建材，每一个陨石坑都是我们的地基。我们不是在造房子，我们是在给人类文明造‘外骨骼’。”</p>
+<p>在这里，土木学子找到了久违的尊严与激情。月球，已经是他们触手可及的春天。</p>
+<h2>眺望红色</h2>
+<p>工程间隙，林拓驾驶着月球漫游车来到了地面。</p>
+<p>月球的夜空深邃得令人敬畏。他把车停在一处高地上，调整天线，接收来自地球母校的远程连线。屏幕那头，是几百名即将毕业、对未来感到迷茫的土木系学弟学妹。</p>
+<p>“学长，月球基地已经快建完了，我们再去还有机会吗？”一个学生怯生生地问。</p>
+<p>林拓没有直接回答。他调整了漫游车外部摄像头的角度，避开了繁忙的月球工地，指向了深空中那颗肉眼可见的、泛着红光的星星——火星。</p>
+<p>“同学们，月球只是我们的实习基地，是我们的‘练兵场’。”</p>
+<p>林拓的声音变得激昂起来：</p>
+<p>“看到那颗红色的星球了吗？那里才是你们真正的舞台。”</p>
+<p>他调出一张全息地图，上面显示着火星表面一座巍峨得令人窒息的巨山——奥林匹斯山（Olympus Mons）。它高达21公里，基座宽达600公里，耸立在稀薄的大气层中，仿佛是神灵为人类留下的通天塔基座。</p>
+<h2>奥林匹斯</h2>
+<p>“在月球，我们学会了如何用玄武岩纤维编织穹顶。但这还不够。”</p>
+<p>林拓指着屏幕中那座红色的巨山，眼中闪烁着憧憬的光芒：</p>
+<p>“在火星，你们将面临更大的挑战，但也拥有更宏大的浪漫。那里有大气，你们要像植物一样，从空气中提取碳元素，合成碳纤维；你们要用红色的氧化铁土壤，打印出红色的堡垒。”</p>
+<p>“想象一下，奥林匹斯山。”</p>
+<p>“终有一天，你们会去到那里。你们会利用那座太阳系最高的山峰作为天然支柱，用我们就地取材打印出的超高强度缆索，建设那里的第一座太空电梯。”</p>
+<p>“那不再是简单的土木工程，那是连接行星与星空的桥梁。”</p>
+<p>屏幕那头的学生们安静了，随后爆发出一阵骚动，那是一种被点燃的渴望。</p>
+<p>林拓对着镜头，对着地球上那些年轻的同行们，做出了最后的邀请：</p>
+<p>“不要觉得手中的图纸沉重，也不要觉得脚下的泥土卑微。”</p>
+<p>“虽然我们现在还在月球上从零开始，但未来，你们将在奥林匹斯山脚下集合。我们将用整颗星球的尘埃为墨，以太阳系最高的山峰为笔，书写土木工程最壮丽的篇章。”</p>
+<p>“土木学子们，月球是现在的春天，而火星，是我们在盛夏的约定！”</p>
+
+        </article>
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+      delimiters: [
+          // 支持 Mistune 生成的 LaTeX 标准格式
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false}, // 新增：支持 \( ... \)
+          {left: '\\[', right: '\\]', display: true}   // 新增：支持 \[ ... \]
+      ],
+      throwOnError : false
+    });">
+    </script>
+</body>
+
+</html>

@@ -4,6 +4,8 @@ date: 2024-03-25 09:38:03
 tags: ["opencv"]
 ---
 
+记录了在 Windows 10 上自行编译OpenCV（为了CUDA支持）和OpenVINO的过程。
+
 <!--more-->
 
 - Author: lartpang
@@ -12,9 +14,9 @@ tags: ["opencv"]
 # Build OpenCV and OpenVINO for Windows 10 with VS 2022
 
 In this guide, I will build the two powerful open-source libraries, i.e., OpenCV and OpenVINO for running my deeplearning model on windows 10.
-Interestingly, both libraries are closely associated with Intel 🖥️. 
+Interestingly, both libraries are closely associated with Intel 🖥️.
 
-## OpenCV 😮 
+## OpenCV 😮
 
 First of all, we must download the related code projects (`opencv` and `opencv_contrib` containing some plugins for `opencv`) into our computer from this links:
 
@@ -72,7 +74,7 @@ Next, start compiling OpenCV.
     - add the `<path>\install\x64\vc17\lib` directory into "解决方案资源管理器->右键点击属性->VC++目录->库目录"
     - add the `opencv_world470.lib` into "解决方案资源管理器->右键点击属性->链接器->输入->附加依赖项"
 
-## OpenVINO 🍰 
+## OpenVINO 🍰
 
 The document of OpenVINO is intuitive and the readability is better than OpenCV.
 The relevant content about building and installing the libirary is listed in these links:

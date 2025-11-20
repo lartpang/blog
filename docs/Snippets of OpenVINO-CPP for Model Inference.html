@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snippets of OpenVINO-CPP for Model Inference</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        :root {
+            /* --- 核心配色方案 --- */
+            --color-bg: #fdfdfd;
+            --color-fg: #24292f;
+            --color-accent: #c93a40;
+            /* 学术红 */
+            --color-border: #e1e4e8;
+            --color-muted: #6e7781;
+
+            /* --- 字体栈优化 --- */
+            /* 标题和正文：优先使用各平台的高质量衬线体 */
+            --font-serif: "New York", "Georgia", "Times New Roman",
+                "Source Han Serif SC", "Noto Serif SC",
+                "Songti SC", "STZhongsong", "SimSun", "PMingLiU",
+                serif;
+            /* 代码块：等宽字体 */
+            --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            /* UI元素(导航/元数据)：无衬线字体 */
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+            --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        /* --- 暗色模式适配 --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg: #0d1117;
+                --color-fg: #c9d1d9;
+                --color-accent: #ff7b72;
+                /* 暗模式下红色调亮 */
+                --color-border: #30363d;
+                --color-muted: #8b949e;
+                --shadow-card: none;
+            }
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-fg);
+            font-family: var(--font-serif);
+            margin: 0;
+            line-height: 1.8;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- 面包屑导航 --- */
+        .breadcrumbs {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumbs a {
+            color: var(--color-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--color-accent);
+            border-bottom: 1px solid var(--color-accent);
+        }
+
+        .breadcrumbs .current {
+            color: var(--color-fg);
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* --- 头部信息 --- */
+        .doc-header {
+            margin-bottom: 56px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .doc-title {
+            margin: 0 0 16px 0;
+            font-size: 2.6em;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            color: var(--color-fg);
+        }
+
+        .doc-meta {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .meta-icon {
+            margin-right: 6px;
+            fill: currentColor;
+            opacity: 0.7;
+        }
+
+        /* --- 摘要区域 --- */
+        .doc-summary {
+            font-family: var(--font-serif);
+            margin-bottom: 56px;
+            padding: 24px 32px;
+            background-color: rgba(125, 133, 144, 0.04);
+            border-left: 3px solid var(--color-accent);
+            font-style: italic;
+            font-size: 1.05em;
+            color: var(--color-fg);
+            line-height: 1.8;
+        }
+
+        .doc-summary p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- Markdown 正文样式重置与优化 --- */
+        .markdown-body {
+            font-family: var(--font-serif);
+            background: transparent;
+            font-size: 18px;
+            color: var(--color-fg);
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3 {
+            border-bottom: none;
+            font-weight: 700;
+            margin-top: 1.6em;
+            letter-spacing: -0.01em;
+        }
+
+        .markdown-body p {
+            margin-bottom: 1.2em;
+            text-align: justify;
+            /* 衬线体两端对齐 */
+        }
+
+        .markdown-body a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+
+        /* 代码块: 始终保持等宽字体 */
+        .markdown-body pre,
+        .markdown-body code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+        }
+
+        /* 代码高亮背景微调 */
+        .markdown-body .highlight pre,
+        .markdown-body pre {
+            background-color: rgba(125, 133, 144, 0.05);
+            border-radius: 4px;
+            padding: 20px;
+            border: none;
+        }
+
+        /* 图片优化 */
+        .markdown-body img {
+            display: block;
+            margin: 40px auto;
+            max-width: 100%;
+            border-radius: 2px;
+            box-shadow: var(--shadow-card);
+        }
+
+        /* 表格优化 */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 32px 0;
+        }
+
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .markdown-body table th,
+        .markdown-body table td {
+            font-family: var(--font-sans);
+            font-size: 0.9em;
+            padding: 8px 12px;
+            border: 1px solid var(--color-border);
+        }
+
+        .markdown-body table tr:nth-child(2n) {
+            background-color: rgba(125, 133, 144, 0.03);
+        }
+
+        /* KaTeX 公式容器 */
+        .katex-display {
+            margin: 1.5em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 767px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .doc-title {
+                font-size: 2em;
+            }
+
+            .markdown-body {
+                font-size: 17px;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+
+            .markdown-body .highlight pre,
+            .markdown-body pre {
+                background-color: #161b22;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="breadcrumbs">
+            <a href="index.html">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" style="vertical-align: -1px; margin-right:4px;">
+                    <path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"></path>
+                </svg>
+                Home
+            </a>
+            <span style="opacity:0.5">/</span>
+            <span class="current" title="Snippets of OpenVINO-CPP for Model Inference">Snippets of OpenVINO-CPP for Model Inference</span>
+        </nav>
+
+        <header class="doc-header">
+            <h1 class="doc-title">Snippets of OpenVINO-CPP for Model Inference</h1>
+            <div class="doc-meta">
+                
+                <span class="meta-item">
+                    <svg class="meta-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
+                        <path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM1.75 6h12.5v8.25a.25.25 0 0 1-.25.25H2.75a.25.25 0 0 1-.25-.25V6Z"></path>
+                    </svg>
+                    2024-03-25 09:41:05
+                </span>
+                
+
+                
+
+                
+                <div class="meta-item" style="display:flex;gap:6px;">
+                    
+                    <span style="background:rgba(201,58,64,0.1);color:var(--color-accent);padding:2px 8px;border-radius:20px;font-size:12px;font-weight:500;">#opencv</span>
+                    
+                </div>
+                
+            </div>
+        </header>
+
+        
+        <div class="doc-summary">
+            <p>记录了通过 OpenVINO 创建的模型进行推理的一些代码片段。</p>
+
+        </div>
+        
+
+        <article class="markdown-body">
+            <ul>
+<li>Author: lartpang</li>
+<li>Link: <a href="https://github.com/lartpang/blog/issues/2">https://github.com/lartpang/blog/issues/2</a></li>
+</ul>
+<h1>Snippets of OpenVINO-CPP for Model Inference</h1>
+<h2>Header File</h2>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;openvino/openvino.hpp&gt;</span>
+</code></pre></div>
+<h2>Create Infer Request</h2>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">preprocessing</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">ov</span><span class="o">::</span><span class="n">Model</span><span class="o">&gt;</span><span class="w"> </span><span class="n">model</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">ov</span><span class="o">::</span><span class="n">preprocess</span><span class="o">::</span><span class="n">PrePostProcessor</span><span class="w"> </span><span class="n">ppp</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+<span class="w">  </span><span class="n">ppp</span><span class="p">.</span><span class="n">input</span><span class="p">().</span><span class="n">tensor</span><span class="p">().</span><span class="n">set_layout</span><span class="p">(</span><span class="s">&quot;NHWC&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">// input data is NHWC from OpenCV Mat</span>
+<span class="w">  </span><span class="n">ppp</span><span class="p">.</span><span class="n">input</span><span class="p">().</span><span class="n">model</span><span class="p">().</span><span class="n">set_layout</span><span class="p">(</span><span class="s">&quot;NCHW&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">// In the model, the layout is NCHW</span>
+<span class="w">  </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ppp</span><span class="p">.</span><span class="n">build</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">ov</span><span class="o">::</span><span class="n">Core</span><span class="w"> </span><span class="n">core</span><span class="p">;</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">core</span><span class="p">.</span><span class="n">read_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">);</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">onnx</span><span class="w"> </span><span class="n">or</span><span class="w"> </span><span class="n">openvino</span><span class="err">&#39;</span><span class="n">s</span><span class="w"> </span><span class="n">xml</span><span class="w"> </span><span class="n">file</span>
+<span class="n">preprocessing</span><span class="p">(</span><span class="n">model</span><span class="p">);</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">compiled_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">core</span><span class="p">.</span><span class="n">compile_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;CPU&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">// Or without `&quot;CPU&quot;`</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">input_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compiled_model</span><span class="p">.</span><span class="n">input</span><span class="p">();</span>
+<span class="k">auto</span><span class="w"> </span><span class="n">infer_request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">compiled_model</span><span class="p">.</span><span class="n">create_infer_request</span><span class="p">();</span>
+</code></pre></div>
+<h2>Input and Output</h2>
+<ul>
+<li>single input</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">infer_request</span><span class="p">.</span><span class="n">set_input_tensor</span><span class="p">(</span><span class="n">blob</span><span class="p">);</span>
+<span class="n">infer_request</span><span class="p">.</span><span class="n">crop_net</span><span class="p">.</span><span class="n">infer</span><span class="p">();</span>
+</code></pre></div>
+<ul>
+<li>single output</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">ov</span><span class="o">::</span><span class="n">Tensor</span><span class="w"> </span><span class="n">single_output</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">point_net</span><span class="p">.</span><span class="n">get_output_tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</code></pre></div>
+<ul>
+<li>multiple outputs</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">ov</span><span class="o">::</span><span class="n">Tensor</span><span class="w"> </span><span class="n">multi_outputs0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">point_net</span><span class="p">.</span><span class="n">get_output_tensor</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="n">ov</span><span class="o">::</span><span class="n">Tensor</span><span class="w"> </span><span class="n">multi_outputs1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">point_net</span><span class="p">.</span><span class="n">get_output_tensor</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</code></pre></div>
+<h2>OpenCV <code>cv::Mat</code> &lt;-&gt; OpenVINO <code>ov::Tensor</code></h2>
+<p>The key to these steps is the alignment of the data layout.</p>
+<h3><code>cv::Mat</code> -&gt; <code>ov::Tensor</code></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// converting the uint8 3-channels image mat to a float32 tensor</span>
+<span class="n">image</span><span class="p">.</span><span class="n">convertTo</span><span class="p">(</span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="n">CV_32FC3</span><span class="p">,</span><span class="w"> </span><span class="mf">1.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">255</span><span class="p">);</span>
+<span class="c1">// NHWC layout as mentioned above. (N=1, C=3)</span>
+<span class="n">ov</span><span class="o">::</span><span class="n">Tensor</span><span class="w"> </span><span class="nf">blob</span><span class="p">(</span><span class="n">input_port</span><span class="p">.</span><span class="n">get_element_type</span><span class="p">(),</span><span class="w"> </span><span class="n">input_port</span><span class="p">.</span><span class="n">get_shape</span><span class="p">(),</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">image</span><span class="p">.</span><span class="n">data</span><span class="p">);</span>
+</code></pre></div>
+<h3><code>ov::Tensor</code> -&gt; <code>cv::Mat</code></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// tensor follows the NCHW layout, so tensor_shape is (N,C,H,W)</span>
+<span class="n">ov</span><span class="o">::</span><span class="n">Shape</span><span class="w"> </span><span class="n">tensor_shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tensor</span><span class="p">.</span><span class="n">get_shape</span><span class="p">();</span>
+<span class="c1">// Due to N=1 and C=1, we can directly assign all data to a new mat.</span>
+<span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="w"> </span><span class="nf">mat</span><span class="p">(</span><span class="n">tensor_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="n">tensor_shape</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="w"> </span><span class="n">CV_32F</span><span class="p">,</span><span class="w"> </span><span class="n">tensor</span><span class="p">.</span><span class="n">data</span><span class="p">());</span>
+</code></pre></div>
+<h2>Reference</h2>
+<ul>
+<li><a href="https://github.com/OpenVINO-dev-contest/YOLOv7_OpenVINO_cpp-python/blob/main/cpp/main_preprocessing.cpp">https://github.com/OpenVINO-dev-contest/YOLOv7_OpenVINO_cpp-python/blob/main/cpp/main_preprocessing.cpp</a></li>
+<li><a href="https://github.com/openvinotoolkit/openvino/blob/master/samples/cpp/hello_classification/main.cpp">https://github.com/openvinotoolkit/openvino/blob/master/samples/cpp/hello_classification/main.cpp</a></li>
+</ul>
+
+        </article>
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+      delimiters: [
+          // 支持 Mistune 生成的 LaTeX 标准格式
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false}, // 新增：支持 \( ... \)
+          {left: '\\[', right: '\\]', display: true}   // 新增：支持 \[ ... \]
+      ],
+      throwOnError : false
+    });">
+    </script>
+</body>
+
+</html>
