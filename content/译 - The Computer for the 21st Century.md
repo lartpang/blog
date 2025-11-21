@@ -1,6 +1,6 @@
 ---
 title: "译 | The Computer for the 21st Century"
-date: 2025-11-15
+date: 2025-11-17
 tags: ["ubiquitous computing"]
 ---
 
