@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>译 | The Computer for the 21st Century</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        :root {
+            /* --- 核心配色方案 --- */
+            --color-bg: #fdfdfd;
+            --color-fg: #24292f;
+            --color-accent: #c93a40;
+            /* 学术红 */
+            --color-border: #e1e4e8;
+            --color-muted: #6e7781;
+
+            /* --- 字体栈优化 --- */
+            /* 标题和正文：优先使用各平台的高质量衬线体 */
+            --font-serif: "New York", "Georgia", "Times New Roman",
+                "Source Han Serif SC", "Noto Serif SC",
+                "Songti SC", "STZhongsong", "SimSun", "PMingLiU",
+                serif;
+            /* 代码块：等宽字体 */
+            --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+            /* UI元素(导航/元数据)：无衬线字体 */
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+
+            --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        /* --- 暗色模式适配 --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg: #0d1117;
+                --color-fg: #c9d1d9;
+                --color-accent: #ff7b72;
+                /* 暗模式下红色调亮 */
+                --color-border: #30363d;
+                --color-muted: #8b949e;
+                --shadow-card: none;
+            }
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-fg);
+            font-family: var(--font-serif);
+            margin: 0;
+            line-height: 1.8;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- 面包屑导航 --- */
+        .breadcrumbs {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumbs a {
+            color: var(--color-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumbs a:hover {
+            color: var(--color-accent);
+            border-bottom: 1px solid var(--color-accent);
+        }
+
+        .breadcrumbs .current {
+            color: var(--color-fg);
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* --- 头部信息 --- */
+        .doc-header {
+            margin-bottom: 56px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .doc-title {
+            margin: 0 0 16px 0;
+            font-size: 2.6em;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            color: var(--color-fg);
+        }
+
+        .doc-meta {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            color: var(--color-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .meta-icon {
+            margin-right: 6px;
+            fill: currentColor;
+            opacity: 0.7;
+        }
+
+        /* --- 摘要区域 --- */
+        .doc-summary {
+            font-family: var(--font-serif);
+            margin-bottom: 56px;
+            padding: 24px 32px;
+            background-color: rgba(125, 133, 144, 0.04);
+            border-left: 3px solid var(--color-accent);
+            font-style: italic;
+            font-size: 1.05em;
+            color: var(--color-fg);
+            line-height: 1.8;
+        }
+
+        .doc-summary p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- Markdown 正文样式重置与优化 --- */
+        .markdown-body {
+            font-family: var(--font-serif);
+            background: transparent;
+            font-size: 18px;
+            color: var(--color-fg);
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3 {
+            border-bottom: none;
+            font-weight: 700;
+            margin-top: 1.6em;
+            letter-spacing: -0.01em;
+        }
+
+        .markdown-body p {
+            margin-bottom: 1.2em;
+            text-align: justify;
+            /* 衬线体两端对齐 */
+        }
+
+        .markdown-body a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        .markdown-body a:hover {
+            text-decoration: underline;
+        }
+
+        /* 代码块: 始终保持等宽字体 */
+        .markdown-body pre,
+        .markdown-body code {
+            font-family: var(--font-mono);
+            font-size: 0.85em;
+        }
+
+        /* 代码高亮背景微调 */
+        .markdown-body .highlight pre,
+        .markdown-body pre {
+            background-color: rgba(125, 133, 144, 0.05);
+            border-radius: 4px;
+            padding: 20px;
+            border: none;
+        }
+
+        /* 图片优化 */
+        .markdown-body img {
+            display: block;
+            margin: 40px auto;
+            max-width: 100%;
+            border-radius: 2px;
+            box-shadow: var(--shadow-card);
+        }
+
+        /* 表格优化 */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 32px 0;
+        }
+
+        .markdown-body table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .markdown-body table th,
+        .markdown-body table td {
+            font-family: var(--font-sans);
+            font-size: 0.9em;
+            padding: 8px 12px;
+            border: 1px solid var(--color-border);
+        }
+
+        .markdown-body table tr:nth-child(2n) {
+            background-color: rgba(125, 133, 144, 0.03);
+        }
+
+        /* KaTeX 公式容器 */
+        .katex-display {
+            margin: 1.5em 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 767px) {
+            .container {
+                padding: 20px 16px;
+            }
+
+            .doc-title {
+                font-size: 2em;
+            }
+
+            .markdown-body {
+                font-size: 17px;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+
+            .markdown-body .highlight pre,
+            .markdown-body pre {
+                background-color: #161b22;
+            }
+        }
+
+        /* 亮色模式代码高亮 */
+        pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #ffffff; }
+.highlight .c { color: #177500 } /* Comment */
+.highlight .err { color: #000000 } /* Error */
+.highlight .k { color: #A90D91 } /* Keyword */
+.highlight .l { color: #1C01CE } /* Literal */
+.highlight .n { color: #000000 } /* Name */
+.highlight .o { color: #000000 } /* Operator */
+.highlight .ch { color: #177500 } /* Comment.Hashbang */
+.highlight .cm { color: #177500 } /* Comment.Multiline */
+.highlight .cp { color: #633820 } /* Comment.Preproc */
+.highlight .cpf { color: #177500 } /* Comment.PreprocFile */
+.highlight .c1 { color: #177500 } /* Comment.Single */
+.highlight .cs { color: #177500 } /* Comment.Special */
+.highlight .kc { color: #A90D91 } /* Keyword.Constant */
+.highlight .kd { color: #A90D91 } /* Keyword.Declaration */
+.highlight .kn { color: #A90D91 } /* Keyword.Namespace */
+.highlight .kp { color: #A90D91 } /* Keyword.Pseudo */
+.highlight .kr { color: #A90D91 } /* Keyword.Reserved */
+.highlight .kt { color: #A90D91 } /* Keyword.Type */
+.highlight .ld { color: #1C01CE } /* Literal.Date */
+.highlight .m { color: #1C01CE } /* Literal.Number */
+.highlight .s { color: #C41A16 } /* Literal.String */
+.highlight .na { color: #836C28 } /* Name.Attribute */
+.highlight .nb { color: #A90D91 } /* Name.Builtin */
+.highlight .nc { color: #3F6E75 } /* Name.Class */
+.highlight .no { color: #000000 } /* Name.Constant */
+.highlight .nd { color: #000000 } /* Name.Decorator */
+.highlight .ni { color: #000000 } /* Name.Entity */
+.highlight .ne { color: #000000 } /* Name.Exception */
+.highlight .nf { color: #000000 } /* Name.Function */
+.highlight .nl { color: #000000 } /* Name.Label */
+.highlight .nn { color: #000000 } /* Name.Namespace */
+.highlight .nx { color: #000000 } /* Name.Other */
+.highlight .py { color: #000000 } /* Name.Property */
+.highlight .nt { color: #000000 } /* Name.Tag */
+.highlight .nv { color: #000000 } /* Name.Variable */
+.highlight .ow { color: #000000 } /* Operator.Word */
+.highlight .mb { color: #1C01CE } /* Literal.Number.Bin */
+.highlight .mf { color: #1C01CE } /* Literal.Number.Float */
+.highlight .mh { color: #1C01CE } /* Literal.Number.Hex */
+.highlight .mi { color: #1C01CE } /* Literal.Number.Integer */
+.highlight .mo { color: #1C01CE } /* Literal.Number.Oct */
+.highlight .sa { color: #C41A16 } /* Literal.String.Affix */
+.highlight .sb { color: #C41A16 } /* Literal.String.Backtick */
+.highlight .sc { color: #2300CE } /* Literal.String.Char */
+.highlight .dl { color: #C41A16 } /* Literal.String.Delimiter */
+.highlight .sd { color: #C41A16 } /* Literal.String.Doc */
+.highlight .s2 { color: #C41A16 } /* Literal.String.Double */
+.highlight .se { color: #C41A16 } /* Literal.String.Escape */
+.highlight .sh { color: #C41A16 } /* Literal.String.Heredoc */
+.highlight .si { color: #C41A16 } /* Literal.String.Interpol */
+.highlight .sx { color: #C41A16 } /* Literal.String.Other */
+.highlight .sr { color: #C41A16 } /* Literal.String.Regex */
+.highlight .s1 { color: #C41A16 } /* Literal.String.Single */
+.highlight .ss { color: #C41A16 } /* Literal.String.Symbol */
+.highlight .bp { color: #5B269A } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #000000 } /* Name.Function.Magic */
+.highlight .vc { color: #000000 } /* Name.Variable.Class */
+.highlight .vg { color: #000000 } /* Name.Variable.Global */
+.highlight .vi { color: #000000 } /* Name.Variable.Instance */
+.highlight .vm { color: #000000 } /* Name.Variable.Magic */
+.highlight .il { color: #1C01CE } /* Literal.Number.Integer.Long */
+        /* 暗色模式代码高亮 (使用媒体查询) */
+        @media (prefers-color-scheme: dark) {
+            pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #49483e }
+.highlight { background: #272822; color: #f8f8f2 }
+.highlight .c { color: #75715e } /* Comment */
+.highlight .err { color: #960050; background-color: #1e0010 } /* Error */
+.highlight .esc { color: #f8f8f2 } /* Escape */
+.highlight .g { color: #f8f8f2 } /* Generic */
+.highlight .k { color: #66d9ef } /* Keyword */
+.highlight .l { color: #ae81ff } /* Literal */
+.highlight .n { color: #f8f8f2 } /* Name */
+.highlight .o { color: #f92672 } /* Operator */
+.highlight .x { color: #f8f8f2 } /* Other */
+.highlight .p { color: #f8f8f2 } /* Punctuation */
+.highlight .ch { color: #75715e } /* Comment.Hashbang */
+.highlight .cm { color: #75715e } /* Comment.Multiline */
+.highlight .cp { color: #75715e } /* Comment.Preproc */
+.highlight .cpf { color: #75715e } /* Comment.PreprocFile */
+.highlight .c1 { color: #75715e } /* Comment.Single */
+.highlight .cs { color: #75715e } /* Comment.Special */
+.highlight .gd { color: #f92672 } /* Generic.Deleted */
+.highlight .ge { color: #f8f8f2; font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #f8f8f2 } /* Generic.Error */
+.highlight .gh { color: #f8f8f2 } /* Generic.Heading */
+.highlight .gi { color: #a6e22e } /* Generic.Inserted */
+.highlight .go { color: #66d9ef } /* Generic.Output */
+.highlight .gp { color: #f92672; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { color: #f8f8f2; font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #75715e } /* Generic.Subheading */
+.highlight .gt { color: #f8f8f2 } /* Generic.Traceback */
+.highlight .kc { color: #66d9ef } /* Keyword.Constant */
+.highlight .kd { color: #66d9ef } /* Keyword.Declaration */
+.highlight .kn { color: #f92672 } /* Keyword.Namespace */
+.highlight .kp { color: #66d9ef } /* Keyword.Pseudo */
+.highlight .kr { color: #66d9ef } /* Keyword.Reserved */
+.highlight .kt { color: #66d9ef } /* Keyword.Type */
+.highlight .ld { color: #e6db74 } /* Literal.Date */
+.highlight .m { color: #ae81ff } /* Literal.Number */
+.highlight .s { color: #e6db74 } /* Literal.String */
+.highlight .na { color: #a6e22e } /* Name.Attribute */
+.highlight .nb { color: #f8f8f2 } /* Name.Builtin */
+.highlight .nc { color: #a6e22e } /* Name.Class */
+.highlight .no { color: #66d9ef } /* Name.Constant */
+.highlight .nd { color: #a6e22e } /* Name.Decorator */
+.highlight .ni { color: #f8f8f2 } /* Name.Entity */
+.highlight .ne { color: #a6e22e } /* Name.Exception */
+.highlight .nf { color: #a6e22e } /* Name.Function */
+.highlight .nl { color: #f8f8f2 } /* Name.Label */
+.highlight .nn { color: #f8f8f2 } /* Name.Namespace */
+.highlight .nx { color: #a6e22e } /* Name.Other */
+.highlight .py { color: #f8f8f2 } /* Name.Property */
+.highlight .nt { color: #f92672 } /* Name.Tag */
+.highlight .nv { color: #f8f8f2 } /* Name.Variable */
+.highlight .ow { color: #f92672 } /* Operator.Word */
+.highlight .pm { color: #f8f8f2 } /* Punctuation.Marker */
+.highlight .w { color: #f8f8f2 } /* Text.Whitespace */
+.highlight .mb { color: #ae81ff } /* Literal.Number.Bin */
+.highlight .mf { color: #ae81ff } /* Literal.Number.Float */
+.highlight .mh { color: #ae81ff } /* Literal.Number.Hex */
+.highlight .mi { color: #ae81ff } /* Literal.Number.Integer */
+.highlight .mo { color: #ae81ff } /* Literal.Number.Oct */
+.highlight .sa { color: #e6db74 } /* Literal.String.Affix */
+.highlight .sb { color: #e6db74 } /* Literal.String.Backtick */
+.highlight .sc { color: #e6db74 } /* Literal.String.Char */
+.highlight .dl { color: #e6db74 } /* Literal.String.Delimiter */
+.highlight .sd { color: #e6db74 } /* Literal.String.Doc */
+.highlight .s2 { color: #e6db74 } /* Literal.String.Double */
+.highlight .se { color: #ae81ff } /* Literal.String.Escape */
+.highlight .sh { color: #e6db74 } /* Literal.String.Heredoc */
+.highlight .si { color: #e6db74 } /* Literal.String.Interpol */
+.highlight .sx { color: #e6db74 } /* Literal.String.Other */
+.highlight .sr { color: #e6db74 } /* Literal.String.Regex */
+.highlight .s1 { color: #e6db74 } /* Literal.String.Single */
+.highlight .ss { color: #e6db74 } /* Literal.String.Symbol */
+.highlight .bp { color: #f8f8f2 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #a6e22e } /* Name.Function.Magic */
+.highlight .vc { color: #f8f8f2 } /* Name.Variable.Class */
+.highlight .vg { color: #f8f8f2 } /* Name.Variable.Global */
+.highlight .vi { color: #f8f8f2 } /* Name.Variable.Instance */
+.highlight .vm { color: #f8f8f2 } /* Name.Variable.Magic */
+.highlight .il { color: #ae81ff } /* Literal.Number.Integer.Long */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="breadcrumbs">
+            <a href="index.html">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" style="vertical-align: -1px; margin-right:4px;">
+                    <path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"></path>
+                </svg>
+                Home
+            </a>
+            <span style="opacity:0.5">/</span>
+            <span class="current" title="译 | The Computer for the 21st Century">译 | The Computer for the 21st Century</span>
+        </nav>
+
+        <header class="doc-header">
+            <h1 class="doc-title">译 | The Computer for the 21st Century</h1>
+            <div class="doc-meta">
+                
+                <span class="meta-item">
+                    <svg class="meta-icon" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
+                        <path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM1.75 6h12.5v8.25a.25.25 0 0 1-.25.25H2.75a.25.25 0 0 1-.25-.25V6Z"></path>
+                    </svg>
+                    2025-11-15
+                </span>
+                
+
+                
+
+                
+                <div class="meta-item" style="display:flex;gap:6px;">
+                    
+                    <span style="background:rgba(201,58,64,0.1);color:var(--color-accent);padding:2px 8px;border-radius:20px;font-size:12px;font-weight:500;">#ubiquitous computing</span>
+                    
+                </div>
+                
+            </div>
+        </header>
+
+        
+
+        <article class="markdown-body">
+            <p><em>SCIENTIFIC AMERICAN September 1991</em></p>
+<blockquote>
+<p>Mark Weiser，他是施乐帕洛阿尔托研究中心（Xerox Palo Alto Research Center）计算机科学实验室的负责人。他正致力于工作站之后的下一次计算革命，这被称为“普适计算”或“具身虚拟”。在加入 PARC 之前，他是马里兰大学的计算机科学教授；他于 1979 年从密歇根大学获得博士学位。威瑟还帮助创办了一家电子出版公司和一家视频艺术公司，并声称自己喜欢计算机编程是“为了乐趣”。他最近的技术工作涉及实现自动计算机内存回收的新理论，该领域称为“垃圾回收”。</p>
+<p><em>硬件和软件的专业化元件，通过电线、无线电波和红外线连接，将变得如此无处不在，以至于没有人会注意到它们的存在。</em></p>
+</blockquote>
+<p>最深刻的技术是那些“消失”的技术。它们将自己编织进日常生活的纤维，直到它们与生活本身难以区分。</p>
+<p>思考一下书写，也许是第一种信息技术。这种以符号形式长久存储口头语言的能力，将信息从个体记忆的局限中解放出来。如今，这项技术在工业化国家无处不在。不仅书籍、杂志和报纸传达着书面信息，街道标志、广告牌、商店招牌甚至涂鸦也是如此。糖果包装纸上也写满了文字。这些“读写技术”（literacy technology）产物的持续背景存在，并不需要主动关注，但要传递的信息一目了然即可使用。很难想象没有这些的现代生活。</p>
+<p>相比之下，基于硅的信息技术还远未成为环境的一部分。个人电脑的销量已超过 5000 万台，但计算机在很大程度上仍然局限于它自己的世界。它只能通过复杂的行话（complex jargon）来接近，而这些行话与人们使用计算机的任务毫无关系。这种技术现状也许类似于抄写员既要懂写作，又要懂如何制造墨水或烘烤粘土的时期。</p>
+<p>围绕个人电脑的神秘光环（arcane aura）不仅仅是一个“用户界面”问题。我和我在施乐帕洛阿尔托研究中心的同事们认为，“个人”电脑这个想法本身就是错位的，而笔记本电脑、dynabook和“知识导航器”的愿景，只是实现信息技术真正潜力的一个过渡步骤。此类机器无法真正使计算成为人们生活中不可或缺的、无形的一部分。因此，我们正试图构思一种关于计算机的新思维方式，一种考虑到人类世界并允许计算机本身消失在背景中的方式。</p>
+<p>这样的消失是人类心理的根本结果，而非技术的结果。每当人们将某件事学得足够好时，他们就不再意识到它。例如，当你看着一个街道标志时，你吸收了它的信息，而没有有意识地执行阅读的动作。计算机科学家、经济学家和诺贝尔奖得主Herbert A. Simon称这种现象为“编译”（compiling）；哲学家Michael Polanyi称之为“隐性维度”（tacit dimension）；心理学家 J. J. Gibson称之为“视觉不变量”（visual invariants）；哲学家Hans Georg Gadamer和Martin Heidegger称之为“视域”（horizon）和“现成可用”（ready-to-hand）；PARC 的John Seely Brown称之为“外围”（periphery）。本质上，他们都在说，只有当事物以这种方式消失时，我们才能不假思索地使用它们，从而超越它们，专注于新的目标。</p>
+<p>将计算机无缝融入整个世界的想法与当今的一些趋势背道而驰。在此背景下，“普适计算”（ubiquitous computing）并不仅仅指可以被带到海滩、丛林或机场的计算机。即使是最强大的笔记本电脑，连接着全球信息网络，它仍然将注意力集中在一个盒子上。与书写类比，携带一台超级笔记本电脑就像只拥有一本非常重要的书。定制这本书，甚至再写几百万本书，都无法触及读写能力的真正力量。</p>
+<p>此外，尽管普适计算机会使用声音和视频，以及文本和图形，但这并不会使它们成为“多媒体计算机”。今天的多媒体机器使电脑屏幕成为一个强需关注的焦点，而不是让它淡入背景。</p>
+<p>也许与我们愿景最对立的是虚拟现实（virtual reality）的概念，它试图在计算机内部制造一个世界。用户戴上特殊的护目镜，将人工场景投射到他们的眼睛上；他们穿着手套甚至紧身衣来感知他们的动作和手势，以便他们可以在虚拟物体中移动和操控。尽管它在允许人们探索（否则无法进入的领域），例如细胞内部、遥远行星的表面、数据库的信息网络等方面可能有其用途，但虚拟现实只是一张地图，而不是领土。它排除了桌子、办公室、其他没有戴护目镜和紧身衣的人、天气、树木、散步、偶遇，以及总的来说，宇宙无限的丰富性。虚拟现实将庞大的设备（enormous apparatus）集中在模拟世界上，而不是无形地增强已经存在的世界。</p>
+<blockquote>
+<p>普适计算以“实时白板”（live boards）取代传统黑板以及施乐帕洛阿尔托研究中心的其他设备的形式开始出现。计算机科学家们聚集在一个实时白板周围进行讨论。制造白板并将它们与其他工具集成，帮助研究人员更好地理解普适计算的最终形态。结合“主动徽章”（active badges），实时白板可以定制它们显示的信息。</p>
+</blockquote>
+<p>事实上，虚拟现实概念与普适的、无形的计算概念之间的对立是如此强烈，以至于我们中的一些人使用“具身虚拟”（embodied virtuality）这个术语来指代将计算机从其电子外壳中解放出来的过程。计算机可读数据——所有可以被改变、处理和分析的不同方式——的“虚拟性”，被带入到物理世界中。</p>
+<p>技术是如何消失在背景中的？电动机的消失或许可以作为一个有启发性的例子。在世纪之交，一个典型的工作室或工厂里只有一台发动机，通过一个由转轴和滑轮组成的系统来驱动几十台甚至上百台不同的机器。廉价、小型、高效的电动机使得首先可以为每个工具提供各自的动力源，然后可以将许多马达装入一台机器中。</p>
+<p>例如，浏览一下典型汽车的维修手册，会发现有 22 个马达和 25 个电磁阀。它们启动发动机、清洁挡风玻璃、锁上和解锁车门等等。通过仔细留意，司机也许能够辨别出他/她何时启动了一个马达，但这样做毫无意义。</p>
+<p>参与具身虚拟的大多数计算机在事实上和隐喻（metaphor）上都将是无形的。电灯开关、恒温器、立体音响和烤箱中的计算机已经在帮助激活这个世界。这些机器以及更多的机器将通过一个无处不在的网络互连。然而，作为计算机科学家，我和我的同事们专注于更直接地传输和显示信息的设备。我们发现有两个问题至关重要：位置和规模。对人类感知而言，几乎没有什么比物理上的并置（physical juxtaposition）更基本了，因此普适计算机必须知道它们在哪里。（相比之下，今天的计算机对它们的位置和周围环境一无所知。）如果一台计算机仅仅知道它在哪个房间，它就可以在很大程度上调整自己的行为，甚至不需要任何人工智能的暗示。</p>
+<p>普适计算机也将有不同的尺寸，每种尺寸都适合特定的任务。我和我的同事们已经制造了我们称之为 tabs（标签）、pads（便笺）和 boards（白板）的东西：英寸尺度的机器，近似于活跃的便利贴；英尺尺度的机器，行为有点像一张纸（或一本书、一本杂志）；以及码尺度的显示器，相当于黑板或公告栏。</p>
+<p>在一个典型的房间里，有多少 tabs、pads 和 board 大小的书写和显示表面？看看你周围：在英寸尺度上，包括墙上的便条、书脊上的标题、控件上的标签、恒温器和时钟，以及小纸片。根据房间的不同，你可能会看到超过 100 个 tabs，10 或 20 个 pads 和一个或两个 boards。这导向了我们初步部署具身虚拟硬件的目标：每个房间数百台计算机。</p>
+<p>一个房间里有数百台计算机，起初可能看起来令人生畏，就像墙壁电线中流过的数百伏电压曾经给人的感觉一样。但是就像墙里的电线一样，这数百台计算机将变得在普通意识中“隐形”。人们会无意识地使用它们来完成日常任务。</p>
+<p>Tabs 是具身虚拟的最小组成部分。由于它们是互连的，tabs 将扩展现有英寸尺度计算机（如袖珍计算器和口袋组织器）的用途。Tabs 还将承担当今计算机无法执行的功能。例如，PARC 和全球其他研究实验室的计算机科学家已经开始研究“主动徽章”（active badges）——一种大约员工工卡大小的夹式计算机。该技术由奥利维蒂剑桥研究实验室（Olivetti Cambridge research laboratory）首先开发。这些徽章可以向遍布建筑物的接收器识别自己的身份，从而可以跟踪佩戴它们的人或物体。</p>
+<p>在我们的实验性具身虚拟中，门只为佩戴正确徽章的人打开，房间会呼叫人们的名字来迎接他们，电话可以自动转接到接收者可能在的任何地方，接待员确实知道人们在哪里，计算机终端会检索任何坐在它前面的人的偏好，约会日记会自己编写。自动日记展示了像“知道人们在哪里”这样简单的任务如何能产生复杂的红利：例如，会议由几个人在同一个房间里度过一段时间组成，而会议的主题很可能就是当人们在场时，该房间显示屏上调出的文件。这不需要人工智能的革命，仅仅是嵌入到日常世界中的计算机。</p>
+<p>我的同事 Roy Want 设计了一款 tab，它包含一个小显示屏，可以同时用作主动徽章、日历和日记。它还将充当计算机屏幕的扩展：例如，用户可以将程序窗口缩小到一个 tab 显示屏上，而不是将其缩小为屏幕上的一个小图标。这将使屏幕腾出空间用于显示信息，也让人们可以在他们的终端周围区域安排基于计算机的项目，就像他们现在在桌子和台子上堆放纸质项目一样。把一个项目带到另一个办公室讨论，就像收集它的 tabs 一样简单；相关的程序和文件可以在任何终端上被调用。</p>
+<blockquote>
+<p>这个英寸尺度计算机的先驱包含一个小型微处理器和一个红外发射器。徽章广播其佩戴者的身份，因此可以触发自动门、自动电话转接，以及为每个阅读它们的人定制计算机显示。这种主动徽章和其他联网的微型计算机被称为 tabs。</p>
+</blockquote>
+<p>尺寸再往上一步是 pad，它介于一张纸和当前的笔记本电脑、掌上电脑之间。PARC 的 Robert Krivacic 已经制造了一个 pad 原型，它使用两个微处理器、一个工作站大小的显示屏、一个多按钮手写笔和一个无线电网络，该网络具有足够的通信带宽，可以支持每人每房间数百个设备。</p>
+<p>Pads 与传统的便携式计算机在一个关键方面有所不同。传统的便携式计算机随处跟着它们的主人，而必须被携带到各处的 pad 是一个失败品。Pads 旨在成为“废弃型计算机”（scrap computers）（类似于废纸），可以在任何地方被抓取和使用；它们没有个体化的身份或重要性。</p>
+<p>理解 pads 的一种方式是把它们看作“窗口”（windows）系统的解药。窗口系统是在 PARC 发明的，并由苹果公司在 Macintosh 上推广开来，作为一种在计算机小屏幕上同时容纳多项不同活动的方式。20 年来，计算机屏幕并没有变得更大。计算机窗口系统常被说成是基于“桌面”隐喻——但谁会使用一个只有九英寸高、十一英寸宽的桌面呢？</p>
+<p>相比之下，Pads 使用的是一张真实的桌子。在桌子上摊开许多电子 pads，就像你摊开纸张一样。让你面前有许多任务，并使用 pads 作为提醒。超越桌子，扩展到抽屉、架子、咖啡桌。将一天中许多任务的许多部分摊开在你面前，以适应任务和你胳膊、眼睛的触及范围，而不是去适应玻璃吹制工艺（指屏幕制造）的局限性。有朝一日，pads 甚至可能像纸一样轻薄，但与此同时，它们能比计算机屏幕实现更多纸张的功能。</p>
+<blockquote>
+<p>普适计算的关键组成部分是在施乐帕洛阿尔托研究中心开发的 pads 和 tabs。页面大小的 pad（顶部，外部和内部视图）包含两个微处理器、4MB 的随机存取内存、一个高速无线电链接、一个高分辨率笔式界面和一个 1024x768 像素的黑白显示屏。因为它使用标准的窗口系统软件，所以 pad 可以与大多数工作站通信。小得多的 tab（左图），2 3/4 x 3 1/4 英寸，有三个控制按钮、一个笔式界面、音频和一个用于在整个房间内通信的红外链接。作者认为，未来的家庭和办公室将容纳数百个这样的小型计算机。</p>
+</blockquote>
+<p>码尺度的显示器（boards）服务于多种目的：在家里，是视频屏幕和公告栏；在办公室，是公告栏、白板或翻转图表。board 也可以作为一个电子书架，人们可以从中下载文本到 pad 或 tab。然而，就目前而言，能够抽出一本书并舒适地将其放在膝上阅读，仍然是纸张的众多吸引力之一。类似的反对意见也适用于将 board 用作桌面；在将具身虚拟推进到更远之前，人们将不得不先习惯于在桌子上使用 pads 和 tabs 作为计算机屏幕的辅助。</p>
+<p>由 PARC 的 Richard Bruce 和 Scott Elrod 制造的原型 boards，正在施乐的几个研究实验室中使用。它们大约 40x60 英寸，显示 1024x768 的黑白像素。要操作显示器，用户拿起一块无线的电子“粉笔”，它既可以接触表面工作，也可以远距离工作。一些研究人员，把自己和同事当作小白鼠（guinea pigs），可以在一个实时白板（live board）周围举行电子中介的会议，或进行其他形式的协作。其他人则使用这些 boards 作为改进显示硬件、新型“粉笔”和交互软件的测试平台。</p>
+<p>出于显而易见和微妙的原因，激活大型共享显示器及其电子粉笔的软件，与工作站的软件是不同的。在粉笔和键盘之间来回切换可能需要走几步路，因此这个动作与使用键盘和鼠标在性质上是不同的。此外，体型也是一个问题。不是每个人都能触及白板的顶部，所以 Macintosh 风格的菜单栏可能必须放在屏幕底部。</p>
+<p>我们已经制造了足够多的实时白板以供随意使用：它们被放置在普通的会议室和开放区域，任何人使用前都无需注册或提前通知。通过制造和使用这些 boards，研究人员开始体验并因此理解一个计算机交互非正式地增强每个房间的世界。实时白板可以在房间内共享，也可以跨房间共享。在 Euro-PARC 的 Paul Dourish 以及 PARC 的 Sara Bly 和 Frank Halasz 发起的实验中，位于相隔遥远地点的团队聚集在 boards（每个都显示相同图像）周围，共同创作图片和绘图。他们甚至跨越大西洋共享了两个 boards。</p>
+<p>实时白板也可以用作公告栏。已经有太多的文本让人无法全部阅读和理解，因此 PARC 的 Marvin Theimer 和 David Nichols 建立了一个原型系统，使其公共信息与阅读它的人相协调。他们的“记分板”几乎不需要用户进行任何交互，除了观看和佩戴主动徽章。</p>
+<p>原型的 tabs、pads 和 boards 只是普适计算的开始。这个概念的真正力量并不来自这些设备中的任何一个——它来自于所有这些设备的互动。这数百个处理器和显示器并不是像鼠标和窗口那样的“用户界面”，只是一个愉快而有效的“场所”来完成工作。</p>
+<p>最令人愉快和有效的是，tabs 可以激活以前惰性的物体。它们可以发出哔哔声，帮助定位放错地方的论文、书籍或其他物品。文件抽屉可以自动打开并显示所需的文件夹——无需搜索。图书馆目录中的 Tabs 可以制作任何书籍的活动地图，并引导搜索者找到它，即使它不在书架上，而是被上一个读者留在了桌子上。</p>
+<p>在演示中，投影幻灯片上的文本大小、放大声音的音量，甚至环境光线的亮度，都可以不靠猜测，而是由当时在场的听众的意愿来决定。用于即时统计投票和检查共识的软件工具，在一些大公司的电子会议室中已经可用；tabs 可以使它们普及开来。</p>
+<p>普适计算所需的技术分为三部分：廉价、低功耗的计算机，包括同样方便的显示器；用于普适应用的软件；以及将它们全部连接在一起的网络。目前的趋势表明第一个要求将很容易被满足。包含 640x480 黑白像素的平板显示器现在很常见。这是 PC 的标准尺寸，也大致适用于电视。只要笔记本电脑、掌上电脑和笔记型电脑继续普及，显示器价格就会下降，分辨率和质量将会提高。到这个十年末，一个 1000x800 像素的高对比度显示器将只有几分之一厘米厚，重量也许在 100 克左右。一块小电池将提供几天的连续使用。</p>
+<p>更大的显示器则是一个有些不同的问题。如果一个交互式计算机屏幕要在实用性上媲美白板，它必须既能从一臂之遥观看，也能从房间对面观看。对于近距离观看，像素密度不应低于标准计算机屏幕，即每英寸约 80 像素。在几英尺见方的区域上保持每英寸 80 像素的密度，意味着需要显示数千万个像素。今天制造的最大的计算机屏幕也只有该容量的约四分之一。这样的大显示器可能会很昂贵，但它们肯定是可获得的。</p>
+<p>大显示器将需要先进的微处理器来为其提供数据。中央处理器（CPU）的速度在 1986 年达到每秒一百万次指令，并且此后每年都在翻倍。一些行业观察家认为，原始芯片速度的这种指数级增长可能会在 1994 年左右开始放缓，但其他性能指标，包括功耗和辅助功能，仍将继续改善。那么，这个 100 克重的平板显示器，可能会由一个每秒执行十亿次操作的微处理器驱动，包含 16MB 的板载内存以及声音、视频和网络接口。这样的处理器平均消耗的功率将是显示器所需功率的百分之几。</p>
+<p>辅助存储设备将增强主内存容量：对当前技术的保守推断表明，火柴盒大小的可移动硬盘（或非易失性存储芯片）每个将能存储约 60MB。包含数 GB 信息的大容量磁盘将成为标准，而 TB（太字节）级的存储——大致相当于美国国会图书馆的数据内容——将变得很普遍。如此巨大的存储空间不一定会被可用的信息填满。然而，充裕的空间将允许采用截然不同的信息管理策略。例如，1TB 的磁盘存储将使删除旧文件几乎变得没有必要。</p>
+<p>尽管处理器和显示器应该能够在本十年末提供普适计算的能力，但软件和网络技术的趋势则更成问题。当前“分布式计算”的实现，只是让联网的文件服务器、打印机或其他设备看起来像是直接连接到每个用户的计算机上。然而，这种方法并没有利用物理上分散的计算机的独特能力，以及知晓特定设备位于何处所体现的信息。</p>
+<p>计算机操作系统和基于窗口的显示软件将必须做出重大改变。当前的操作系统（如 DOS 和 Unix）的设计，是基于一个假设：计算机的硬件和软件配置在运行时不会发生重大变化。这个假设对于传统的大型机和个人计算机是合理的，但对于普适计算来说却毫无意义。Pads、tabs 甚至 boards 可能会在任何时间、任何房间内出现和消失，而且要关闭一个房间里的所有计算机来为其中任何一台安装新软件肯定是行不通的。（事实上，要找到一个房间里所有的计算机都可能是不可能的。）</p>
+<p>一种解决方案可能是“微内核”（micro-kernel）操作系统，例如卡内基梅隆大学的 Rick Rashid 和阿姆斯特丹自由大学的 A. S. Tanenbaum 开发的那些。这些实验性系统只包含最基本的固定计算机代码框架；用于执行特定功能的软件模块可以很容易地添加或删除。基于这一原则的未来操作系统可以自动缩小和增长，以适应普适计算不断变化的需求。</p>
+<p>当前的窗口显示系统也还没有准备好应对普适计算。它们通常假设一台特定的计算机将显示单个应用程序的所有信息。尽管例如 X Window 系统和 Windows 3.0 可以处理多个屏幕，但它们无法很好地处理那些从一个屏幕启动然后移动到另一个屏幕的应用程序，更不用说那些在不同计算机或不同房间之间“漫游”的应用程序。</p>
+<p>解决这个问题的方案尚处于起步阶段。当然，没有一个现有的显示系统能够在具身虚拟所需的各种输入和输出形式下良好工作。要使 pads、tabs 和 boards 无缝地协同工作，将需要改变应用程序与其显示窗口之间的通信协议类型。</p>
+<p>将连接普适硬件和软件的网络带来了进一步的挑战。有线和无线网络的数据传输速率都在迅速增长。接入吉比特/秒（Gbps）的有线网络虽然昂贵，但已经成为可能，并将变得越来越便宜。（吉比特网络很少会将其所有带宽用于单个数据流；相反，它们将允许海量的低速传输同时进行。）基于数字蜂窝电话原理的小型无线网络，目前在几百米的范围内提供每秒 2 到 10 兆比特（Mbps）的数据速率。能够向每个站点传输 25 万比特/秒（Kbps）的低功耗无线网络最终将实现商业化。</p>
+<p>然而，透明地连接有线和无线网络的问题仍然难以解决。尽管已经开发了一些权宜之计，但工程师们必须开发新的通信协议，明确识别在物理空间中移动的机器这一概念。此外，在大多数无线网络方案中设想的信道数量仍然非常小，而覆盖范围很大（50 到 100 米），因此移动设备的总数受到严重限制。这样一个系统要在每个房间支持数百台机器是根本不可能的。基于红外或更新的电磁技术的单房间网络，有足够的信道容量用于普适计算机，但它们只能在室内工作。</p>
+<p>现有技术将要求一个移动设备拥有三种不同的网络连接：微小范围无线、长距离无线和非常高速的有线。能够以某种方式服务于所有这三种功能的单一网络连接方式，尚待发明。</p>
+<p>无论是对普适计算原理的阐释，还是对其所涉及技术的罗列，都无法真正让人感受到生活在一个充满隐形小工具的世界里会是什么样子。根据今天具身虚拟的粗糙碎片进行推断，就像在刻下第一块泥板后不久就试图预测《Finnegans Wake》的出版一样。尽管如此，这种努力可能是值得的：（试想这样一个故事）</p>
+<blockquote>
+<p>Sal 醒来；她闻到了咖啡的香味。几分钟前，她的闹钟（在她醒来前因不安分的翻滚而被警觉）悄悄地问：“咖啡？”她咕哝着：“要。”“是”和“否”是它唯一认识的词。</p>
+</blockquote>
+<blockquote>
+<p>Sal通过她的窗户望向她的街区。一扇窗户可以看到阳光和栅栏，通过其他窗户，她看到了为她保留的清晨邻居来往的电子轨迹。隐私惯例和实际数据速率阻止了显示视频录像，但是街区地图上的时间标记和电子轨迹让Sal在她的街道上感到舒适。</p>
+</blockquote>
+<blockquote>
+<p>瞥一眼通往她孩子房间的窗户，她可以看到他们分别在 15 分钟和 20 分钟前起床了，并且已经在厨房里。注意到她起床了，他们开始制造更大的噪音。</p>
+</blockquote>
+<blockquote>
+<p>早餐时，Sal阅读新闻。她仍然更喜欢纸质形式，就像大多数人一样。她在商业版块发现了一位专栏作家的有趣引言。她用她的笔划过报纸的名称、日期、版块和页码，然后圈出了那句引言。笔向纸发送了一条消息，纸将这句引言传输到了她的办公室。</p>
+</blockquote>
+<blockquote>
+<p>制造她车库开门器的公司发来了电子邮件。她把说明书弄丢了，向他们寻求帮助。他们给她寄来了一本新手册，还有一些意想不到的东西——一种找到旧手册的方法。根据便条，她可以在开门器上按一个代码，丢失的手册就会自己找到自己。在车库里，她循着哔哔声，找到了那本沾满油污的手册，它掉在了一些盒子后面。果不其然，那里有制造商贴在封面上的小 tab，就是为了避免像她这样的电子邮件请求。</p>
+</blockquote>
+<blockquote>
+<p>在上班的路上，Sal瞥了一眼“前视镜”（foreview mirror）查看交通状况。她发现前方交通放缓，同时在一条小街上注意到一家食品店的前视图中出现了标志性的绿色，说明这是一家新店。她决定从下一个出口下去，买杯咖啡，同时避开拥堵。</p>
+</blockquote>
+<blockquote>
+<p>Sal一到公司，“前视镜”就帮她迅速找到了一个停车位。当她走进大楼时，她办公室里的机器准备为她登录，但直到她真正进入她的办公室时，这个序列才完成。在路上，她在四五个同事的办公室停下来，交换问候和消息。</p>
+</blockquote>
+<blockquote>
+<p>Sal瞥了一眼她的窗户：硅谷是阴天，湿度 75%，下午有 40% 的降雨概率；与此同时，东海岸办公室今天上午很安静。通常情况下，活动指示器到现在至少会显示一个自发的紧急会议。她选择不把总部办公室的窗口回调三个小时——那样被突然袭击的风险太大了。但她知道其他人会这样做，通常是那些从不接东海岸电话，但又想有参与感的人。</p>
+</blockquote>
+<blockquote>
+<p>Sal在工作第一天编程的门边指示灯正在闪烁：有新鲜咖啡。她走向咖啡机。</p>
+</blockquote>
+<blockquote>
+<p>回到办公室，Sal拿起一个 tab，向她在设计组的朋友 Joe 挥动，他们有一个联合任务。在接下来的几周里，他们共享一个“虚拟办公室”。这种共享可以有多种形式——在这种情况下，两人互相开放了他们的位置检测器，以及彼此的屏幕内容和位置。Sal选择在她办公桌的后角落里的一小套 tabs 中，保持乔所有 tabs 和 pads 的微缩版本可见，并且是三维校准的。她看不清上面写着什么，但是当她用眼角余光注意到显示内容发生变化时，她感觉与他的工作联系更紧密了，而且在必要时她可以轻松地放大任何内容。</p>
+</blockquote>
+<blockquote>
+<p>Sal桌子上的一个空白 tab 发出哔哔声，并显示出“Joe”这个词。她拿起它，并用它指向她的实时白板。乔想和她讨论一份文件，现在文件显示在墙上，同时她听到了乔的声音：“我为这第三段纠结了一上午了，语气还是不对。你介意读一下吗？”Sal坐回去阅读那段文字，她想指一个词。她再次用那个“Joe”tab 指向附近的一个 pad，然后用手写笔圈出了她想要的词：“我认为是‘普适’（ubiquitous）这个词。它用得还不够普遍，让整段话听起来有点太正式了。我们能换个说法把这个词去掉吗？”“我试试看。哦，对了，Sal，你有没有收到 Mary Hausdorf 的消息？” “没有。那是谁？”“你记得的。她参加了上周的会议。她告诉我她会联系你。”Sal不记得玛丽，但她隐约记得那个会议。她迅速开始搜索过去两周内举行的、超过六人且以前未与她一起开会的人参加的会议，然后找到了那一个。与会者的名字弹了出来，她看到了玛丽。</p>
+</blockquote>
+<blockquote>
+<p>就像会议中常见的那样，玛丽向其他与会者提供了一些关于她自己的个人信息，Sal看到了一些共同的背景。她会给玛丽发个便条，看看是怎么回事。Sal很高兴玛丽没有像许多人那样，只在会议期间让个人简介可访问……</p>
+</blockquote>
+<p>除了展示计算机可以无形地进入人们生活的一些方式之外，这个场景还指出了具身虚拟将引发的一些社会问题。也许其中最关键的是隐私：每个房间都有数百台计算机，都能感知到附近的人，并通过高速网络连接起来，这有潜力使迄今为止的极权主义看起来都像是纯粹的无政府状态。就像局域网上的工作站可以被编程来拦截发给其他人的信息一样，房间里的一个流氓 tab 就有可能记录下那里发生的一切。</p>
+<p>即使在今天，提供各种便利的主动徽章和自动编写的约会日记，在坏人手中也可能成为真正危害的来源。不仅是公司的上级或下属，过度热心的政府官员，甚至营销公司，都可能不当地使用那些使隐形计算机如此便捷的相同信息。</p>
+<p>幸运的是，加密技术已经存在，可以保护从一台普适计算机到另一台普适计算机的消息安全，并保护存储在网络系统中的私人信息。如果从一开始就将这些技术设计到系统中，它们可以确保私人数据不会被公开。一个实施良好的普适计算版本，甚至可以提供比现在更好的隐私保护。</p>
+<p>通过将计算机推向后台，具身虚拟将使个人更加意识到他们计算机链接另一端的人。这一发展可能会扭转传统个人电脑给生活和工作场所带来的不健康的“向心力”。</p>
+<p>即使在今天，那些躲在没有窗户的办公室里、面对着发光电脑屏幕的人，可能一天中的大部分时间都见不到他们的同伴。而在虚拟现实中，外部世界及其所有居民实际上不复存在。相比之下，普适计算机存在于人类世界中，对个人互动不构成障碍。如果说有什么不同的话，那就是它们在不同地点和时间之间提供的透明连接，可能倾向于使社区更加紧密。</p>
+<p>我和我在 PARC 的同事们相信，我们称之为普适计算的东西，将在未来 20 年内逐渐成为计算机访问的主导模式。就像个人电脑一样，普适计算不会产生任何根本性的新事物，但是通过使一切事情做得更快、更容易，用更少的精力和更少的脑力消耗，它将改变那些表面上看起来可能的事情。例如，桌面出版与计算机排版（可追溯到 1960 年代中期）本质上没有什么不同。但是易用性造就了巨大的差异。</p>
+<p>当几乎每个物体要么包含一台计算机，要么可以附着一个 tab 时，获取信息将变得轻而易举：“那件衣服是谁做的？店里还有吗？我上周喜欢的那套西装的设计师叫什么名字？”计算环境知道你上周长时间盯着的那套西装，因为它知道你们俩的位置，并且它可以追溯地找到设计师的名字，即使你当时对那些信息不感兴趣。</p>
+<p>从社会学上讲，普适计算可能意味着“计算机成瘾者”的减少。在 1910 年代和 1920 年代，许多人“捣鼓”矿石收音机，以利用广播这个高科技新世界。现在，矿石和猫须接收器（crystal-and-cat's-whisker receivers）已经很少见了，因为高质量的收音机无处不在。此外，具身虚拟将（几乎是第一次）把计算机带给企业总裁们和国家元首们的面前。计算机的使用将渗透到社会的所有群体。</p>
+<p>最重要的是，普适计算机将有助于克服信息过载的问题。在树林中散步时，我们触手可及的信息比任何计算机系统中的都多，然而人们觉得在树林中散步是放松的，而使用计算机是令人沮丧的。那些适应人类环境，而不是强迫人类进入它们环境的机器，将使使用计算机像在树林中散步一样令人神清气爽。</p>
+
+        </article>
+    </div>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+      delimiters: [
+          // 支持 Mistune 生成的 LaTeX 标准格式
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false},
+          {left: '\\(', right: '\\)', display: false}, // 新增：支持 \( ... \)
+          {left: '\\[', right: '\\]', display: true}   // 新增：支持 \[ ... \]
+      ],
+      throwOnError : false
+    });">
+    </script>
+</body>
+
+</html>
