@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}首页 - Document Collection{% endblock %}
+
+{% block style_extra %}
+    .index-header { margin-bottom: 60px; text-align: center; padding-bottom: 40px; border-bottom: 1px solid var(--color-border); }
+    .site-title { font-size: 2.5em; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 10px 0; }
+    .site-desc { color: var(--color-muted); font-family: var(--font-sans); font-size: 1.1em; }
+
+    .article-list { list-style: none; padding: 0; margin: 0; }
+    .article-item { display: flex; flex-direction: column; padding: 28px 0; border-bottom: 1px solid rgba(125,133,144,0.1); }
+    .article-item:last-child { border-bottom: none; }
+
+    .article-title { font-size: 1.5em; font-weight: 700; margin-bottom: 8px; display: block; }
+
+    .article-meta { font-family: var(--font-sans); font-size: 14px; color: var(--color-muted); display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+
+    .tag-pill-simple { background: rgba(125,133,144,0.1); padding: 2px 8px; border-radius: 4px; font-size: 12px; }
+
+    .article-summary { font-size: 16px; color: var(--color-muted); margin: 0; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+    @media (max-width: 767px) {
+        .container { padding: 40px 20px; }
+        .site-title { font-size: 2em; }
+    }
+{% endblock %}
+
+{% block content %}
+    <header class="index-header">
+        <h1 class="site-title">開 心</h1>
+        <p class="site-desc">Notes, Documentation and Ideas.</p>
+    </header>
+
+    <ul class="article-list">
+        {% for article in articles %}
+        <li class="article-item">
+            <a href="{{ article.url }}" class="article-title">{{ article.title }}</a>
+            <div class="article-meta">
+                <span>{{ article.date }}</span>
+                {% if article.tags %}
+                <span>
+                    {% for tag in article.tags %}
+                    <span class="tag-pill-simple">#{{ tag }}</span>
+                    {% endfor %}
+                </span>
+                {% endif %}
+            </div>
+            <p class="article-summary">{{ article.summary_text }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
