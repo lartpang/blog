@@ -1,14 +1,12 @@
 ---
-tags: 
+tags: ['learning']
 title: HOW TO REMEMBER EVERYTHING YOU READ
 date: 星期日, 十一月 30日 2025, 5:54:11 下午
 update: 星期日, 十一月 30日 2025, 7:18:47 晚上
 ---
 
-# HOW TO REMEMBER EVERYTHING YOU READ
-
 > This content has been extracted from the original PDF and converted into HTML format to enhance accessibility and flexibility for readers in various language environments. The primary goal is to facilitate easier reading, translation, and comprehension compared to the static PDF format. This document is intended **solely for educational and non-commercial purposes**. Please respect the intellectual property of the original author.
-> 
+>
 > 本内容已从原始 PDF 中提取并转换为 HTML 格式，以增强不同语言环境读者的可访问性和灵活性。主要目的是为了比静态 PDF 格式更方便阅读、翻译和理解。本文档**仅供教育和非商业目的使用**。请尊重原作者的知识产权。
 
 *Polymathinvestor.com | November, 2025*
