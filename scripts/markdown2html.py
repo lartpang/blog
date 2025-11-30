@@ -1,5 +1,6 @@
 import argparse
 import re
+import shutil
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -183,7 +184,7 @@ def generate_index_page(articles, output_dir, jinja_template):
     print(f"Generated Index: {output_dir / 'index.html'}")
 
 
-def build_site(input_dir, output_dir, tpl_article_path, tpl_index_path):
+def build_site(input_dir, output_dir, assets_name, tpl_article_path, tpl_index_path):
     input_path = Path(input_dir)
     output_path = Path(output_dir)
 
@@ -197,7 +198,7 @@ def build_site(input_dir, output_dir, tpl_article_path, tpl_index_path):
     index_tpl_path = Path(tpl_index_path).resolve()
 
     if not article_tpl_path.exists() or not index_tpl_path.exists():
-        print(f"Error: Templates not found.", file=sys.stderr)
+        print("Error: Templates not found.", file=sys.stderr)
         sys.exit(1)
 
     template_dirs = list(set([str(article_tpl_path.parent), str(index_tpl_path.parent)]))
@@ -212,18 +213,19 @@ def build_site(input_dir, output_dir, tpl_article_path, tpl_index_path):
 
     articles_metadata = []
     md_files = list(input_path.glob("*.md"))
-
     if not md_files:
-        print(f"No markdown files found.", file=sys.stderr)
+        print("No markdown files found.", file=sys.stderr)
         return
 
     print(f"Found {len(md_files)} markdown files. Building site...")
-
     for md_file in md_files:
         meta = process_single_file(md_file, output_path, tpl_article)
         articles_metadata.append(meta)
 
     generate_index_page(articles_metadata, output_path, tpl_index)
+
+    shutil.copytree(input_path / assets_name, output_path / assets_name)
+
     print("\nBuild Complete! 🎉")
     return articles_metadata
 
@@ -232,13 +234,16 @@ def main():
     parser = argparse.ArgumentParser(description="Static Site Generator")
     parser.add_argument("--input_dir", default="../content")
     parser.add_argument("--output_dir", default="../docs")
+    parser.add_argument("--assets_name", default="assets")
     parser.add_argument("--template-article", default="templates/article.html")
     parser.add_argument("--template-index", default="templates/index.html")
     parser.add_argument("--readme", default="../readme.md")
     args = parser.parse_args()
 
     print(f"SSG Generator v{VERSION}")
-    articles_metadata = build_site(args.input_dir, args.output_dir, args.template_article, args.template_index)
+    articles_metadata = build_site(
+        args.input_dir, args.output_dir, args.assets_name, args.template_article, args.template_index
+    )
 
     if args.readme and articles_metadata is not None:
         update_readme(args.readme, len(articles_metadata))

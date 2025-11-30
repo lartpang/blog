@@ -67,7 +67,7 @@ Time Budgeting (The 80/20 of Reading) – Allocate your reading effort wisely. E
 
 ## MEMORY & RETENTION FRAMEWORKS
 
-![[assets/forgetting_curve.png]]
+![](./assets/forgetting_curve.png)
 
 *Figure 1: The classic forgetting curve (red) shows how learned information fades over time without reinforcement. Spaced review sessions produce the green curves – each review strengthens memory and slows forgetting, so intervals can become increasingly longer. This illustrates why spaced repetition is essential for long-term retention.*
 
