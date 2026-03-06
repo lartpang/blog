@@ -1,0 +1,6 @@
+PyGithub
+requests
+feedgen
+Jinja2
+mistune
+pygments

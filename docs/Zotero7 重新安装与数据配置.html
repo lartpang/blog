@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zotero7 重新安装与数据配置 — 開心的小院</title>
+    <meta name="description" content="简单记录了一次Zotero7的重新安装与数据配置。">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Serif:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+
+    <style>
+        /* ===== 设计令牌：纸质书风格 ===== */
+        :root {
+            /* 纸张底色：陈年羊皮纸 */
+            --paper:          #f7f3eb;
+            --paper-warm:     #f2ece0;
+            --paper-deep:     #ede5d6;
+            --paper-card:     #faf7f2;
+            --paper-shadow:   rgba(120, 90, 50, 0.10);
+
+            /* 墨水色：深焦墨 */
+            --ink:            #2c2417;
+            --ink-mid:        #5a4a35;
+            --ink-light:      #8a7560;
+            --ink-faint:      #b8a994;
+
+            /* 朱砂印章红（品牌点缀色，克制使用） */
+            --seal:           #9b2335;
+            --seal-light:     #c0392b;
+            --seal-subtle:    rgba(155, 35, 53, 0.07);
+            --seal-border:    rgba(155, 35, 53, 0.20);
+
+            /* 边框：牛皮纸纹 */
+            --border:         rgba(120, 90, 50, 0.15);
+            --border-strong:  rgba(120, 90, 50, 0.28);
+
+            /* 阴影：柔和书页卷边感 */
+            --shadow-sm:  0 1px 4px rgba(100, 70, 30, 0.08);
+            --shadow-md:  0 3px 12px rgba(100, 70, 30, 0.12);
+            --shadow-lg:  0 6px 28px rgba(100, 70, 30, 0.16);
+
+            /* 字体 */
+            --font-serif: "EB Garamond", "Noto Serif", "Noto Serif SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+            --font-ui:    "Noto Serif SC", "Noto Serif", system-ui, sans-serif;
+            --font-mono:  "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+
+            /* 圆角 */
+            --r-sm: 4px;
+            --r-md: 6px;
+            --r-lg: 10px;
+
+            /* 过渡 */
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+            --dur:  0.22s;
+        }
+
+        /* ===== 重置 ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; font-size: 18px; }
+
+        body {
+            background-color: var(--paper-warm);
+            color: var(--ink);
+            font-family: var(--font-serif);
+            line-height: 1.85;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            /* 微妙的纸张纤维纹理 */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+        }
+
+        /* ===== 链接 ===== */
+        a { color: inherit; text-decoration: none; transition: color var(--dur) var(--ease); }
+
+        /* ===== 导航栏：中式书脊感 ===== */
+        .site-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(242, 236, 224, 0.92);
+            backdrop-filter: blur(16px) saturate(1.2);
+            -webkit-backdrop-filter: blur(16px) saturate(1.2);
+            border-bottom: 1px solid var(--border-strong);
+            padding: 0 clamp(16px, 4vw, 48px);
+        }
+
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: var(--ink);
+            transition: opacity var(--dur) var(--ease);
+        }
+        .nav-brand:hover { opacity: 0.7; }
+
+        .nav-brand-seal {
+            width: 30px;
+            height: 30px;
+            background: var(--seal);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            box-shadow: 1px 1px 0 rgba(0,0,0,0.2), 2px 2px 6px rgba(155,35,53,0.25);
+            /* 印章旋转感 */
+            transform: rotate(-2deg);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 14px;
+            border-radius: var(--r-sm);
+            font-size: 0.88rem;
+            color: var(--ink-mid);
+            font-family: var(--font-ui);
+            transition: all var(--dur) var(--ease);
+        }
+        .nav-links a:hover { color: var(--ink); background: var(--paper-deep); }
+
+        /* 导航底部装饰线 */
+        .nav-inner::after {
+            display: none;
+        }
+
+        /* ===== 主内容 ===== */
+        .site-main { position: relative; }
+
+        /* ===== 页脚 ===== */
+        .site-footer {
+            border-top: 1px solid var(--border);
+            padding: 36px clamp(16px, 4vw, 48px);
+            text-align: center;
+            margin-top: 80px;
+            background: var(--paper-deep);
+        }
+
+        .footer-inner { max-width: 1100px; margin: 0 auto; }
+
+        .footer-text {
+            font-size: 0.80rem;
+            color: var(--ink-light);
+            font-family: var(--font-ui);
+            line-height: 1.8;
+        }
+
+        .footer-text a { color: var(--ink-mid); }
+        .footer-text a:hover { color: var(--seal); }
+
+        .footer-sep { display: inline-block; margin: 0 8px; opacity: 0.4; }
+
+        /* ===== 通用标签 ===== */
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 1px 9px;
+            border-radius: 2px;
+            font-size: 0.70rem;
+            font-family: var(--font-ui);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            background: var(--seal-subtle);
+            color: var(--seal);
+            border: 1px solid var(--seal-border);
+        }
+
+        /* ===== 图标 ===== */
+        svg.icon {
+            width: 1em; height: 1em;
+            vertical-align: -0.12em;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* ===== 滚动条 ===== */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: var(--paper-warm); }
+        ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+        @media (max-width: 600px) {
+            .nav-link-text { display: none; }
+            .nav-links a { padding: 5px 10px; }
+        }
+
+        
+    </style>
+    
+<style>
+    /* ===== 阅读进度条（纸质风：使用焦墨红细线） ===== */
+    .reading-progress {
+        position: fixed;
+        top: 0; left: 0;
+        z-index: 999;
+        width: 0%;
+        height: 2px;
+        background: var(--seal);
+        transition: width 0.12s linear;
+        box-shadow: 0 0 6px rgba(155, 35, 53, 0.4);
+    }
+
+    /* ===== 整体布局 ===== */
+    .article-wrap {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 48px clamp(20px, 5vw, 48px) 80px;
+    }
+
+    /* ===== 面包屑 ===== */
+    .breadcrumbs {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.80rem;
+        color: var(--ink-light);
+        font-family: var(--font-ui);
+        margin-bottom: 36px;
+    }
+    .breadcrumbs a {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: var(--ink-light);
+        transition: color var(--dur) var(--ease);
+    }
+    .breadcrumbs a:hover { color: var(--seal); }
+    .breadcrumb-sep { opacity: 0.4; }
+    .breadcrumbs .current {
+        color: var(--ink-mid);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 280px;
+    }
+
+    /* ===== 仿书籍版权页的文章头部 ===== */
+    .article-header {
+        margin-bottom: 44px;
+        padding-bottom: 28px;
+        border-bottom: 1px solid var(--border);
+        text-align: center;
+    }
+
+    /* 顶部印章标签 */
+    .article-genre {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 20px;
+        font-family: var(--font-ui);
+        font-size: 0.74rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--seal);
+        border: 1px solid var(--seal-border);
+        background: var(--seal-subtle);
+        padding: 3px 12px;
+        border-radius: 2px;
+    }
+
+    .article-title {
+        font-size: clamp(1.7rem, 4vw, 2.6rem);
+        font-weight: 600;
+        line-height: 1.35;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+        margin-bottom: 22px;
+        font-style: italic;
+    }
+
+    .article-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        font-family: var(--font-ui);
+        font-size: 0.80rem;
+        color: var(--ink-light);
+    }
+
+    .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    /* ===== 可折叠 TOC（Notion 风，内联嵌入正文前） ===== */
+    .toc-inline {
+        margin: 0 0 36px 0;
+        border: 1px solid var(--border-strong);
+        border-radius: var(--r-md);
+        background: var(--paper-deep);
+        overflow: hidden;
+        font-family: var(--font-ui);
+        /* 暗藏书签感 */
+        box-shadow: var(--shadow-sm);
+    }
+
+    .toc-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        padding: 10px 14px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-family: var(--font-ui);
+        font-size: 0.84rem;
+        font-weight: 500;
+        color: var(--ink-mid);
+        text-align: left;
+        transition: background var(--dur) var(--ease);
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .toc-toggle:hover { background: rgba(120, 90, 50, 0.06); }
+
+    .toc-toggle-icon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        transition: transform var(--dur) var(--ease);
+        color: var(--ink-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .toc-toggle-icon svg { width: 10px; height: 10px; fill: currentColor; }
+
+    /* 展开状态旋转箭头 */
+    .toc-inline.open .toc-toggle-icon { transform: rotate(90deg); }
+
+    .toc-toggle-label { flex: 1; }
+
+    .toc-toggle-count {
+        font-size: 0.72rem;
+        color: var(--ink-faint);
+        background: rgba(120, 90, 50, 0.08);
+        padding: 1px 7px;
+        border-radius: 10px;
+        font-weight: 400;
+    }
+
+    /* 折叠体 */
+    .toc-body {
+        display: none;
+        border-top: 1px solid var(--border);
+        padding: 8px 0;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .toc-inline.open .toc-body { display: block; }
+
+    .toc-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .toc-item { margin: 0; }
+
+    .toc-link {
+        display: block;
+        font-size: 0.80rem;
+        color: var(--ink-mid);
+        padding: 4px 14px;
+        line-height: 1.5;
+        transition: all var(--dur) var(--ease);
+        border-left: 2px solid transparent;
+        cursor: pointer;
+    }
+
+    .toc-link:hover {
+        color: var(--ink);
+        background: rgba(120, 90, 50, 0.05);
+        border-left-color: var(--ink-faint);
+    }
+
+    .toc-link.active {
+        color: var(--seal);
+        border-left-color: var(--seal);
+        background: var(--seal-subtle);
+    }
+
+    .toc-item.level-3 .toc-link {
+        padding-left: 28px;
+        font-size: 0.76rem;
+        color: var(--ink-light);
+    }
+
+    .toc-item.level-4 .toc-link {
+        padding-left: 42px;
+        font-size: 0.73rem;
+        color: var(--ink-faint);
+    }
+
+    /* ===== 摘要区：仿扉页题词 ===== */
+    .article-summary {
+        margin: 0 0 40px;
+        padding: 20px 28px 20px 32px;
+        border-left: 3px solid var(--seal);
+        background: linear-gradient(to right, rgba(155, 35, 53, 0.04), transparent);
+        border-radius: 0 var(--r-sm) var(--r-sm) 0;
+        font-style: italic;
+        color: var(--ink-mid);
+        font-size: 1.02em;
+        line-height: 1.9;
+    }
+
+    /* ===== 正文排版：精装书内页 ===== */
+    .prose {
+        font-family: var(--font-serif);
+        font-size: 1.05rem;
+        line-height: 1.95;
+        color: var(--ink);
+        /* 段落首行对齐 */
+    }
+
+    .prose > * + * { margin-top: 1.4em; }
+
+    /* 段落 */
+    .prose p {
+        margin-bottom: 0;
+        text-align: justify;
+        /* 中文排版：首行缩进可选（故事类适合） */
+        /* text-indent: 2em; */
+        hyphens: auto;
+    }
+
+    /* 标题 */
+    .prose h1, .prose h2, .prose h3,
+    .prose h4, .prose h5, .prose h6 {
+        font-family: var(--font-serif);
+        font-weight: 600;
+        color: var(--ink);
+        line-height: 1.4;
+        margin-top: 2.4em;
+        margin-bottom: 0.7em;
+    }
+
+    .prose h1 { font-size: 1.75em; font-style: italic; }
+
+    .prose h2 {
+        font-size: 1.30em;
+        font-style: italic;
+        text-align: center;
+        position: relative;
+        padding: 0 32px;
+    }
+    /* 章节分隔装饰（仿书脊星号） */
+    .prose h2::before,
+    .prose h2::after {
+        content: '—';
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--ink-faint);
+        font-style: normal;
+        font-weight: 300;
+    }
+    .prose h2::before { left: 0; }
+    .prose h2::after  { right: 0; }
+
+    .prose h3 {
+        font-size: 1.10em;
+        color: var(--ink-mid);
+    }
+
+    .prose h4 { font-size: 1.00em; color: var(--ink-mid); }
+
+    /* 链接：下划线用点线，低调 */
+    .prose a {
+        color: var(--seal);
+        text-decoration-line: underline;
+        text-decoration-style: dotted;
+        text-decoration-color: rgba(155, 35, 53, 0.4);
+        text-underline-offset: 3px;
+        transition: all var(--dur) var(--ease);
+    }
+    .prose a:hover {
+        text-decoration-style: solid;
+        text-decoration-color: rgba(155, 35, 53, 0.7);
+    }
+
+    /* 引用块：书中旁注风格 */
+    .prose blockquote {
+        margin: 1.8em 0;
+        padding: 14px 20px;
+        border-left: 3px solid var(--border-strong);
+        color: var(--ink-mid);
+        font-style: italic;
+        background: rgba(120, 90, 50, 0.04);
+        border-radius: 0 var(--r-sm) var(--r-sm) 0;
+    }
+    .prose blockquote p { margin: 0; text-align: left; }
+    .prose blockquote > * + * { margin-top: 0.5em; }
+
+    /* 行内代码 */
+    .prose :not(pre) > code {
+        font-family: var(--font-mono);
+        font-size: 0.84em;
+        background: rgba(120, 90, 50, 0.08);
+        border: 1px solid var(--border);
+        padding: 0.1em 0.4em;
+        border-radius: var(--r-sm);
+        color: var(--ink-mid);
+    }
+
+    /* 代码块 */
+    .prose pre {
+        border-radius: var(--r-md);
+        overflow-x: auto;
+        border: 1px solid var(--border);
+        margin: 1.8em 0;
+        background: #fdf9f2 !important;
+        box-shadow: inset 0 1px 3px rgba(120,90,50,0.06);
+    }
+    .prose pre code {
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: 0.86em;
+        color: inherit;
+    }
+
+    /* Pygments 代码高亮（暖色系重写） */
+    pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.highlight .hll { background-color: #ffffcc }
+.highlight { background: #ffffff; }
+.highlight .c { color: #177500 } /* Comment */
+.highlight .err { color: #000000 } /* Error */
+.highlight .k { color: #A90D91 } /* Keyword */
+.highlight .l { color: #1C01CE } /* Literal */
+.highlight .n { color: #000000 } /* Name */
+.highlight .o { color: #000000 } /* Operator */
+.highlight .ch { color: #177500 } /* Comment.Hashbang */
+.highlight .cm { color: #177500 } /* Comment.Multiline */
+.highlight .cp { color: #633820 } /* Comment.Preproc */
+.highlight .cpf { color: #177500 } /* Comment.PreprocFile */
+.highlight .c1 { color: #177500 } /* Comment.Single */
+.highlight .cs { color: #177500 } /* Comment.Special */
+.highlight .kc { color: #A90D91 } /* Keyword.Constant */
+.highlight .kd { color: #A90D91 } /* Keyword.Declaration */
+.highlight .kn { color: #A90D91 } /* Keyword.Namespace */
+.highlight .kp { color: #A90D91 } /* Keyword.Pseudo */
+.highlight .kr { color: #A90D91 } /* Keyword.Reserved */
+.highlight .kt { color: #A90D91 } /* Keyword.Type */
+.highlight .ld { color: #1C01CE } /* Literal.Date */
+.highlight .m { color: #1C01CE } /* Literal.Number */
+.highlight .s { color: #C41A16 } /* Literal.String */
+.highlight .na { color: #836C28 } /* Name.Attribute */
+.highlight .nb { color: #A90D91 } /* Name.Builtin */
+.highlight .nc { color: #3F6E75 } /* Name.Class */
+.highlight .no { color: #000000 } /* Name.Constant */
+.highlight .nd { color: #000000 } /* Name.Decorator */
+.highlight .ni { color: #000000 } /* Name.Entity */
+.highlight .ne { color: #000000 } /* Name.Exception */
+.highlight .nf { color: #000000 } /* Name.Function */
+.highlight .nl { color: #000000 } /* Name.Label */
+.highlight .nn { color: #000000 } /* Name.Namespace */
+.highlight .nx { color: #000000 } /* Name.Other */
+.highlight .py { color: #000000 } /* Name.Property */
+.highlight .nt { color: #000000 } /* Name.Tag */
+.highlight .nv { color: #000000 } /* Name.Variable */
+.highlight .ow { color: #000000 } /* Operator.Word */
+.highlight .mb { color: #1C01CE } /* Literal.Number.Bin */
+.highlight .mf { color: #1C01CE } /* Literal.Number.Float */
+.highlight .mh { color: #1C01CE } /* Literal.Number.Hex */
+.highlight .mi { color: #1C01CE } /* Literal.Number.Integer */
+.highlight .mo { color: #1C01CE } /* Literal.Number.Oct */
+.highlight .sa { color: #C41A16 } /* Literal.String.Affix */
+.highlight .sb { color: #C41A16 } /* Literal.String.Backtick */
+.highlight .sc { color: #2300CE } /* Literal.String.Char */
+.highlight .dl { color: #C41A16 } /* Literal.String.Delimiter */
+.highlight .sd { color: #C41A16 } /* Literal.String.Doc */
+.highlight .s2 { color: #C41A16 } /* Literal.String.Double */
+.highlight .se { color: #C41A16 } /* Literal.String.Escape */
+.highlight .sh { color: #C41A16 } /* Literal.String.Heredoc */
+.highlight .si { color: #C41A16 } /* Literal.String.Interpol */
+.highlight .sx { color: #C41A16 } /* Literal.String.Other */
+.highlight .sr { color: #C41A16 } /* Literal.String.Regex */
+.highlight .s1 { color: #C41A16 } /* Literal.String.Single */
+.highlight .ss { color: #C41A16 } /* Literal.String.Symbol */
+.highlight .bp { color: #5B269A } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #000000 } /* Name.Function.Magic */
+.highlight .vc { color: #000000 } /* Name.Variable.Class */
+.highlight .vg { color: #000000 } /* Name.Variable.Global */
+.highlight .vi { color: #000000 } /* Name.Variable.Instance */
+.highlight .vm { color: #000000 } /* Name.Variable.Magic */
+.highlight .il { color: #1C01CE } /* Literal.Number.Integer.Long */
+
+    .highlight {
+        background: #fdf9f2 !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--r-md);
+        overflow: hidden;
+        margin: 1.8em 0;
+        box-shadow: inset 0 1px 3px rgba(120,90,50,0.06);
+    }
+
+    .highlight pre {
+        margin: 0 !important;
+        padding: 18px 22px !important;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        overflow-x: auto;
+    }
+
+    /* 表格：账本格感 */
+    .table-wrapper {
+        overflow-x: auto;
+        margin: 1.8em 0;
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+    }
+
+    .table-wrapper table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.88em;
+        font-family: var(--font-ui);
+    }
+
+    .table-wrapper th {
+        background: var(--paper-deep);
+        padding: 9px 16px;
+        text-align: left;
+        font-weight: 600;
+        font-size: 0.82em;
+        letter-spacing: 0.04em;
+        color: var(--ink-mid);
+        border-bottom: 1px solid var(--border-strong);
+    }
+
+    .table-wrapper td {
+        padding: 8px 16px;
+        border-bottom: 1px solid var(--border);
+        color: var(--ink-mid);
+        vertical-align: top;
+    }
+
+    .table-wrapper tr:last-child td { border-bottom: none; }
+    .table-wrapper tr:hover td { background: rgba(120,90,50,0.03); }
+
+    /* 列表 */
+    .prose ul, .prose ol { padding-left: 1.6em; margin: 0.8em 0; }
+    .prose li { margin: 0.35em 0; }
+    .prose li::marker { color: var(--seal); }
+
+    /* 任务列表 */
+    .prose input[type="checkbox"] {
+        accent-color: var(--seal);
+        margin-right: 6px;
+        vertical-align: middle;
+    }
+
+    /* 水平线：仿书章节分隔 */
+    .prose hr {
+        border: none;
+        margin: 2.8em 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+    .prose hr::before {
+        content: '✦  ✦  ✦';
+        color: var(--ink-faint);
+        font-size: 0.75rem;
+        letter-spacing: 0.3em;
+    }
+
+    /* 图片 */
+    .prose img {
+        max-width: 100%;
+        border-radius: var(--r-md);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-md);
+        margin: 1.5em auto;
+        display: block;
+    }
+
+    /* ===== 文章尾部装饰 ===== */
+    .article-end-mark {
+        text-align: center;
+        margin: 48px 0 0;
+        padding-top: 32px;
+        border-top: 1px solid var(--border);
+        font-family: var(--font-ui);
+    }
+
+    .article-end-ornament {
+        display: block;
+        color: var(--ink-faint);
+        font-size: 0.85rem;
+        letter-spacing: 0.3em;
+        margin-bottom: 20px;
+    }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 20px;
+        border: 1px solid var(--border-strong);
+        border-radius: var(--r-sm);
+        font-family: var(--font-ui);
+        font-size: 0.84rem;
+        color: var(--ink-mid);
+        background: var(--paper-card);
+        transition: all var(--dur) var(--ease);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .back-btn:hover {
+        background: var(--paper-deep);
+        color: var(--ink);
+        border-color: var(--seal-border);
+        color: var(--seal);
+        transform: translateX(-2px);
+    }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 680px) {
+        .article-wrap { padding: 28px 18px 60px; }
+        .article-title { font-size: 1.55rem; }
+        .prose { font-size: 1rem; line-height: 1.9; }
+        .prose h2::before, .prose h2::after { display: none; }
+        .prose h2 { padding: 0; }
+    }
+</style>
+
+</head>
+<body>
+    <nav class="site-nav" role="navigation" aria-label="主导航">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand" id="nav-brand-link">
+                <div class="nav-brand-seal" aria-hidden="true">開</div>
+                <span>開心的小院</span>
+            </a>
+            <ul class="nav-links" role="list">
+                <li>
+                    <a href="index.html" id="nav-home-link">
+                        <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 14.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"/></svg>
+                        <span class="nav-link-text">首页</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html#posts" id="nav-posts-link">
+                        <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75A.75.75 0 0 1 .75 1h4.253c1.227 0 2.317.59 3 1.501A3.743 3.743 0 0 1 11.006 1h4.245a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75h-4.507a2.25 2.25 0 0 0-1.591.659l-.622.621a.75.75 0 0 1-1.06 0l-.622-.621A2.25 2.25 0 0 0 5.258 13H.75a.75.75 0 0 1-.75-.75Zm7.251 10.324.004-5.073-.002-2.253A2.25 2.25 0 0 0 5.003 2.5H1.5v9h3.757a3.75 3.75 0 0 1 1.994.574ZM8.755 4.75l-.004 7.322a3.752 3.752 0 0 1 1.992-.572H14.5v-9h-3.495a2.25 2.25 0 0 0-2.25 2.25Z"/></svg>
+                        <span class="nav-link-text">文集</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+    <div class="reading-progress" id="reading-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="阅读进度"></div>
+
+    <div class="article-wrap">
+
+        <!-- 面包屑 -->
+        <nav class="breadcrumbs" aria-label="面包屑导航">
+            <a href="index.html">
+                <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 14.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"/></svg>
+                首页
+            </a>
+            <span class="breadcrumb-sep" aria-hidden="true">/</span>
+            <span class="current" title="Zotero7 重新安装与数据配置">Zotero7 重新安装与数据配置</span>
+        </nav>
+
+        <!-- 文章头部 -->
+        <header class="article-header">
+            
+            <div>
+                
+                <span class="article-genre">
+                    <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 7.775V2.75C1 1.784 1.784 1 2.75 1h5.025c.464 0 .91.184 1.238.513l6.25 6.25a1.75 1.75 0 0 1 0 2.474l-5.026 5.026a1.75 1.75 0 0 1-2.474 0l-6.25-6.25A1.752 1.752 0 0 1 1 7.775Zm1.5 0c0 .066.026.13.073.177l6.25 6.25a.25.25 0 0 0 .354 0l5.025-5.025a.25.25 0 0 0 0-.354l-6.25-6.25a.25.25 0 0 0-.177-.073H2.75a.25.25 0 0 0-.25.25ZM6 5a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/></svg>
+                    tool
+                </span>
+                
+            </div>
+            
+
+            <h1 class="article-title" id="article-title">Zotero7 重新安装与数据配置</h1>
+
+            <div class="article-meta">
+                
+                <span class="meta-item">
+                    <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.75 0a.75.75 0 0 1 .75.75V2h5V.75a.75.75 0 0 1 1.5 0V2h1.25c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 13.25 16H2.75A1.75 1.75 0 0 1 1 14.25V3.75C1 2.784 1.784 2 2.75 2H4V.75A.75.75 0 0 1 4.75 0ZM1.75 6h12.5v8.25a.25.25 0 0 1-.25.25H2.75a.25.25 0 0 1-.25-.25V6Z"/></svg>
+                    2024-09-01 10:00:36
+                </span>
+                
+
+                
+
+                <span class="meta-item" id="reading-time-item">
+                    <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Zm7-3.25v2.992l2.028.812a.75.75 0 0 1-.557 1.392l-2.5-1A.751.751 0 0 1 7 8.25v-3.5a.75.75 0 0 1 1.5 0Z"/></svg>
+                    <span id="reading-time-text" aria-label="预计阅读时长">–</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- 摘要/题词 -->
+        
+        <div class="article-summary" role="note" aria-label="文章摘要">
+            <p>简单记录了一次Zotero7的重新安装与数据配置。</p>
+
+        </div>
+        
+
+        <!-- ====== 可折叠 TOC（Notion 风，仅在有标题时渲染） ====== -->
+        <div class="toc-inline" id="toc-widget" style="display:none;" aria-label="文章目录">
+            <button class="toc-toggle" id="toc-toggle-btn" aria-expanded="false" aria-controls="toc-body-panel" type="button">
+                <span class="toc-toggle-icon" aria-hidden="true">
+                    <svg viewBox="0 0 10 10"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                <span class="toc-toggle-label">目录</span>
+                <span class="toc-toggle-count" id="toc-count" aria-label="目录项数量"></span>
+            </button>
+            <div class="toc-body" id="toc-body-panel" role="navigation" aria-label="文章目录">
+                <ul class="toc-list" id="toc-list" role="list"></ul>
+            </div>
+        </div>
+
+        <!-- 正文 -->
+        <article class="prose" id="article-content">
+            <ul>
+<li>Author: lartpang</li>
+<li>Link: <a href="https://github.com/lartpang/blog/issues/22">https://github.com/lartpang/blog/issues/22</a></li>
+</ul>
+<h2>前提</h2>
+<ul>
+<li>之前的附件配置是基于链接的形式，而附件是单独文件夹存储的。</li>
+<li>新安装时，设备上已经移除了所有之前的设置（几之前的所有配置信息都被保存到了云端你自己的账号下）。</li>
+<li>设备上只剩下了之前的pdf附件文件夹和其中的pdf附件了。</li>
+</ul>
+<h2>配置过程</h2>
+<ul>
+<li>安装最新版的Zotero7的安装包：<a href="https://www.zotero.org/download/">https://www.zotero.org/download/</a></li>
+<li>安装后到设置中配置：<ul>
+<li>先到 <code>同步</code> 选项卡中登录你的Zotero账号密码，将基础的设置同步下来。</li>
+<li>再配置 <code>高级</code> 选项卡中的已链接附件的根目录到你的附件文件夹目录。</li>
+<li>重启Zotero即可。
+常规情况下到这步应该就没问题了。</li>
+</ul>
+</li>
+</ul>
+<h2>后续配置</h2>
+<ul>
+<li>手动安装插件市场：<a href="https://github.com/syt2/zotero-addons">https://github.com/syt2/zotero-addons</a></li>
+<li>安装好后从插件市场中安装附件管理器插件：Zotero Attanger</li>
+<li>对附件管理器插件中配置新的附件采用链接形式，配置源路径、附加类型（链接）和靶路径等以适配你现有附件的存储格式。</li>
+<li>安装其他的插件，并进行相关的配置。</li>
+</ul>
+
+        </article>
+
+        <!-- 文章结尾 -->
+        <div class="article-end-mark">
+            <span class="article-end-ornament">— 完 —</span>
+            <a href="index.html" class="back-btn">
+                <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M7.78 12.53a.75.75 0 0 1-1.06 0L2.47 8.28a.75.75 0 0 1 0-1.06l4.25-4.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L4.81 7h7.44a.75.75 0 0 1 0 1.5H4.81l2.97 2.97a.75.75 0 0 1 0 1.06Z"/></svg>
+                返回文集
+            </a>
+        </div>
+
+    </div>
+
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-inner">
+            <p class="footer-text">
+                © 2025–2026 開心
+                <span class="footer-sep">·</span>
+                由 <a href="https://github.com/lartpang/blog" target="_blank" rel="noopener">GitHub Pages</a> 托管
+                <span class="footer-sep">·</span>
+                故事 · 译文 · 随想
+            </p>
+        </div>
+    </footer>
+
+    
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="initMath()"></script>
+    <script>
+        function initMath() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$',  right: '$',  display: false},
+                    {left: '\\(', right: '\\)', display: false},
+                    {left: '\\[', right: '\\]', display: true}
+                ],
+                throwOnError: false
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const content = document.getElementById('article-content');
+
+            /* ── 阅读时间 ── */
+            const rtText = document.getElementById('reading-time-text');
+            if (content && rtText) {
+                const raw = content.textContent || '';
+                const cnChars = (raw.match(/[\u4e00-\u9fa5]/g) || []).length;
+                const enWords = raw.replace(/[\u4e00-\u9fa5]/g, '').trim().split(/\s+/).filter(Boolean).length;
+                const mins = Math.max(1, Math.ceil(cnChars / 500 + enWords / 200));
+                rtText.textContent = `约 ${mins} 分钟`;
+            }
+
+            /* ── 可折叠 TOC ── */
+            const tocWidget  = document.getElementById('toc-widget');
+            const tocToggle  = document.getElementById('toc-toggle-btn');
+            const tocBody    = document.getElementById('toc-body-panel');
+            const tocList    = document.getElementById('toc-list');
+            const tocCount   = document.getElementById('toc-count');
+            const tocInline  = document.querySelector('.toc-inline');
+
+            if (content && tocList) {
+                const headings = Array.from(content.querySelectorAll('h2, h3, h4'));
+
+                if (headings.length >= 2) {
+                    /* 显示 TOC 组件 */
+                    tocWidget.style.display = '';
+                    tocCount.textContent = headings.length;
+
+                    headings.forEach((h, idx) => {
+                        if (!h.id) h.id = `s-${idx}`;
+
+                        const level = parseInt(h.tagName[1]);  /* 2, 3, 4 */
+                        const li = document.createElement('li');
+                        li.className = `toc-item level-${level}`;
+
+                        const a = document.createElement('a');
+                        a.className = 'toc-link';
+                        a.href = `#${h.id}`;
+                        a.textContent = h.textContent.replace(/^—\s*|—\s*$/g, '').trim();
+                        a.addEventListener('click', e => {
+                            e.preventDefault();
+                            h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            /* 点击后收起 TOC */
+                            tocInline.classList.remove('open');
+                            tocBody.style.display = '';
+                            tocToggle.setAttribute('aria-expanded', 'false');
+                        });
+
+                        li.appendChild(a);
+                        tocList.appendChild(li);
+                    });
+
+                    /* 折叠切换 */
+                    tocToggle.addEventListener('click', () => {
+                        const isOpen = tocInline.classList.toggle('open');
+                        tocToggle.setAttribute('aria-expanded', String(isOpen));
+                    });
+
+                    /* 高亮当前章节 */
+                    const allLinks = tocList.querySelectorAll('.toc-link');
+                    const obs = new IntersectionObserver(entries => {
+                        entries.forEach(e => {
+                            if (e.isIntersecting) {
+                                allLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${e.target.id}`));
+                            }
+                        });
+                    }, { rootMargin: '-10% 0px -75% 0px' });
+
+                    headings.forEach(h => obs.observe(h));
+                }
+            }
+
+            /* ── 阅读进度条 ── */
+            const bar = document.getElementById('reading-progress');
+            if (bar) {
+                const upd = () => {
+                    const h = document.documentElement.scrollHeight - window.innerHeight;
+                    bar.style.width = h > 0 ? `${Math.min(window.scrollY / h * 100, 100)}%` : '0%';
+                };
+                window.addEventListener('scroll', upd, { passive: true });
+                upd();
+            }
+        });
+    </script>
+
+</body>
+</html>

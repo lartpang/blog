@@ -1,0 +1,627 @@
+{% extends "base.html" %}
+
+{% block title %}文集 — 開心的小院{% endblock %}
+{% block meta_desc %}一个存放原创故事、译文和技术随笔的个人小展。{% endblock %}
+
+{% block style_page %}
+<style>
+    /* ===== 标签颜色：按内容类型区分 ===== */
+    /* story：故事 - 沉稳红 */
+    .tag-chip[class*="story"] {
+        background: rgba(155, 35, 53, 0.07);
+        color: var(--seal);
+        border-color: rgba(155, 35, 53, 0.2);
+    }
+    /* trans: 译文 - 晻青紫 */
+    .tag-chip[class*="trans"] {
+        background: rgba(70, 100, 160, 0.07);
+        color: #4a6ea8;
+        border-color: rgba(70, 100, 160, 0.2);
+    }
+    /* note / tech: 笔记 - 森照绿 */
+    .tag-chip[class*="note"],
+    .tag-chip[class*="tech"] {
+        background: rgba(50, 110, 80, 0.07);
+        color: #3d7a58;
+        border-color: rgba(50, 110, 80, 0.2);
+    }
+    .hero {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(56px, 10vw, 100px) clamp(16px, 4vw, 48px) clamp(48px, 8vw, 80px);
+        text-align: center;
+        background: var(--paper-deep);
+        border-bottom: 1px solid var(--border-strong);
+    }
+
+    /* 装饰：古书版框线 */
+    .hero-frame {
+        position: absolute;
+        inset: 16px;
+        border: 1px solid var(--border);
+        border-radius: var(--r-sm);
+        pointer-events: none;
+    }
+
+    .hero-frame::before {
+        content: '';
+        position: absolute;
+        inset: 5px;
+        border: 1px solid rgba(120,90,50,0.08);
+        border-radius: 2px;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 560px;
+        margin: 0 auto;
+    }
+
+    /* 上方小字：类出版信息 */
+    .hero-imprint {
+        font-family: var(--font-ui);
+        font-size: 0.73rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--seal);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .hero-imprint::before,
+    .hero-imprint::after {
+        content: '';
+        display: block;
+        width: 28px;
+        height: 1px;
+        background: currentColor;
+        opacity: 0.5;
+    }
+
+    .hero-title {
+        font-size: clamp(2.0rem, 5.5vw, 3.4rem);
+        font-weight: 600;
+        line-height: 1.25;
+        letter-spacing: 0.04em;
+        color: var(--ink);
+        margin-bottom: 14px;
+        font-style: italic;
+    }
+
+    /* 朱砂印章：装饰性方块 */
+    .hero-seal {
+        display: inline-block;
+        width: 42px;
+        height: 42px;
+        background: var(--seal);
+        border-radius: 3px;
+        color: #fff;
+        font-size: 18px;
+        line-height: 42px;
+        text-align: center;
+        margin: 16px auto 20px;
+        box-shadow: 1px 1px 0 rgba(0,0,0,0.2), 2px 2px 8px rgba(155,35,53,0.3);
+        transform: rotate(-3deg);
+        font-style: normal;
+        font-family: var(--font-ui);
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+    .hero-desc {
+        font-size: 0.95rem;
+        color: var(--ink-mid);
+        font-style: italic;
+        line-height: 1.8;
+        margin-bottom: 32px;
+    }
+
+    .hero-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 28px;
+    }
+
+    .hero-divider-line {
+        width: 40px;
+        height: 1px;
+        background: var(--border-strong);
+    }
+
+    .hero-divider-ornament {
+        color: var(--ink-faint);
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+    }
+
+    .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        border: 1px solid var(--border);
+        border-radius: var(--r-sm);
+        overflow: hidden;
+        background: var(--paper-card);
+        max-width: 320px;
+        margin: 0 auto;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .hero-stat {
+        flex: 1;
+        padding: 14px 16px;
+        text-align: center;
+        border-right: 1px solid var(--border);
+    }
+
+    .hero-stat:last-child { border-right: none; }
+
+    .hero-stat-num {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--ink);
+        line-height: 1;
+        margin-bottom: 4px;
+    }
+
+    .hero-stat-label {
+        font-family: var(--font-ui);
+        font-size: 0.70rem;
+        color: var(--ink-light);
+        letter-spacing: 0.06em;
+    }
+
+    /* ===== 筛选栏 ===== */
+    .filter-bar {
+        padding: 18px clamp(16px, 4vw, 48px);
+        background: var(--paper-card);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 56px;     /* 与导航栏高度一致 */
+        z-index: 90;
+    }
+
+    .filter-inner {
+        max-width: 960px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .filter-label {
+        font-family: var(--font-ui);
+        font-size: 0.76rem;
+        color: var(--ink-light);
+        letter-spacing: 0.04em;
+        flex-shrink: 0;
+        margin-right: 2px;
+    }
+
+    .filter-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 12px;
+        border-radius: 2px;
+        font-family: var(--font-ui);
+        font-size: 0.78rem;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--ink-light);
+        transition: all var(--dur) var(--ease);
+        letter-spacing: 0.03em;
+    }
+
+    .filter-btn:hover {
+        border-color: var(--border-strong);
+        color: var(--ink-mid);
+        background: rgba(120, 90, 50, 0.05);
+    }
+
+    .filter-btn.active {
+        background: var(--seal-subtle);
+        border-color: var(--seal-border);
+        color: var(--seal);
+    }
+
+    .filter-count {
+        font-size: 0.68rem;
+        color: var(--ink-faint);
+        background: rgba(120, 90, 50, 0.08);
+        padding: 0 5px;
+        border-radius: 8px;
+        line-height: 1.5;
+    }
+    .filter-btn.active .filter-count { background: rgba(155,35,53,0.12); color: var(--seal); }
+
+    /* 搜索 */
+    .search-wrapper {
+        margin-left: auto;
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .search-icon-wrap {
+        position: absolute;
+        left: 9px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--ink-faint);
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .search-input {
+        background: var(--paper-warm);
+        border: 1px solid var(--border);
+        border-radius: var(--r-sm);
+        padding: 5px 12px 5px 30px;
+        font-family: var(--font-ui);
+        font-size: 0.82rem;
+        color: var(--ink);
+        width: 180px;
+        outline: none;
+        transition: all var(--dur) var(--ease);
+    }
+
+    .search-input::placeholder { color: var(--ink-faint); }
+
+    .search-input:focus {
+        border-color: var(--border-strong);
+        box-shadow: 0 0 0 2px rgba(155,35,53,0.08);
+        width: 220px;
+    }
+
+    @media (max-width: 560px) {
+        .search-wrapper { margin-left: 0; width: 100%; }
+        .search-input, .search-input:focus { width: 100%; }
+        .filter-bar { top: 56px; }
+    }
+
+    /* ===== 文章列表区 ===== */
+    .posts-section {
+        padding: 36px clamp(16px, 4vw, 48px) 60px;
+    }
+
+    .posts-inner {
+        max-width: 960px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+
+    .section-title {
+        font-family: var(--font-ui);
+        font-size: 0.74rem;
+        color: var(--ink-light);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight: 500;
+        flex-shrink: 0;
+    }
+
+    .section-rule { flex: 1; height: 1px; background: var(--border); }
+
+    /* ===== 文章卡片：仿古书目条目 ===== */
+    .posts-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1px; /* 细线分隔 */
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        overflow: hidden;
+        background: var(--border); /* 用背景色模拟分隔线 */
+        box-shadow: var(--shadow-sm);
+    }
+
+    .post-card {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        gap: 6px 16px;
+        padding: 20px 24px;
+        background: var(--paper-card);
+        text-decoration: none;
+        color: inherit;
+        transition: background var(--dur) var(--ease);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .post-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--seal);
+        transform: scaleY(0);
+        transform-origin: center;
+        transition: transform var(--dur) var(--ease);
+    }
+
+    .post-card:hover { background: var(--paper-warm); }
+    .post-card:hover::before { transform: scaleY(1); }
+
+    .post-card-main {
+        grid-column: 1;
+        grid-row: 1;
+        min-width: 0;
+    }
+
+    .post-card-side {
+        grid-column: 2;
+        grid-row: 1 / 3;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .post-card-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        font-style: italic;
+        color: var(--ink);
+        line-height: 1.4;
+        transition: color var(--dur) var(--ease);
+        margin-bottom: 5px;
+    }
+
+    .post-card:hover .post-card-title { color: var(--seal); }
+
+    .post-card-summary {
+        font-size: 0.85rem;
+        color: var(--ink-light);
+        line-height: 1.65;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        grid-column: 1;
+        grid-row: 2;
+        padding-left: 0;
+    }
+
+    .post-card-date {
+        font-family: var(--font-ui);
+        font-size: 0.75rem;
+        color: var(--ink-faint);
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+    }
+
+    .post-card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+
+    /* 小型箭头指示符 */
+    .post-card-arrow {
+        color: var(--ink-faint);
+        opacity: 0;
+        transition: all var(--dur) var(--ease);
+        font-size: 0.85rem;
+    }
+
+    .post-card:hover .post-card-arrow { opacity: 1; color: var(--seal); transform: translateX(3px); }
+
+    /* 空状态 */
+    .empty-state {
+        text-align: center;
+        padding: 52px 20px;
+        color: var(--ink-light);
+        font-family: var(--font-ui);
+        font-size: 0.88rem;
+        border: 1px dashed var(--border-strong);
+        border-radius: var(--r-md);
+    }
+
+    .empty-ornament { font-size: 1.5rem; margin-bottom: 12px; opacity: 0.4; }
+
+    /* ===== 动画 ===== */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .post-card { animation: fadeIn 0.3s var(--ease) both; }
+    .post-card:nth-child(1)  { animation-delay: 0.04s; }
+    .post-card:nth-child(2)  { animation-delay: 0.08s; }
+    .post-card:nth-child(3)  { animation-delay: 0.12s; }
+    .post-card:nth-child(4)  { animation-delay: 0.16s; }
+    .post-card:nth-child(5)  { animation-delay: 0.20s; }
+    .post-card:nth-child(n+6){ animation-delay: 0.24s; }
+
+    .post-card.hidden { display: none; }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 580px) {
+        .post-card {
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto auto;
+        }
+        .post-card-side {
+            grid-column: 1;
+            grid-row: 3;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .post-card-summary { grid-row: 2; }
+        .post-card-arrow { display: none; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- 书封面式英雄区 -->
+    <section class="hero" aria-labelledby="hero-heading">
+        <div class="hero-frame" aria-hidden="true"></div>
+        <div class="hero-content">
+            <div class="hero-imprint" aria-hidden="true">个人文集</div>
+            <h1 class="hero-title" id="hero-heading">開心的小院</h1>
+            <div class="hero-seal" aria-hidden="true">開</div>
+            <p class="hero-desc">故事 · 译文 · 随想<br>记录值得留存的思考与感悟</p>
+            <div class="hero-divider" aria-hidden="true">
+                <div class="hero-divider-line"></div>
+                <span class="hero-divider-ornament">✦</span>
+                <div class="hero-divider-line"></div>
+            </div>
+            <div class="hero-stats" aria-label="站点统计">
+                <div class="hero-stat">
+                    <div class="hero-stat-num">{{ articles | length }}</div>
+                    <div class="hero-stat-label">篇文章</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">{{ articles | selectattr('tags', 'containing', 'story') | list | length }}</div>
+                    <div class="hero-stat-label">篇故事</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">{{ articles | selectattr('tags', 'containing', 'trans') | list | length }}</div>
+                    <div class="hero-stat-label">篇译文</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 筛选栏（吸顶） -->
+    <div class="filter-bar" role="search" aria-label="按标签筛选">
+        <div class="filter-inner">
+            <span class="filter-label">筛选：</span>
+            <button class="filter-btn active" data-tag="all" id="filter-all" type="button">
+                全部
+                <span class="filter-count" id="count-all">{{ articles | length }}</span>
+            </button>
+
+            {# 动态生成标签按钮 #}
+            {% set all_tags = [] %}
+            {% for article in articles %}
+                {% for tag in article.tags %}
+                    {% if tag not in all_tags %}{% set _ = all_tags.append(tag) %}{% endif %}
+                {% endfor %}
+            {% endfor %}
+
+            {% for tag in all_tags %}
+            {% set cnt = articles | selectattr('tags', 'containing', tag) | list | length %}
+            <button class="filter-btn" data-tag="{{ tag }}" type="button">
+                {{ tag }}
+                <span class="filter-count">{{ cnt }}</span>
+            </button>
+            {% endfor %}
+
+            <div class="search-wrapper">
+                <span class="search-icon-wrap" aria-hidden="true">
+                    <svg class="icon" viewBox="0 0 16 16" width="13" height="13"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7Z"/></svg>
+                </span>
+                <input type="search" class="search-input" id="search-input" placeholder="搜索文章…" aria-label="搜索文章标题或摘要" autocomplete="off">
+            </div>
+        </div>
+    </div>
+
+    <!-- 文章列表 -->
+    <section class="posts-section" id="posts" aria-labelledby="posts-label">
+        <div class="posts-inner">
+            <div class="section-header">
+                <span class="section-title" id="posts-label">目录</span>
+                <div class="section-rule" aria-hidden="true"></div>
+                <span class="section-title" id="posts-count">共 {{ articles | length }} 篇</span>
+            </div>
+
+            <div class="posts-list" id="posts-list" role="list">
+                {% for article in articles %}
+                <a
+                    href="{{ article.url }}"
+                    class="post-card"
+                    data-tags="{{ article.tags | join(',') }}"
+                    data-title="{{ article.title | lower }}"
+                    role="listitem"
+                    aria-label="{{ article.title }}，{{ article.date }}"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">{{ article.title }}</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">{{ article.date }}</span>
+                        {% if article.tags %}
+                        <div class="post-card-tags">
+                            {% for tag in article.tags %}
+                            <span class="tag-chip">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    {% if article.summary_text %}
+                    <p class="post-card-summary">{{ article.summary_text }}</p>
+                    {% endif %}
+                </a>
+                {% endfor %}
+            </div>
+
+            <div class="empty-state" id="empty-state" style="display:none;" aria-live="polite">
+                <div class="empty-ornament" aria-hidden="true">🔍</div>
+                <p>没有找到匹配的文章，请尝试其他搜索词</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards     = Array.from(document.querySelectorAll('.post-card'));
+        const filterBtns= document.querySelectorAll('.filter-btn');
+        const searchIn  = document.getElementById('search-input');
+        const empty     = document.getElementById('empty-state');
+        const countEl   = document.getElementById('posts-count');
+        let tag = 'all', kw = '';
+
+        function render() {
+            let n = 0;
+            cards.forEach(c => {
+                const tags  = (c.dataset.tags || '').split(',').map(s => s.trim());
+                const title = c.dataset.title || '';
+                const sum   = (c.querySelector('.post-card-summary')?.textContent || '').toLowerCase();
+                const ok    = (tag === 'all' || tags.includes(tag)) && (!kw || title.includes(kw) || sum.includes(kw));
+                c.classList.toggle('hidden', !ok);
+                if (ok) n++;
+            });
+            empty.style.display = n ? 'none' : 'block';
+            countEl.textContent = `共 ${n} 篇`;
+        }
+
+        filterBtns.forEach(b => b.addEventListener('click', () => {
+            filterBtns.forEach(x => x.classList.remove('active'));
+            b.classList.add('active');
+            tag = b.dataset.tag;
+            render();
+        }));
+
+        searchIn.addEventListener('input', () => { kw = searchIn.value.toLowerCase().trim(); render(); });
+    });
+</script>
+{% endblock %}

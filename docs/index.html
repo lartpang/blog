@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文集 — 開心的小院 — 開心的小院</title>
+    <meta name="description" content="一个存放原创故事、译文和技术随笔的个人小展。">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Serif:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    
+
+    <style>
+        /* ===== 设计令牌：纸质书风格 ===== */
+        :root {
+            /* 纸张底色：陈年羊皮纸 */
+            --paper:          #f7f3eb;
+            --paper-warm:     #f2ece0;
+            --paper-deep:     #ede5d6;
+            --paper-card:     #faf7f2;
+            --paper-shadow:   rgba(120, 90, 50, 0.10);
+
+            /* 墨水色：深焦墨 */
+            --ink:            #2c2417;
+            --ink-mid:        #5a4a35;
+            --ink-light:      #8a7560;
+            --ink-faint:      #b8a994;
+
+            /* 朱砂印章红（品牌点缀色，克制使用） */
+            --seal:           #9b2335;
+            --seal-light:     #c0392b;
+            --seal-subtle:    rgba(155, 35, 53, 0.07);
+            --seal-border:    rgba(155, 35, 53, 0.20);
+
+            /* 边框：牛皮纸纹 */
+            --border:         rgba(120, 90, 50, 0.15);
+            --border-strong:  rgba(120, 90, 50, 0.28);
+
+            /* 阴影：柔和书页卷边感 */
+            --shadow-sm:  0 1px 4px rgba(100, 70, 30, 0.08);
+            --shadow-md:  0 3px 12px rgba(100, 70, 30, 0.12);
+            --shadow-lg:  0 6px 28px rgba(100, 70, 30, 0.16);
+
+            /* 字体 */
+            --font-serif: "EB Garamond", "Noto Serif", "Noto Serif SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+            --font-ui:    "Noto Serif SC", "Noto Serif", system-ui, sans-serif;
+            --font-mono:  "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+
+            /* 圆角 */
+            --r-sm: 4px;
+            --r-md: 6px;
+            --r-lg: 10px;
+
+            /* 过渡 */
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+            --dur:  0.22s;
+        }
+
+        /* ===== 重置 ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; font-size: 18px; }
+
+        body {
+            background-color: var(--paper-warm);
+            color: var(--ink);
+            font-family: var(--font-serif);
+            line-height: 1.85;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            /* 微妙的纸张纤维纹理 */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+        }
+
+        /* ===== 链接 ===== */
+        a { color: inherit; text-decoration: none; transition: color var(--dur) var(--ease); }
+
+        /* ===== 导航栏：中式书脊感 ===== */
+        .site-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(242, 236, 224, 0.92);
+            backdrop-filter: blur(16px) saturate(1.2);
+            -webkit-backdrop-filter: blur(16px) saturate(1.2);
+            border-bottom: 1px solid var(--border-strong);
+            padding: 0 clamp(16px, 4vw, 48px);
+        }
+
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: var(--ink);
+            transition: opacity var(--dur) var(--ease);
+        }
+        .nav-brand:hover { opacity: 0.7; }
+
+        .nav-brand-seal {
+            width: 30px;
+            height: 30px;
+            background: var(--seal);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            box-shadow: 1px 1px 0 rgba(0,0,0,0.2), 2px 2px 6px rgba(155,35,53,0.25);
+            /* 印章旋转感 */
+            transform: rotate(-2deg);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 14px;
+            border-radius: var(--r-sm);
+            font-size: 0.88rem;
+            color: var(--ink-mid);
+            font-family: var(--font-ui);
+            transition: all var(--dur) var(--ease);
+        }
+        .nav-links a:hover { color: var(--ink); background: var(--paper-deep); }
+
+        /* 导航底部装饰线 */
+        .nav-inner::after {
+            display: none;
+        }
+
+        /* ===== 主内容 ===== */
+        .site-main { position: relative; }
+
+        /* ===== 页脚 ===== */
+        .site-footer {
+            border-top: 1px solid var(--border);
+            padding: 36px clamp(16px, 4vw, 48px);
+            text-align: center;
+            margin-top: 80px;
+            background: var(--paper-deep);
+        }
+
+        .footer-inner { max-width: 1100px; margin: 0 auto; }
+
+        .footer-text {
+            font-size: 0.80rem;
+            color: var(--ink-light);
+            font-family: var(--font-ui);
+            line-height: 1.8;
+        }
+
+        .footer-text a { color: var(--ink-mid); }
+        .footer-text a:hover { color: var(--seal); }
+
+        .footer-sep { display: inline-block; margin: 0 8px; opacity: 0.4; }
+
+        /* ===== 通用标签 ===== */
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 1px 9px;
+            border-radius: 2px;
+            font-size: 0.70rem;
+            font-family: var(--font-ui);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            background: var(--seal-subtle);
+            color: var(--seal);
+            border: 1px solid var(--seal-border);
+        }
+
+        /* ===== 图标 ===== */
+        svg.icon {
+            width: 1em; height: 1em;
+            vertical-align: -0.12em;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* ===== 滚动条 ===== */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: var(--paper-warm); }
+        ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+        @media (max-width: 600px) {
+            .nav-link-text { display: none; }
+            .nav-links a { padding: 5px 10px; }
+        }
+
+        
+    </style>
+    
+<style>
+    /* ===== 标签颜色：按内容类型区分 ===== */
+    /* story：故事 - 沉稳红 */
+    .tag-chip[class*="story"] {
+        background: rgba(155, 35, 53, 0.07);
+        color: var(--seal);
+        border-color: rgba(155, 35, 53, 0.2);
+    }
+    /* trans: 译文 - 晻青紫 */
+    .tag-chip[class*="trans"] {
+        background: rgba(70, 100, 160, 0.07);
+        color: #4a6ea8;
+        border-color: rgba(70, 100, 160, 0.2);
+    }
+    /* note / tech: 笔记 - 森照绿 */
+    .tag-chip[class*="note"],
+    .tag-chip[class*="tech"] {
+        background: rgba(50, 110, 80, 0.07);
+        color: #3d7a58;
+        border-color: rgba(50, 110, 80, 0.2);
+    }
+    .hero {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(56px, 10vw, 100px) clamp(16px, 4vw, 48px) clamp(48px, 8vw, 80px);
+        text-align: center;
+        background: var(--paper-deep);
+        border-bottom: 1px solid var(--border-strong);
+    }
+
+    /* 装饰：古书版框线 */
+    .hero-frame {
+        position: absolute;
+        inset: 16px;
+        border: 1px solid var(--border);
+        border-radius: var(--r-sm);
+        pointer-events: none;
+    }
+
+    .hero-frame::before {
+        content: '';
+        position: absolute;
+        inset: 5px;
+        border: 1px solid rgba(120,90,50,0.08);
+        border-radius: 2px;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 560px;
+        margin: 0 auto;
+    }
+
+    /* 上方小字：类出版信息 */
+    .hero-imprint {
+        font-family: var(--font-ui);
+        font-size: 0.73rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--seal);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .hero-imprint::before,
+    .hero-imprint::after {
+        content: '';
+        display: block;
+        width: 28px;
+        height: 1px;
+        background: currentColor;
+        opacity: 0.5;
+    }
+
+    .hero-title {
+        font-size: clamp(2.0rem, 5.5vw, 3.4rem);
+        font-weight: 600;
+        line-height: 1.25;
+        letter-spacing: 0.04em;
+        color: var(--ink);
+        margin-bottom: 14px;
+        font-style: italic;
+    }
+
+    /* 朱砂印章：装饰性方块 */
+    .hero-seal {
+        display: inline-block;
+        width: 42px;
+        height: 42px;
+        background: var(--seal);
+        border-radius: 3px;
+        color: #fff;
+        font-size: 18px;
+        line-height: 42px;
+        text-align: center;
+        margin: 16px auto 20px;
+        box-shadow: 1px 1px 0 rgba(0,0,0,0.2), 2px 2px 8px rgba(155,35,53,0.3);
+        transform: rotate(-3deg);
+        font-style: normal;
+        font-family: var(--font-ui);
+        font-weight: 600;
+        letter-spacing: 0;
+    }
+
+    .hero-desc {
+        font-size: 0.95rem;
+        color: var(--ink-mid);
+        font-style: italic;
+        line-height: 1.8;
+        margin-bottom: 32px;
+    }
+
+    .hero-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 28px;
+    }
+
+    .hero-divider-line {
+        width: 40px;
+        height: 1px;
+        background: var(--border-strong);
+    }
+
+    .hero-divider-ornament {
+        color: var(--ink-faint);
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+    }
+
+    .hero-stats {
+        display: flex;
+        justify-content: center;
+        gap: 0;
+        border: 1px solid var(--border);
+        border-radius: var(--r-sm);
+        overflow: hidden;
+        background: var(--paper-card);
+        max-width: 320px;
+        margin: 0 auto;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .hero-stat {
+        flex: 1;
+        padding: 14px 16px;
+        text-align: center;
+        border-right: 1px solid var(--border);
+    }
+
+    .hero-stat:last-child { border-right: none; }
+
+    .hero-stat-num {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--ink);
+        line-height: 1;
+        margin-bottom: 4px;
+    }
+
+    .hero-stat-label {
+        font-family: var(--font-ui);
+        font-size: 0.70rem;
+        color: var(--ink-light);
+        letter-spacing: 0.06em;
+    }
+
+    /* ===== 筛选栏 ===== */
+    .filter-bar {
+        padding: 18px clamp(16px, 4vw, 48px);
+        background: var(--paper-card);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 56px;     /* 与导航栏高度一致 */
+        z-index: 90;
+    }
+
+    .filter-inner {
+        max-width: 960px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .filter-label {
+        font-family: var(--font-ui);
+        font-size: 0.76rem;
+        color: var(--ink-light);
+        letter-spacing: 0.04em;
+        flex-shrink: 0;
+        margin-right: 2px;
+    }
+
+    .filter-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 12px;
+        border-radius: 2px;
+        font-family: var(--font-ui);
+        font-size: 0.78rem;
+        cursor: pointer;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--ink-light);
+        transition: all var(--dur) var(--ease);
+        letter-spacing: 0.03em;
+    }
+
+    .filter-btn:hover {
+        border-color: var(--border-strong);
+        color: var(--ink-mid);
+        background: rgba(120, 90, 50, 0.05);
+    }
+
+    .filter-btn.active {
+        background: var(--seal-subtle);
+        border-color: var(--seal-border);
+        color: var(--seal);
+    }
+
+    .filter-count {
+        font-size: 0.68rem;
+        color: var(--ink-faint);
+        background: rgba(120, 90, 50, 0.08);
+        padding: 0 5px;
+        border-radius: 8px;
+        line-height: 1.5;
+    }
+    .filter-btn.active .filter-count { background: rgba(155,35,53,0.12); color: var(--seal); }
+
+    /* 搜索 */
+    .search-wrapper {
+        margin-left: auto;
+        position: relative;
+        flex-shrink: 0;
+    }
+
+    .search-icon-wrap {
+        position: absolute;
+        left: 9px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--ink-faint);
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .search-input {
+        background: var(--paper-warm);
+        border: 1px solid var(--border);
+        border-radius: var(--r-sm);
+        padding: 5px 12px 5px 30px;
+        font-family: var(--font-ui);
+        font-size: 0.82rem;
+        color: var(--ink);
+        width: 180px;
+        outline: none;
+        transition: all var(--dur) var(--ease);
+    }
+
+    .search-input::placeholder { color: var(--ink-faint); }
+
+    .search-input:focus {
+        border-color: var(--border-strong);
+        box-shadow: 0 0 0 2px rgba(155,35,53,0.08);
+        width: 220px;
+    }
+
+    @media (max-width: 560px) {
+        .search-wrapper { margin-left: 0; width: 100%; }
+        .search-input, .search-input:focus { width: 100%; }
+        .filter-bar { top: 56px; }
+    }
+
+    /* ===== 文章列表区 ===== */
+    .posts-section {
+        padding: 36px clamp(16px, 4vw, 48px) 60px;
+    }
+
+    .posts-inner {
+        max-width: 960px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+
+    .section-title {
+        font-family: var(--font-ui);
+        font-size: 0.74rem;
+        color: var(--ink-light);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        font-weight: 500;
+        flex-shrink: 0;
+    }
+
+    .section-rule { flex: 1; height: 1px; background: var(--border); }
+
+    /* ===== 文章卡片：仿古书目条目 ===== */
+    .posts-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1px; /* 细线分隔 */
+        border: 1px solid var(--border);
+        border-radius: var(--r-md);
+        overflow: hidden;
+        background: var(--border); /* 用背景色模拟分隔线 */
+        box-shadow: var(--shadow-sm);
+    }
+
+    .post-card {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        gap: 6px 16px;
+        padding: 20px 24px;
+        background: var(--paper-card);
+        text-decoration: none;
+        color: inherit;
+        transition: background var(--dur) var(--ease);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .post-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--seal);
+        transform: scaleY(0);
+        transform-origin: center;
+        transition: transform var(--dur) var(--ease);
+    }
+
+    .post-card:hover { background: var(--paper-warm); }
+    .post-card:hover::before { transform: scaleY(1); }
+
+    .post-card-main {
+        grid-column: 1;
+        grid-row: 1;
+        min-width: 0;
+    }
+
+    .post-card-side {
+        grid-column: 2;
+        grid-row: 1 / 3;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .post-card-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        font-style: italic;
+        color: var(--ink);
+        line-height: 1.4;
+        transition: color var(--dur) var(--ease);
+        margin-bottom: 5px;
+    }
+
+    .post-card:hover .post-card-title { color: var(--seal); }
+
+    .post-card-summary {
+        font-size: 0.85rem;
+        color: var(--ink-light);
+        line-height: 1.65;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        grid-column: 1;
+        grid-row: 2;
+        padding-left: 0;
+    }
+
+    .post-card-date {
+        font-family: var(--font-ui);
+        font-size: 0.75rem;
+        color: var(--ink-faint);
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+    }
+
+    .post-card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        justify-content: flex-end;
+    }
+
+    /* 小型箭头指示符 */
+    .post-card-arrow {
+        color: var(--ink-faint);
+        opacity: 0;
+        transition: all var(--dur) var(--ease);
+        font-size: 0.85rem;
+    }
+
+    .post-card:hover .post-card-arrow { opacity: 1; color: var(--seal); transform: translateX(3px); }
+
+    /* 空状态 */
+    .empty-state {
+        text-align: center;
+        padding: 52px 20px;
+        color: var(--ink-light);
+        font-family: var(--font-ui);
+        font-size: 0.88rem;
+        border: 1px dashed var(--border-strong);
+        border-radius: var(--r-md);
+    }
+
+    .empty-ornament { font-size: 1.5rem; margin-bottom: 12px; opacity: 0.4; }
+
+    /* ===== 动画 ===== */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .post-card { animation: fadeIn 0.3s var(--ease) both; }
+    .post-card:nth-child(1)  { animation-delay: 0.04s; }
+    .post-card:nth-child(2)  { animation-delay: 0.08s; }
+    .post-card:nth-child(3)  { animation-delay: 0.12s; }
+    .post-card:nth-child(4)  { animation-delay: 0.16s; }
+    .post-card:nth-child(5)  { animation-delay: 0.20s; }
+    .post-card:nth-child(n+6){ animation-delay: 0.24s; }
+
+    .post-card.hidden { display: none; }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 580px) {
+        .post-card {
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto auto;
+        }
+        .post-card-side {
+            grid-column: 1;
+            grid-row: 3;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .post-card-summary { grid-row: 2; }
+        .post-card-arrow { display: none; }
+    }
+</style>
+
+</head>
+<body>
+    <nav class="site-nav" role="navigation" aria-label="主导航">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand" id="nav-brand-link">
+                <div class="nav-brand-seal" aria-hidden="true">開</div>
+                <span>開心的小院</span>
+            </a>
+            <ul class="nav-links" role="list">
+                <li>
+                    <a href="index.html" id="nav-home-link">
+                        <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 14.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"/></svg>
+                        <span class="nav-link-text">首页</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html#posts" id="nav-posts-link">
+                        <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75A.75.75 0 0 1 .75 1h4.253c1.227 0 2.317.59 3 1.501A3.743 3.743 0 0 1 11.006 1h4.245a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75h-4.507a2.25 2.25 0 0 0-1.591.659l-.622.621a.75.75 0 0 1-1.06 0l-.622-.621A2.25 2.25 0 0 0 5.258 13H.75a.75.75 0 0 1-.75-.75Zm7.251 10.324.004-5.073-.002-2.253A2.25 2.25 0 0 0 5.003 2.5H1.5v9h3.757a3.75 3.75 0 0 1 1.994.574ZM8.755 4.75l-.004 7.322a3.752 3.752 0 0 1 1.992-.572H14.5v-9h-3.495a2.25 2.25 0 0 0-2.25 2.25Z"/></svg>
+                        <span class="nav-link-text">文集</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        
+    <!-- 书封面式英雄区 -->
+    <section class="hero" aria-labelledby="hero-heading">
+        <div class="hero-frame" aria-hidden="true"></div>
+        <div class="hero-content">
+            <div class="hero-imprint" aria-hidden="true">个人文集</div>
+            <h1 class="hero-title" id="hero-heading">開心的小院</h1>
+            <div class="hero-seal" aria-hidden="true">開</div>
+            <p class="hero-desc">故事 · 译文 · 随想<br>记录值得留存的思考与感悟</p>
+            <div class="hero-divider" aria-hidden="true">
+                <div class="hero-divider-line"></div>
+                <span class="hero-divider-ornament">✦</span>
+                <div class="hero-divider-line"></div>
+            </div>
+            <div class="hero-stats" aria-label="站点统计">
+                <div class="hero-stat">
+                    <div class="hero-stat-num">15</div>
+                    <div class="hero-stat-label">篇文章</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">5</div>
+                    <div class="hero-stat-label">篇故事</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">0</div>
+                    <div class="hero-stat-label">篇译文</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 筛选栏（吸顶） -->
+    <div class="filter-bar" role="search" aria-label="按标签筛选">
+        <div class="filter-inner">
+            <span class="filter-label">筛选：</span>
+            <button class="filter-btn active" data-tag="all" id="filter-all" type="button">
+                全部
+                <span class="filter-count" id="count-all">15</span>
+            </button>
+
+            
+            
+            
+                
+                    
+                
+                    
+                
+            
+                
+                    
+                
+                    
+                
+            
+                
+                    
+                
+                    
+                
+            
+                
+                    
+                
+            
+                
+                    
+                
+                    
+                
+            
+                
+                    
+                
+            
+                
+                    
+                
+            
+                
+                    
+                
+            
+                
+                    
+                
+            
+                
+                    
+                
+            
+                
+                    
+                
+            
+                
+                    
+                
+            
+                
+                    
+                
+            
+                
+                    
+                
+            
+                
+                    
+                
+            
+
+            
+            
+            <button class="filter-btn" data-tag="story" type="button">
+                story
+                <span class="filter-count">5</span>
+            </button>
+            
+            
+            <button class="filter-btn" data-tag="乱世链锯" type="button">
+                乱世链锯
+                <span class="filter-count">1</span>
+            </button>
+            
+            
+            <button class="filter-btn" data-tag="神火余烬" type="button">
+                神火余烬
+                <span class="filter-count">1</span>
+            </button>
+            
+            
+            <button class="filter-btn" data-tag="tool usage" type="button">
+                tool usage
+                <span class="filter-count">1</span>
+            </button>
+            
+            
+            <button class="filter-btn" data-tag="learning" type="button">
+                learning
+                <span class="filter-count">3</span>
+            </button>
+            
+            
+            <button class="filter-btn" data-tag="MIT" type="button">
+                MIT
+                <span class="filter-count">1</span>
+            </button>
+            
+            
+            <button class="filter-btn" data-tag="ubiquitous computing" type="button">
+                ubiquitous computing
+                <span class="filter-count">1</span>
+            </button>
+            
+            
+            <button class="filter-btn" data-tag="continuous learning" type="button">
+                continuous learning
+                <span class="filter-count">1</span>
+            </button>
+            
+            
+            <button class="filter-btn" data-tag="tool" type="button">
+                tool
+                <span class="filter-count">1</span>
+            </button>
+            
+            
+            <button class="filter-btn" data-tag="life" type="button">
+                life
+                <span class="filter-count">1</span>
+            </button>
+            
+            
+            <button class="filter-btn" data-tag="opencv" type="button">
+                opencv
+                <span class="filter-count">3</span>
+            </button>
+            
+
+            <div class="search-wrapper">
+                <span class="search-icon-wrap" aria-hidden="true">
+                    <svg class="icon" viewBox="0 0 16 16" width="13" height="13"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215ZM11.5 7a4.499 4.499 0 1 0-8.997 0A4.499 4.499 0 0 0 11.5 7Z"/></svg>
+                </span>
+                <input type="search" class="search-input" id="search-input" placeholder="搜索文章…" aria-label="搜索文章标题或摘要" autocomplete="off">
+            </div>
+        </div>
+    </div>
+
+    <!-- 文章列表 -->
+    <section class="posts-section" id="posts" aria-labelledby="posts-label">
+        <div class="posts-inner">
+            <div class="section-header">
+                <span class="section-title" id="posts-label">目录</span>
+                <div class="section-rule" aria-hidden="true"></div>
+                <span class="section-title" id="posts-count">共 15 篇</span>
+            </div>
+
+            <div class="posts-list" id="posts-list" role="list">
+                
+                <a
+                    href="新编故事 - 乱世链锯.html"
+                    class="post-card"
+                    data-tags="story,乱世链锯"
+                    data-title="新编故事 - 乱世链锯"
+                    role="listitem"
+                    aria-label="新编故事 - 乱世链锯，2026-03-05 22:41:34"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">新编故事 - 乱世链锯</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2026-03-05 22:41:34</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">story</span>
+                            
+                            <span class="tag-chip">乱世链锯</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">楔子：恐惧的种子 天宝十四载，冬。 渔阳鼙鼓动地来，惊破霓裳羽衣曲。 没有人知道，那鼓声震裂的不仅是长安城的歌舞升平，更是一道封印——一道自三皇五帝以来，以礼乐教化维系人心的无形之墙。墙倒之后，那些被压抑了千年的恐惧，终于找到了出口。 它们起初只是模糊的影子。 在潼关失守的夜晚，有士兵声称看见城墙缝隙中渗出黑色的雾气，那雾气凝聚成扭曲的人形，在溃军身后无声地跟随。他们说，那是战友的冤魂，是在战场被...</p>
+                    
+                </a>
+                
+                <a
+                    href="新编故事 - 神火余烬.html"
+                    class="post-card"
+                    data-tags="story,神火余烬"
+                    data-title="新编故事 - 神火余烬"
+                    role="listitem"
+                    aria-label="新编故事 - 神火余烬，2026-03-05 13:40:39"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">新编故事 - 神火余烬</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2026-03-05 13:40:39</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">story</span>
+                            
+                            <span class="tag-chip">神火余烬</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">神火不灭，薪尽火传 跪者终亡，立者永生 第一章：破庙血誓 永昌十三年，大雪。 破庙的门扇早已不知去向，风雪如一群饿狼，从四壁的裂缝中蜂拥而入。神像的残躯矗立在黑暗深处，金漆剥落殆尽，露出泥土与稻草的内里——它曾是被万人膜拜的神明，如今不过是一具无人认领的尸骸。 十二岁的林寂舟跪在冰冷的地砖上，膝盖早已失去知觉。他的双手被麻绳反绑在身后，嘴角挂着凝固的血迹，但他的眼睛始终睁着，死死盯着神像前的男人。...</p>
+                    
+                </a>
+                
+                <a
+                    href="译 - 纯文本社会科学指南：普通人的实用手册.html"
+                    class="post-card"
+                    data-tags="tool usage,learning"
+                    data-title="译 - 纯文本社会科学指南：普通人的实用手册"
+                    role="listitem"
+                    aria-label="译 - 纯文本社会科学指南：普通人的实用手册，2025-12-8"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">译 - 纯文本社会科学指南：普通人的实用手册</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2025-12-8</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">tool usage</span>
+                            
+                            <span class="tag-chip">learning</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">纯文本社会科学指南：普通人的实用手册 原作者：Kieran Healy（杜克大学社会学教授） 链接：https://plain-text.co/ 翻译说明：本翻译力求准确传达原文内容，保留技术术语和代码示例，原始版权归作者所有。 1. 引言 作为一名社会科学领域的初级研究生，你应该使用什么软件来完成工作？更重要的是，指导你做出选择的原则是什么？我提供一些总体考虑和具体建议。简而言之：你应该使用那些...</p>
+                    
+                </a>
+                
+                <a
+                    href="HOW TO REMEMBER EVERYTHING YOU READ.html"
+                    class="post-card"
+                    data-tags="learning"
+                    data-title="how to remember everything you read"
+                    role="listitem"
+                    aria-label="HOW TO REMEMBER EVERYTHING YOU READ，2025-11-30"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">HOW TO REMEMBER EVERYTHING YOU READ</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2025-11-30</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">learning</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">This content has been extracted from the original PDF and converted into HTML format to enhance accessibility and flexibility for readers in various language environments. The primary goal is to facil...</p>
+                    
+                </a>
+                
+                <a
+                    href="译 - How People Learning.html"
+                    class="post-card"
+                    data-tags="learning,MIT"
+                    data-title="译 - how people learning"
+                    role="listitem"
+                    aria-label="译 - How People Learning，2025-11-25"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">译 - How People Learning</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2025-11-25</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">learning</span>
+                            
+                            <span class="tag-chip">MIT</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">内容来源：https://tll.mit.edu/teaching-resources/how-people-learn/ 元认知 (Metacognition) 元认知 (Metacognition) 是学习者利用对手头任务的知识、对学习策略的知识以及对自我的了解，来计划学习、监控学习目标的进展并评估结果的过程。 关于专业技能 (expertise) 的文献强调了元认知技能的重要性。专家不仅拥有...</p>
+                    
+                </a>
+                
+                <a
+                    href="新编故事 - 星尘筑梦.html"
+                    class="post-card"
+                    data-tags="story"
+                    data-title="新编故事 - 星尘筑梦"
+                    role="listitem"
+                    aria-label="新编故事 - 星尘筑梦，2025-11-20 11:25"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">新编故事 - 星尘筑梦</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2025-11-20 11:25</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">story</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">文献来源：人民日报海外版 日期：2020年5月11日 2020年5月8日，中国新一代载人飞船试验船返回舱成功着陆。引人注目的是，舱内搭载的一台“太空3D打印机”成功带回了两个样件：一个是连续纤维增强复合材料样件，一个是蜂窝结构样件。 这是中国首次在太空完成这种高强度材料的在轨制造。航天五院529厂的专家指出，这验证了微重力环境下材料成型的可行性。彼时，这只是一个手掌大小的黑色蜂窝块，但它却悄然埋下...</p>
+                    
+                </a>
+                
+                <a
+                    href="译 - The Computer for the 21st Century.html"
+                    class="post-card"
+                    data-tags="ubiquitous computing"
+                    data-title="译 | the computer for the 21st century"
+                    role="listitem"
+                    aria-label="译 | The Computer for the 21st Century，2025-11-17"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">译 | The Computer for the 21st Century</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2025-11-17</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">ubiquitous computing</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">SCIENTIFIC AMERICAN September 1991 Mark Weiser，他是施乐帕洛阿尔托研究中心（Xerox Palo Alto Research Center）计算机科学实验室的负责人。他正致力于工作站之后的下一次计算革命，这被称为“普适计算”或“具身虚拟”。在加入 PARC 之前，他是马里兰大学的计算机科学教授；他于 1979 年从密歇根大学获得博士学位。威瑟还帮助创办...</p>
+                    
+                </a>
+                
+                <a
+                    href="新编故事 - 短剑与黄泉.html"
+                    class="post-card"
+                    data-tags="story"
+                    data-title="新编故事 - 短剑与黄泉"
+                    role="listitem"
+                    aria-label="新编故事 - 短剑与黄泉，2025-11-16 15:19"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">新编故事 - 短剑与黄泉</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2025-11-16 15:19</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">story</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">坠落 咸阳宫的喧嚣像潮水一样迅速退去。最后留在耳边的，只有我自己那狂妄却又绝望的笑声，以及骨肉分离的剧痛。 当我再次睁开眼时，没有金碧辉煌的大殿，也没有那根被我匕首击中的铜柱。四周是漫无边际的灰雾，脚下是暗红色的泥土，一条浑浊的大河在远处无声地流淌。这里没有风，但我却感到了比易水更彻骨的寒意。 我知道，这里是黄泉。 我低头看自己的身体，左腿完好如初，胸口的八个血洞也不见了。但我手中空空如也，那把淬...</p>
+                    
+                </a>
+                
+                <a
+                    href="译 - AI 中的稳定性与可塑性困境.html"
+                    class="post-card"
+                    data-tags="continuous learning"
+                    data-title="译 | ai 中的稳定性与可塑性困境"
+                    role="listitem"
+                    aria-label="译 | AI 中的稳定性与可塑性困境，2025-11-15"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">译 | AI 中的稳定性与可塑性困境</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2025-11-15</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">continuous learning</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">原文：https://medium.com/data-science-at-microsoft/the-stability-plasticity-dilemma-in-ai-7c61fbaf2f50 In the continuing odyssey of engineering truly sentient systems, one of the most formidable yet exhi...</p>
+                    
+                </a>
+                
+                <a
+                    href="新编故事 - 噪音.html"
+                    class="post-card"
+                    data-tags="story"
+                    data-title="新编故事 - 噪音"
+                    role="listitem"
+                    aria-label="新编故事 - 噪音，2025-11-10 22:58"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">新编故事 - 噪音</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2025-11-10 22:58</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">story</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">0x00 网络操作中心里没有天气。 这里只有恒定的21摄氏度，和一种被空气过滤器反复过滤的、干燥的空气。L称之为“罐头空气”。 墙上是一整面巨大的拼接屏，上面是数据港的实时流量图。那上面奔涌的线条，就是这座城市的脉搏。L的工作，是确保它们永不间断，永不紊乱。 他是夜班的运维工程师。他的世界由仪表盘、日志和告警组成。 凌晨3:17，“嘀嘀。嘀嘀。” 一声低沉的蜂鸣，优先级3级的告警。不算紧急，但足够...</p>
+                    
+                </a>
+                
+                <a
+                    href="Zotero7 重新安装与数据配置.html"
+                    class="post-card"
+                    data-tags="tool"
+                    data-title="zotero7 重新安装与数据配置"
+                    role="listitem"
+                    aria-label="Zotero7 重新安装与数据配置，2024-09-01 10:00:36"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">Zotero7 重新安装与数据配置</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2024-09-01 10:00:36</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">tool</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">简单记录了一次Zotero7的重新安装与数据配置。</p>
+                    
+                </a>
+                
+                <a
+                    href="CVPR 参会记录.html"
+                    class="post-card"
+                    data-tags="life"
+                    data-title="cvpr 参会记录"
+                    role="listitem"
+                    aria-label="CVPR 参会记录，2024-04-17 03:32:15"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">CVPR 参会记录</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2024-04-17 03:32:15</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">life</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                </a>
+                
+                <a
+                    href="Six methods of indexing pixels of Mat in OpenCV.html"
+                    class="post-card"
+                    data-tags="opencv"
+                    data-title="six methods of indexing pixels of mat in opencv"
+                    role="listitem"
+                    aria-label="Six methods of indexing pixels of Mat in OpenCV，2024-03-25 09:41:52"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">Six methods of indexing pixels of Mat in OpenCV</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2024-03-25 09:41:52</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">opencv</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">记录了六种在OpenCV中索引像素的方法。</p>
+                    
+                </a>
+                
+                <a
+                    href="Snippets of OpenVINO-CPP for Model Inference.html"
+                    class="post-card"
+                    data-tags="opencv"
+                    data-title="snippets of openvino-cpp for model inference"
+                    role="listitem"
+                    aria-label="Snippets of OpenVINO-CPP for Model Inference，2024-03-25 09:41:05"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">Snippets of OpenVINO-CPP for Model Inference</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2024-03-25 09:41:05</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">opencv</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">记录了通过 OpenVINO 创建的模型进行推理的一些代码片段。</p>
+                    
+                </a>
+                
+                <a
+                    href="Build OpenCV and OpenVINO for Windows 10 with VS 2022 (2).html"
+                    class="post-card"
+                    data-tags="opencv"
+                    data-title="build opencv and openvino for windows 10 with vs 2022"
+                    role="listitem"
+                    aria-label="Build OpenCV and OpenVINO for Windows 10 with VS 2022，2024-03-25 09:38:03"
+                >
+                    <div class="post-card-main">
+                        <div class="post-card-title">Build OpenCV and OpenVINO for Windows 10 with VS 2022</div>
+                    </div>
+
+                    <div class="post-card-side">
+                        <span class="post-card-date">2024-03-25 09:38:03</span>
+                        
+                        <div class="post-card-tags">
+                            
+                            <span class="tag-chip">opencv</span>
+                            
+                        </div>
+                        
+                        <span class="post-card-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    
+                    <p class="post-card-summary">记录了在 Windows 10 上自行编译OpenCV（为了CUDA支持）和OpenVINO的过程。</p>
+                    
+                </a>
+                
+            </div>
+
+            <div class="empty-state" id="empty-state" style="display:none;" aria-live="polite">
+                <div class="empty-ornament" aria-hidden="true">🔍</div>
+                <p>没有找到匹配的文章，请尝试其他搜索词</p>
+            </div>
+        </div>
+    </section>
+
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-inner">
+            <p class="footer-text">
+                © 2025–2026 開心
+                <span class="footer-sep">·</span>
+                由 <a href="https://github.com/lartpang/blog" target="_blank" rel="noopener">GitHub Pages</a> 托管
+                <span class="footer-sep">·</span>
+                故事 · 译文 · 随想
+            </p>
+        </div>
+    </footer>
+
+    
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards     = Array.from(document.querySelectorAll('.post-card'));
+        const filterBtns= document.querySelectorAll('.filter-btn');
+        const searchIn  = document.getElementById('search-input');
+        const empty     = document.getElementById('empty-state');
+        const countEl   = document.getElementById('posts-count');
+        let tag = 'all', kw = '';
+
+        function render() {
+            let n = 0;
+            cards.forEach(c => {
+                const tags  = (c.dataset.tags || '').split(',').map(s => s.trim());
+                const title = c.dataset.title || '';
+                const sum   = (c.querySelector('.post-card-summary')?.textContent || '').toLowerCase();
+                const ok    = (tag === 'all' || tags.includes(tag)) && (!kw || title.includes(kw) || sum.includes(kw));
+                c.classList.toggle('hidden', !ok);
+                if (ok) n++;
+            });
+            empty.style.display = n ? 'none' : 'block';
+            countEl.textContent = `共 ${n} 篇`;
+        }
+
+        filterBtns.forEach(b => b.addEventListener('click', () => {
+            filterBtns.forEach(x => x.classList.remove('active'));
+            b.classList.add('active');
+            tag = b.dataset.tag;
+            render();
+        }));
+
+        searchIn.addEventListener('input', () => { kw = searchIn.value.toLowerCase().trim(); render(); });
+    });
+</script>
+
+</body>
+</html>

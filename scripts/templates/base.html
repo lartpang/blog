@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}文集{% endblock %} — 開心的小院</title>
+    <meta name="description" content="{% block meta_desc %}一个存放故事、译文与随想的个人空间{% endblock %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Serif:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+    {% block head_extra %}{% endblock %}
+
+    <style>
+        /* ===== 设计令牌：纸质书风格 ===== */
+        :root {
+            /* 纸张底色：陈年羊皮纸 */
+            --paper:          #f7f3eb;
+            --paper-warm:     #f2ece0;
+            --paper-deep:     #ede5d6;
+            --paper-card:     #faf7f2;
+            --paper-shadow:   rgba(120, 90, 50, 0.10);
+
+            /* 墨水色：深焦墨 */
+            --ink:            #2c2417;
+            --ink-mid:        #5a4a35;
+            --ink-light:      #8a7560;
+            --ink-faint:      #b8a994;
+
+            /* 朱砂印章红（品牌点缀色，克制使用） */
+            --seal:           #9b2335;
+            --seal-light:     #c0392b;
+            --seal-subtle:    rgba(155, 35, 53, 0.07);
+            --seal-border:    rgba(155, 35, 53, 0.20);
+
+            /* 边框：牛皮纸纹 */
+            --border:         rgba(120, 90, 50, 0.15);
+            --border-strong:  rgba(120, 90, 50, 0.28);
+
+            /* 阴影：柔和书页卷边感 */
+            --shadow-sm:  0 1px 4px rgba(100, 70, 30, 0.08);
+            --shadow-md:  0 3px 12px rgba(100, 70, 30, 0.12);
+            --shadow-lg:  0 6px 28px rgba(100, 70, 30, 0.16);
+
+            /* 字体 */
+            --font-serif: "EB Garamond", "Noto Serif", "Noto Serif SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+            --font-ui:    "Noto Serif SC", "Noto Serif", system-ui, sans-serif;
+            --font-mono:  "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+
+            /* 圆角 */
+            --r-sm: 4px;
+            --r-md: 6px;
+            --r-lg: 10px;
+
+            /* 过渡 */
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+            --dur:  0.22s;
+        }
+
+        /* ===== 重置 ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html { scroll-behavior: smooth; font-size: 18px; }
+
+        body {
+            background-color: var(--paper-warm);
+            color: var(--ink);
+            font-family: var(--font-serif);
+            line-height: 1.85;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            /* 微妙的纸张纤维纹理 */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+        }
+
+        /* ===== 链接 ===== */
+        a { color: inherit; text-decoration: none; transition: color var(--dur) var(--ease); }
+
+        /* ===== 导航栏：中式书脊感 ===== */
+        .site-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(242, 236, 224, 0.92);
+            backdrop-filter: blur(16px) saturate(1.2);
+            -webkit-backdrop-filter: blur(16px) saturate(1.2);
+            border-bottom: 1px solid var(--border-strong);
+            padding: 0 clamp(16px, 4vw, 48px);
+        }
+
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: var(--ink);
+            transition: opacity var(--dur) var(--ease);
+        }
+        .nav-brand:hover { opacity: 0.7; }
+
+        .nav-brand-seal {
+            width: 30px;
+            height: 30px;
+            background: var(--seal);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            box-shadow: 1px 1px 0 rgba(0,0,0,0.2), 2px 2px 6px rgba(155,35,53,0.25);
+            /* 印章旋转感 */
+            transform: rotate(-2deg);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 14px;
+            border-radius: var(--r-sm);
+            font-size: 0.88rem;
+            color: var(--ink-mid);
+            font-family: var(--font-ui);
+            transition: all var(--dur) var(--ease);
+        }
+        .nav-links a:hover { color: var(--ink); background: var(--paper-deep); }
+
+        /* 导航底部装饰线 */
+        .nav-inner::after {
+            display: none;
+        }
+
+        /* ===== 主内容 ===== */
+        .site-main { position: relative; }
+
+        /* ===== 页脚 ===== */
+        .site-footer {
+            border-top: 1px solid var(--border);
+            padding: 36px clamp(16px, 4vw, 48px);
+            text-align: center;
+            margin-top: 80px;
+            background: var(--paper-deep);
+        }
+
+        .footer-inner { max-width: 1100px; margin: 0 auto; }
+
+        .footer-text {
+            font-size: 0.80rem;
+            color: var(--ink-light);
+            font-family: var(--font-ui);
+            line-height: 1.8;
+        }
+
+        .footer-text a { color: var(--ink-mid); }
+        .footer-text a:hover { color: var(--seal); }
+
+        .footer-sep { display: inline-block; margin: 0 8px; opacity: 0.4; }
+
+        /* ===== 通用标签 ===== */
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 1px 9px;
+            border-radius: 2px;
+            font-size: 0.70rem;
+            font-family: var(--font-ui);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            background: var(--seal-subtle);
+            color: var(--seal);
+            border: 1px solid var(--seal-border);
+        }
+
+        /* ===== 图标 ===== */
+        svg.icon {
+            width: 1em; height: 1em;
+            vertical-align: -0.12em;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        /* ===== 滚动条 ===== */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: var(--paper-warm); }
+        ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+        @media (max-width: 600px) {
+            .nav-link-text { display: none; }
+            .nav-links a { padding: 5px 10px; }
+        }
+
+        {% block style_extra %}{% endblock %}
+    </style>
+    {% block style_page %}{% endblock %}
+</head>
+<body>
+    <nav class="site-nav" role="navigation" aria-label="主导航">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand" id="nav-brand-link">
+                <div class="nav-brand-seal" aria-hidden="true">開</div>
+                <span>開心的小院</span>
+            </a>
+            <ul class="nav-links" role="list">
+                <li>
+                    <a href="index.html" id="nav-home-link">
+                        <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 14.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z"/></svg>
+                        <span class="nav-link-text">首页</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html#posts" id="nav-posts-link">
+                        <svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75A.75.75 0 0 1 .75 1h4.253c1.227 0 2.317.59 3 1.501A3.743 3.743 0 0 1 11.006 1h4.245a.75.75 0 0 1 .75.75v10.5a.75.75 0 0 1-.75.75h-4.507a2.25 2.25 0 0 0-1.591.659l-.622.621a.75.75 0 0 1-1.06 0l-.622-.621A2.25 2.25 0 0 0 5.258 13H.75a.75.75 0 0 1-.75-.75Zm7.251 10.324.004-5.073-.002-2.253A2.25 2.25 0 0 0 5.003 2.5H1.5v9h3.757a3.75 3.75 0 0 1 1.994.574ZM8.755 4.75l-.004 7.322a3.752 3.752 0 0 1 1.992-.572H14.5v-9h-3.495a2.25 2.25 0 0 0-2.25 2.25Z"/></svg>
+                        <span class="nav-link-text">文集</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="site-main" id="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-inner">
+            <p class="footer-text">
+                © 2025–2026 開心
+                <span class="footer-sep">·</span>
+                由 <a href="https://github.com/lartpang/blog" target="_blank" rel="noopener">GitHub Pages</a> 托管
+                <span class="footer-sep">·</span>
+                故事 · 译文 · 随想
+            </p>
+        </div>
+    </footer>
+
+    {% block scripts_extra %}{% endblock %}
+</body>
+</html>
