@@ -1,5 +1,12 @@
 .obsidian/
 .trash/
 .env/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
 /docs/
 /_site/
