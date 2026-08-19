@@ -1,0 +1,503 @@
+{% extends "base.html" %}
+
+{% block title %}開心的小院{% endblock %}
+{% block meta_desc %}開心的小院：记录故事、译文、工具和研究随想的个人日志。{% endblock %}
+
+{% block style_page %}
+<style>
+    .home-shell {
+        width: min(1180px, calc(100% - 40px));
+        margin: 0 auto;
+    }
+
+    .hero {
+        position: relative;
+        display: block;
+        padding: clamp(76px, 11vw, 138px) 0 clamp(74px, 10vw, 124px);
+        border-bottom: 1px solid var(--rule);
+    }
+
+    .eyebrow,
+    .section-kicker,
+    .ledger-label,
+    .post-label {
+        margin: 0;
+        color: var(--accent);
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        line-height: 1.5;
+        text-transform: uppercase;
+    }
+
+    .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 24px;
+    }
+
+    .eyebrow .signal-dot {
+        width: 6px;
+        height: 6px;
+        box-shadow: none;
+    }
+
+    .hero h1 {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-size: clamp(2.55rem, 6.1vw, 5.35rem);
+        font-weight: 600;
+        letter-spacing: -0.075em;
+        line-height: 1.04;
+    }
+
+    .hero h1 span {
+        color: var(--accent);
+    }
+
+    .hero-ledger {
+        width: 100%;
+        max-width: 560px;
+        margin-top: 52px;
+    }
+
+    .ledger-list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        max-width: 560px;
+        margin: 0;
+    }
+
+    .ledger-list div {
+        min-width: 0;
+    }
+
+    .ledger-list dt {
+        margin-bottom: 5px;
+        color: var(--ink-faint);
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        text-transform: uppercase;
+    }
+
+    .ledger-list dd {
+        margin: 0;
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-size: 1.8rem;
+        font-weight: 500;
+        letter-spacing: -0.05em;
+        line-height: 1;
+    }
+
+    .archive {
+        padding: clamp(64px, 9vw, 110px) 0 96px;
+    }
+
+    .archive-heading {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 28px;
+    }
+
+    .archive-heading h2 {
+        margin: 8px 0 0;
+        font-family: var(--font-display);
+        font-size: clamp(1.7rem, 3vw, 2.6rem);
+        font-weight: 500;
+        letter-spacing: -0.06em;
+        line-height: 1.1;
+    }
+
+    .archive-count {
+        color: var(--ink-faint);
+        font-family: var(--font-mono);
+        font-size: 0.67rem;
+        white-space: nowrap;
+    }
+
+    .archive-tools {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        min-height: 0;
+        padding-bottom: 18px;
+    }
+
+    .filter-list {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 5px 16px;
+        min-width: 0;
+    }
+
+    .filter-btn {
+        padding: 0 0 3px;
+        border: 0;
+        border-bottom: 1px solid transparent;
+        background: transparent;
+        color: var(--ink-faint);
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: 0.67rem;
+        line-height: 1.4;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+        border-bottom-color: var(--accent);
+        color: var(--accent);
+    }
+
+    .filter-count {
+        color: inherit;
+        opacity: 0.65;
+    }
+
+    .search-wrapper {
+        position: relative;
+        flex: 0 1 220px;
+        margin-left: auto;
+    }
+
+    .search-wrapper::before {
+        content: "/";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        color: var(--signal);
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        transform: translateY(-50%);
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 5px 0 6px 16px;
+        border: 0;
+        border-bottom: 1px solid var(--rule);
+        outline: 0;
+        background: transparent;
+        color: var(--ink);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+    }
+
+    .search-input::placeholder {
+        color: var(--ink-faint);
+    }
+
+    .search-input:focus {
+        border-color: var(--accent);
+    }
+
+    .post-list {
+        border-top: 0;
+    }
+
+    .post-row {
+        position: relative;
+        display: grid;
+        grid-template-columns: 124px minmax(0, 1fr) 22px;
+        gap: 26px;
+        align-items: start;
+        padding: 22px 16px 22px 0;
+        border-bottom: 1px solid var(--rule);
+        overflow: hidden;
+    }
+
+    .post-row::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -16px;
+        width: 3px;
+        background: var(--accent);
+        transform: scaleY(0);
+        transform-origin: center;
+        transition: transform var(--speed) var(--ease);
+    }
+
+    .post-row:hover {
+        background: var(--surface);
+    }
+
+    .post-row:hover::before {
+        transform: scaleY(1);
+    }
+
+    .post-date {
+        padding-top: 3px;
+        color: var(--ink-faint);
+        font-family: var(--font-mono);
+        font-size: 0.67rem;
+        line-height: 1.5;
+    }
+
+    .post-main {
+        min-width: 0;
+    }
+
+    .post-label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--signal);
+        font-size: 0.6rem;
+        letter-spacing: 0.05em;
+    }
+
+    .post-title {
+        display: block;
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-size: 1.05rem;
+        font-weight: 500;
+        letter-spacing: -0.025em;
+        line-height: 1.45;
+    }
+
+    .post-row:hover .post-title {
+        color: var(--accent);
+    }
+
+    .post-summary {
+        display: -webkit-box;
+        max-width: 720px;
+        margin: 7px 0 0;
+        overflow: hidden;
+        color: var(--ink-soft);
+        font-size: 0.79rem;
+        line-height: 1.7;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    .post-arrow {
+        padding-top: 3px;
+        color: var(--ink-faint);
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
+        text-align: right;
+        transition: color var(--speed) var(--ease), transform var(--speed) var(--ease);
+    }
+
+    .post-row:hover .post-arrow {
+        color: var(--accent);
+        transform: translate(3px, -3px);
+    }
+
+    .post-row.hidden {
+        display: none;
+    }
+
+    .empty-state {
+        padding: 42px 0;
+        border-bottom: 1px solid var(--rule);
+        color: var(--ink-soft);
+        font-family: var(--font-mono);
+        font-size: 0.73rem;
+    }
+
+    @media (max-width: 680px) {
+        .home-shell {
+            width: min(100% - 32px, 1180px);
+        }
+
+        .hero {
+            padding: 62px 0 58px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 13vw, 4.4rem);
+        }
+
+        .hero-ledger {
+            margin-top: 54px;
+        }
+
+        .archive {
+            padding-top: 62px;
+        }
+
+        .archive-heading {
+            display: block;
+        }
+
+        .archive-count {
+            display: block;
+            margin-top: 12px;
+        }
+
+        .archive-tools {
+            display: block;
+            padding: 12px 0;
+        }
+
+        .search-wrapper {
+            margin-top: 14px;
+        }
+
+        .post-row {
+            grid-template-columns: 92px minmax(0, 1fr) 16px;
+            gap: 12px;
+            padding: 20px 0;
+        }
+
+        .post-row::before {
+            left: -18px;
+        }
+
+        .post-title {
+            font-size: 0.98rem;
+        }
+
+        .post-summary {
+            font-size: 0.75rem;
+        }
+
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="home-shell">
+    <section class="hero" aria-labelledby="hero-heading">
+        <div class="hero-copy">
+            <p class="eyebrow"><span class="signal-dot" aria-hidden="true"></span> PERSONAL ARCHIVE / OPEN FOR READING</p>
+            <h1 id="hero-heading">在代码、文字与故事之间，<br><span>留下思考。</span></h1>
+        </div>
+
+        <aside class="hero-ledger" aria-label="站点统计">
+            <dl class="ledger-list">
+                <div>
+                    <dt>entries</dt>
+                    <dd>{{ articles | length }}</dd>
+                </div>
+                <div>
+                    <dt>stories</dt>
+                    <dd>{{ articles | selectattr('tags', 'containing', 'story') | list | length }}</dd>
+                </div>
+                <div>
+                    <dt>learning</dt>
+                    <dd>{{ articles | selectattr('tags', 'containing', 'learning') | list | length }}</dd>
+                </div>
+            </dl>
+        </aside>
+    </section>
+
+    <section class="archive" id="posts" aria-labelledby="archive-heading">
+        <header class="archive-heading">
+            <div>
+                <p class="section-kicker">WRITING INDEX / 01</p>
+                <h2 id="archive-heading">最近记下的东西</h2>
+            </div>
+            <span class="archive-count" id="posts-count">{{ articles | length }} / {{ articles | length }} entries</span>
+        </header>
+
+        <div class="archive-tools" role="search" aria-label="搜索和筛选文章">
+            <div class="filter-list">
+                <button class="filter-btn active" data-tag="all" type="button">all <span class="filter-count">{{ articles | length }}</span></button>
+                {% set all_tags = [] %}
+                {% for article in articles %}
+                    {% for tag in article.tags %}
+                        {% if tag not in all_tags %}{% set _ = all_tags.append(tag) %}{% endif %}
+                    {% endfor %}
+                {% endfor %}
+                {% for tag in all_tags %}
+                    {% set cnt = articles | selectattr('tags', 'containing', tag) | list | length %}
+                    <button class="filter-btn" data-tag="{{ tag }}" type="button">{{ tag }} <span class="filter-count">{{ cnt }}</span></button>
+                {% endfor %}
+            </div>
+            <label class="search-wrapper">
+                <span class="sr-only">搜索文章标题或摘要</span>
+                <input class="search-input" id="search-input" type="search" placeholder="search notes" autocomplete="off">
+            </label>
+        </div>
+
+        <div class="post-list" id="post-list" role="list">
+            {% for article in articles %}
+            <a
+                class="post-row"
+                href="{{ article.url }}"
+                data-tags="{{ article.tags | join(',') }}"
+                data-title="{{ article.title | lower }}"
+                role="listitem"
+                aria-label="{{ article.title }}，{{ article.date }}"
+            >
+                <span class="post-date">{{ article.date }}</span>
+                <span class="post-main">
+                    <span class="post-label">{{ article.tags[0] if article.tags else "note" }}</span>
+                    <span class="post-title">{{ article.title }}</span>
+                    {% if article.summary_text %}<span class="post-summary">{{ article.summary_text }}</span>{% endif %}
+                </span>
+                <span class="post-arrow" aria-hidden="true">↗</span>
+            </a>
+            {% endfor %}
+        </div>
+
+        <div class="empty-state" id="empty-state" style="display:none;" aria-live="polite">No matching notes. Try a different keyword.</div>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var rows = Array.prototype.slice.call(document.querySelectorAll(".post-row"));
+        var filterButtons = Array.prototype.slice.call(document.querySelectorAll(".filter-btn"));
+        var searchInput = document.getElementById("search-input");
+        var emptyState = document.getElementById("empty-state");
+        var count = document.getElementById("posts-count");
+        var activeTag = "all";
+        var keyword = "";
+
+        function renderRows() {
+            var visible = 0;
+
+            rows.forEach(function (row) {
+                var tags = (row.getAttribute("data-tags") || "").split(",").map(function (item) {
+                    return item.trim();
+                });
+                var title = (row.getAttribute("data-title") || "").toLowerCase();
+                var summary = (row.querySelector(".post-summary") || {}).textContent || "";
+                var matchesTag = activeTag === "all" || tags.indexOf(activeTag) !== -1;
+                var matchesSearch = !keyword || title.indexOf(keyword) !== -1 || summary.toLowerCase().indexOf(keyword) !== -1;
+                var isVisible = matchesTag && matchesSearch;
+
+                row.classList.toggle("hidden", !isVisible);
+                if (isVisible) visible += 1;
+            });
+
+            emptyState.style.display = visible ? "none" : "block";
+            count.textContent = String(visible) + " / " + String(rows.length) + " entries";
+        }
+
+        filterButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                filterButtons.forEach(function (item) {
+                    item.classList.remove("active");
+                });
+                button.classList.add("active");
+                activeTag = button.getAttribute("data-tag") || "all";
+                renderRows();
+            });
+        });
+
+        searchInput.addEventListener("input", function () {
+            keyword = searchInput.value.toLowerCase().trim();
+            renderRows();
+        });
+    });
+</script>
+{% endblock %}

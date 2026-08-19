@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f6f8">
+    <title>{% block title %}開心的小院{% endblock %} · 開心的小院</title>
+    <meta name="description" content="{% block meta_desc %}一个把问题写下来、把想法留给未来的个人研究日志。{% endblock %}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    {% block head_extra %}{% endblock %}
+
+    <style>
+        :root {
+            --canvas: #f4f6f8;
+            --surface: #ffffff;
+            --ink: #18232d;
+            --ink-soft: #53616d;
+            --ink-faint: #8b98a3;
+            --rule: #d9e0e6;
+            --rule-strong: #b9c5ce;
+            --accent: #2f6bff;
+            --accent-soft: rgba(47, 107, 255, 0.09);
+            --signal: #f26a4f;
+            --dark: #16212b;
+            --font-display: "Space Grotesk", "Noto Sans SC", system-ui, sans-serif;
+            --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+            --font-mono: "IBM Plex Mono", "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+            --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+            --speed: 180ms;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            background: var(--canvas);
+        }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+            background: var(--canvas);
+            color: var(--ink);
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color var(--speed) var(--ease), background-color var(--speed) var(--ease), border-color var(--speed) var(--ease), transform var(--speed) var(--ease);
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            color: inherit;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 4px;
+        }
+
+        ::selection {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .site-nav {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            border-bottom: 1px solid var(--rule);
+            background: rgba(244, 246, 248, 0.88);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+        }
+
+        .nav-inner {
+            width: min(1180px, calc(100% - 40px));
+            min-height: 68px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .nav-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-width: max-content;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 28px;
+            height: 28px;
+            place-items: center;
+            border: 1.5px solid var(--accent);
+            color: var(--accent);
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .brand-copy {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .brand-name {
+            font-family: var(--font-display);
+            font-size: 0.98rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-sub {
+            color: var(--ink-faint);
+            font-family: var(--font-mono);
+            font-size: 0.66rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .nav-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 auto 0 0;
+            color: var(--ink-faint);
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .signal-dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--signal);
+            box-shadow: 0 0 0 4px rgba(242, 106, 79, 0.12);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-family: var(--font-mono);
+            font-size: 0.71rem;
+            letter-spacing: 0.03em;
+        }
+
+        .nav-links a {
+            color: var(--ink-soft);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .site-main {
+            position: relative;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .site-footer {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 30px 0 48px;
+            border-top: 1px solid var(--rule);
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            color: var(--ink-faint);
+            font-family: var(--font-mono);
+            font-size: 0.67rem;
+            line-height: 1.7;
+        }
+
+        .footer-inner p {
+            margin: 0;
+        }
+
+        .footer-inner a {
+            color: var(--ink-soft);
+        }
+
+        .footer-inner a:hover {
+            color: var(--accent);
+        }
+
+        .footer-right {
+            text-align: right;
+        }
+
+        .tag-chip {
+            display: inline-block;
+            color: var(--ink-soft);
+            font-family: var(--font-mono);
+            font-size: 0.66rem;
+            line-height: 1.4;
+        }
+
+        .tag-chip::before {
+            content: "#";
+            color: var(--accent);
+        }
+
+        @media (max-width: 760px) {
+            .nav-inner,
+            .site-footer {
+                width: min(100% - 32px, 1180px);
+            }
+
+            .nav-inner {
+                min-height: 62px;
+                gap: 16px;
+            }
+
+            .nav-status,
+            .brand-sub {
+                display: none;
+            }
+
+            .nav-links {
+                gap: 14px;
+                margin-left: auto;
+                font-size: 0.65rem;
+            }
+
+            .footer-inner {
+                display: block;
+            }
+
+            .footer-right {
+                margin-top: 8px;
+                text-align: left;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+
+        {% block style_extra %}{% endblock %}
+    </style>
+    {% block style_page %}{% endblock %}
+</head>
+<body>
+    <header class="site-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand" aria-label="返回開心的小院首页">
+                <span class="brand-mark" aria-hidden="true">K</span>
+                <span class="brand-copy">
+                    <span class="brand-name">開心的小院</span>
+                    <span class="brand-sub">field notes</span>
+                </span>
+            </a>
+
+            <div class="nav-status">
+                <span class="signal-dot" aria-hidden="true"></span>
+                writing in public
+            </div>
+
+            <nav aria-label="主导航">
+                <ul class="nav-links">
+                    <li><a href="https://github.com/lartpang/blog" target="_blank" rel="noopener">GitHub ↗</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="site-main" id="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p>© 2025–2026 開心 · built as a small static archive</p>
+            <p class="footer-right">stories / translations / notes<br><a href="https://github.com/lartpang/blog" target="_blank" rel="noopener">source on GitHub ↗</a></p>
+        </div>
+    </footer>
+
+    {% block scripts_extra %}{% endblock %}
+</body>
+</html>

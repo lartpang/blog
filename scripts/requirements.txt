@@ -1,0 +1,6 @@
+PyGithub
+requests
+feedgen
+Jinja2==3.1.6
+mistune==3.3.4
+pygments==2.21.0
